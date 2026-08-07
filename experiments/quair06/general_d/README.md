@@ -29,7 +29,10 @@ MAT filenames are unchanged.
 | `validate_fastP.m` | `(d,k)=(2,2),(2,3)`, `rng(0)`, 3 test channels each | prints fast-versus-direct assembly residuals; no MAT output | CVX, QETLAB |
 
 These are retained snapshots of historically validated runs, not a claim that
-this migration reran or revalidated them.
+this migration reran or revalidated them. A read-only live reconciliation on
+2026-08-07 matched all 148 files in the remote general-d tree to the local raw
+snapshot. Seven remote-only MAT cross-checks are retained in
+`results/diagnostic` without changing the canonical summary rows.
 
 ## Diagnostics
 

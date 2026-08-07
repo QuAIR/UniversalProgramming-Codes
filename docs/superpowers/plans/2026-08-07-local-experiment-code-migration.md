@@ -114,7 +114,7 @@ REQUIRED_SUMMARY_COLUMNS = [
 VALID_STATUSES = {"validated", "diagnostic", "legacy", "incomplete"}
 ```
 
-The validator walks tracked-style text files while excluding `.git/`, rejects generic personal MATLAB home paths matching `/home/<user>/matlab_codes`, private `10.4.6.*` addresses, SSH private-key markers, CVX license URLs, and emitted `Username:` fields, validates the summary columns and statuses, checks that every nonempty `artifact` path exists, verifies that exact qubit runners contain `opts.s = 500`, and rejects any exact runner that calls `gamma_k_d2(...,'linear',...)`.
+The validator walks tracked-style text files while excluding `.git/`, rejects generic personal MATLAB home paths matching `/home/<user>/matlab_codes`, private IPv4 addresses, SSH private-key markers, CVX license URLs, and emitted `Username:` fields, validates the summary columns and statuses, checks that every nonempty `artifact` path exists, verifies that exact qubit runners contain `opts.s = 500`, and rejects any exact runner that calls `gamma_k_d2(...,'linear',...)`.
 
 - [ ] **Step 4: Add repository ignore rules**
 
@@ -278,7 +278,7 @@ Each wrapper resolves the repository root relative to the script, obtains the MA
 Run:
 
 ```powershell
-Select-String -Path experiments\quair06\kcopy_d2\* -Pattern "linear|/home/|10\.4\.6\."
+Select-String -Path experiments\quair06\kcopy_d2\* -Pattern "linear|/home/|private-address"
 python tools/verify_repository.py
 ```
 
@@ -340,7 +340,7 @@ Run:
 
 ```powershell
 python tools/verify_repository.py
-Get-ChildItem -Recurse -File experiments\quair06\general_d | Select-String -Pattern "/home/|10\.4\.6\.|mingrui"
+Get-ChildItem -Recurse -File experiments\quair06\general_d | Select-String -Pattern "/home/|private-address|research-user"
 ```
 
 Expected: no matches for personal paths; verifier failures are limited to later documentation and result tasks.
@@ -606,7 +606,7 @@ Run:
 ```powershell
 python tools/verify_repository.py
 python -m unittest discover -s tests/python -v
-git grep -n -I -E "(/home/[A-Za-z0-9_.-]+/matlab_codes|10\.4\.6\.[0-9]+|BEGIN OPENSSH PRIVATE KEY|cvx/academic\?)"
+git grep -n -I -E "(/home/[A-Za-z0-9_.-]+/matlab_codes|BEGIN OPENSSH PRIVATE KEY|cvx/academic\?)"
 ```
 
 Expected: verifier and unit tests pass; sensitive grep has no matches.

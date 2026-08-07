@@ -11,3 +11,9 @@ linear mode is a lower bound, not equivalent to the exact SDP, can lie below the
 
 Each retained runner resolves paths and outputs locally, but these warnings
 remain intentional: archived scripts are not supported computational results.
+
+`server-snapshots/quair06-2026-08-07` contains remote-only sources found by a
+read-only live reconciliation. It omits sources already represented by a
+portable repository target and retains generated, exploratory, and diagnostic
+wrappers only for provenance. Its PBT scripts contain a recovered claim that
+was not independently re-proven during the reconciliation.

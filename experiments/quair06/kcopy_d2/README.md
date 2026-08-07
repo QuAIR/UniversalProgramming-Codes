@@ -29,3 +29,17 @@ MATLAB requires CVX, QETLAB, and an SDP solver. Configure their portable paths
 as described in `../config/README.md`. The exact sample count is fixed at 500
 and the fresh-channel certificate count is fixed at 50. No supported batch
 uses the legacy linear relaxation.
+
+## Reconciled live evidence
+
+The live quair06 tree was reconciled read-only on 2026-08-07. All 57 files in
+the qubit project matched the local snapshot SHA-256 values. No job was
+running, started, stopped, or modified during the reconciliation.
+
+The completed k=5 saved-block artifact is retained as
+`results/diagnostic/quair06_exact_d2_k5_saved_blocks.mat`. It is useful as a
+validated feasible solution but is not the canonical optimum because its cost
+differs from the structured result and its solver log contains a linear-system
+NaN/Inf warning. The companion checkpoint records k=6 as incomplete. These
+files are evidence from the historical batch, not outputs of the supported
+scripts in this directory.

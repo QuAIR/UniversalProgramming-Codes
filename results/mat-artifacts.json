@@ -1,7 +1,7 @@
 {
     "schema_version":  1,
     "source_commit":  "4512790",
-    "artifact_count":  34,
+    "artifact_count":  44,
     "artifacts":  [
                       {
                           "path":  "results/certified/general_d/cert_d2_k3.mat",
@@ -2411,6 +2411,872 @@
                                                 "tolerance":  1E-12
                                             }
                                         ]
+                      },
+                      {
+                          "path":  "results/diagnostic/quair06_exact_d2_k5_saved_blocks.mat",
+                          "classification":  "diagnostic",
+                          "diagnostic_type":  "validated_feasible_solution",
+                          "current_sha256":  "34e0237e6df364836066f493c7b6f49d0d1ed432f4c536d4562b59c933299ce6",
+                          "source":  {
+                                         "snapshot_date":  "2026-08-07",
+                                         "source_root":  "primary",
+                                         "path":  "results_exact_k56/exact_d2_k5.mat",
+                                         "sha256":  "34e0237e6df364836066f493c7b6f49d0d1ed432f4c536d4562b59c933299ce6",
+                                         "live_hash_verified":  true
+                                     },
+                          "variables":  [
+                                            "b1",
+                                            "b2",
+                                            "blockMeta",
+                                            "blocksMinus",
+                                            "blocksMinusRaw",
+                                            "blocksPlus",
+                                            "blocksPlusRaw",
+                                            "coeffMinus",
+                                            "coeffPlus",
+                                            "cost",
+                                            "info",
+                                            "p1",
+                                            "p2",
+                                            "yMinus",
+                                            "yPlus"
+                                        ],
+                          "evidence":  {
+                                           "d":  2,
+                                           "k":  5,
+                                           "cost":  1.35153816332987,
+                                           "p1":  1.17576941409901,
+                                           "p2":  0.175768749230858,
+                                           "status":  "Solved",
+                                           "classification_status":  "diagnostic_validated_feasible",
+                                           "sample_count":  500,
+                                           "runtime_s":  113324.414558,
+                                           "warning":  "linsysolve_nan_or_inf",
+                                           "canonical_optimum":  false
+                                       },
+                          "residuals":  [
+                                            {
+                                                "matlab_path":  "info.minEig",
+                                                "value":  3.365947E-05,
+                                                "tolerance":  0
+                                            },
+                                            {
+                                                "matlab_path":  "info.maxNonHerm",
+                                                "value":  1.6446E-09,
+                                                "tolerance":  2E-09
+                                            },
+                                            {
+                                                "matlab_path":  "info.tpResidual",
+                                                "value":  2.48638E-06,
+                                                "tolerance":  3E-06
+                                            },
+                                            {
+                                                "matlab_path":  "info.freshProgResidual",
+                                                "value":  9.96877E-07,
+                                                "tolerance":  1.1E-06
+                                            }
+                                        ],
+                          "checks":  [
+                                         {
+                                             "matlab_path":  "cost",
+                                             "expected":  1.35153816332987,
+                                             "tolerance":  1E-12
+                                         },
+                                         {
+                                             "matlab_path":  "p1",
+                                             "expected":  1.17576941409901,
+                                             "tolerance":  1E-12
+                                         },
+                                         {
+                                             "matlab_path":  "p2",
+                                             "expected":  0.175768749230858,
+                                             "tolerance":  1E-12
+                                         },
+                                         {
+                                             "matlab_path":  "info.sampleCount",
+                                             "expected":  500,
+                                             "tolerance":  0
+                                         }
+                                     ]
+                      },
+                      {
+                          "path":  "results/diagnostic/quair06_exact_k56_checkpoint.mat",
+                          "classification":  "diagnostic",
+                          "diagnostic_type":  "checkpoint_k5_complete_k6_incomplete",
+                          "current_sha256":  "fa4cdfbb8acb67fa3c6b8082d3b54a8f75d86758acd061554502d4c4bb44c874",
+                          "source":  {
+                                         "snapshot_date":  "2026-08-07",
+                                         "source_root":  "primary",
+                                         "path":  "kcopy_d2_quair06_exact_k56_partial.mat",
+                                         "sha256":  "feddeaab294590d1a46f0210bda5833634ebae645fb730dd09f320a65770340c",
+                                         "live_hash_verified":  true
+                                     },
+                          "variables":  [
+                                            "opts",
+                                            "Tpartial"
+                                        ],
+                          "evidence":  {
+                                           "d":  2,
+                                           "k":  [
+                                                     5,
+                                                     6
+                                                 ],
+                                           "status":  "k5_complete_k6_incomplete",
+                                           "sample_count":  500,
+                                           "k5_cost":  1.35153816332987,
+                                           "k6_cost":  "NaN",
+                                           "canonical_optimum":  false
+                                       },
+                          "residuals":  [
+
+                                        ],
+                          "checks":  [
+
+                                     ],
+                          "sanitization":  {
+                                               "changed_fields":  [
+                                                                      "opts.cvxRoot",
+                                                                      "opts.helperPath",
+                                                                      "opts.qetlabPath",
+                                                                      "opts.resultsDir"
+                                                                  ],
+                                               "replacements":  {
+                                                                    "opts.cvxRoot":  "\u003cCVX_ROOT\u003e",
+                                                                    "opts.helperPath":  "\u003cREPOSITORY_ROOT\u003e/src/matlab/common",
+                                                                    "opts.qetlabPath":  "\u003cQETLAB_ROOT\u003e",
+                                                                    "opts.resultsDir":  "\u003cRESULTS_ROOT\u003e/diagnostic"
+                                                                },
+                                               "source_sha256":  "feddeaab294590d1a46f0210bda5833634ebae645fb730dd09f320a65770340c",
+                                               "current_sha256":  "fa4cdfbb8acb67fa3c6b8082d3b54a8f75d86758acd061554502d4c4bb44c874"
+                                           }
+                      },
+                      {
+                          "path":  "results/diagnostic/quair06_full_vs_linear_k1_k3.mat",
+                          "classification":  "diagnostic",
+                          "diagnostic_type":  "historical_full_vs_linear_comparison",
+                          "current_sha256":  "9e2a56ebf95ee395f244ec0c1782ed9dd4766413e5c855b7b5f141327ef4eeb3",
+                          "source":  {
+                                         "snapshot_date":  "2026-08-07",
+                                         "source_root":  "primary",
+                                         "path":  "kcopy_d2_quair06_k14_partial.mat",
+                                         "sha256":  "9e2a56ebf95ee395f244ec0c1782ed9dd4766413e5c855b7b5f141327ef4eeb3",
+                                         "live_hash_verified":  true
+                                     },
+                          "variables":  [
+                                            "gam_full",
+                                            "gam_linear",
+                                            "ks",
+                                            "pminus_full",
+                                            "pminus_linear",
+                                            "pplus_full",
+                                            "pplus_linear",
+                                            "runtime_full",
+                                            "runtime_linear",
+                                            "status_full",
+                                            "status_linear"
+                                        ],
+                          "evidence":  {
+                                           "d":  2,
+                                           "k":  [
+                                                     1,
+                                                     2,
+                                                     3,
+                                                     4
+                                                 ],
+                                           "status":  "k1_to_k3_complete_k4_incomplete",
+                                           "full_costs":  [
+                                                              5.5,
+                                                              2.71333025586,
+                                                              1.88829144016,
+                                                              "NaN"
+                                                          ],
+                                           "linear_costs":  [
+                                                                5.5,
+                                                                2.68514,
+                                                                1.83346,
+                                                                "NaN"
+                                                            ],
+                                           "canonical_optimum":  false
+                                       },
+                          "residuals":  [
+
+                                        ],
+                          "checks":  [
+
+                                     ]
+                      },
+                      {
+                          "path":  "results/diagnostic/quair06_struct2_d3_k1.mat",
+                          "classification":  "diagnostic",
+                          "diagnostic_type":  "full_space_crosscheck",
+                          "current_sha256":  "ed62fa29d6e28f600f0e8861ea039c23cdfca9883eb21b976f1bc3401cf9611d",
+                          "source":  {
+                                         "snapshot_date":  "2026-08-07",
+                                         "source_root":  "pqga-full",
+                                         "path":  "results/struct2_d3_k1.mat",
+                                         "sha256":  "ed62fa29d6e28f600f0e8861ea039c23cdfca9883eb21b976f1bc3401cf9611d",
+                                         "live_hash_verified":  true
+                                     },
+                          "variables":  [
+                                            "b1",
+                                            "b2",
+                                            "cost",
+                                            "cvx_status",
+                                            "d",
+                                            "e1",
+                                            "e2",
+                                            "fres",
+                                            "k",
+                                            "p1",
+                                            "p2",
+                                            "s",
+                                            "tpr1",
+                                            "tpr2"
+                                        ],
+                          "evidence":  {
+                                           "d":  3,
+                                           "k":  1,
+                                           "cost":  15.222222222222232,
+                                           "p1":  8.111111111111116,
+                                           "p2":  7.111111111111116,
+                                           "status":  "Solved",
+                                           "sample_count":  500,
+                                           "canonical_optimum":  false
+                                       },
+                          "residuals":  [
+                                            {
+                                                "matlab_path":  "e1",
+                                                "value":  -9.1388813228383267E-15,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "e2",
+                                                "value":  -4.6340944091666832E-15,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "fres",
+                                                "value":  1.9791817385125211E-15,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "tpr1",
+                                                "value":  0,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "tpr2",
+                                                "value":  4.4519804855454967E-15,
+                                                "tolerance":  1E-06
+                                            }
+                                        ],
+                          "checks":  [
+                                         {
+                                             "matlab_path":  "cost",
+                                             "expected":  15.222222222222232,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p1",
+                                             "expected":  8.111111111111116,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p2",
+                                             "expected":  7.111111111111116,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "d",
+                                             "expected":  3,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "k",
+                                             "expected":  1,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "s",
+                                             "expected":  500,
+                                             "tolerance":  0
+                                         }
+                                     ]
+                      },
+                      {
+                          "path":  "results/diagnostic/quair06_struct2_d3_k2.mat",
+                          "classification":  "diagnostic",
+                          "diagnostic_type":  "full_space_crosscheck",
+                          "current_sha256":  "d28ed60909fd6ba674fb13a0303d5cc33e6b63ee42b88501a362942d2710f912",
+                          "source":  {
+                                         "snapshot_date":  "2026-08-07",
+                                         "source_root":  "pqga-full",
+                                         "path":  "results/struct2_d3_k2.mat",
+                                         "sha256":  "d28ed60909fd6ba674fb13a0303d5cc33e6b63ee42b88501a362942d2710f912",
+                                         "live_hash_verified":  true
+                                     },
+                          "variables":  [
+                                            "b1",
+                                            "b2",
+                                            "cost",
+                                            "cvx_status",
+                                            "d",
+                                            "e1",
+                                            "e2",
+                                            "fres",
+                                            "k",
+                                            "p1",
+                                            "p2",
+                                            "s",
+                                            "tpr1",
+                                            "tpr2"
+                                        ],
+                          "evidence":  {
+                                           "d":  3,
+                                           "k":  2,
+                                           "cost":  7.456449778869561,
+                                           "p1":  4.2282248878814794,
+                                           "p2":  3.2282248909880815,
+                                           "status":  "Solved",
+                                           "sample_count":  500,
+                                           "canonical_optimum":  false
+                                       },
+                          "residuals":  [
+                                            {
+                                                "matlab_path":  "e1",
+                                                "value":  4.2412305072215692E-09,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "e2",
+                                                "value":  1.7958985795128531E-07,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "fres",
+                                                "value":  1.7311992247486775E-08,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "tpr1",
+                                                "value":  1.90700315099702E-10,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "tpr2",
+                                                "value":  1.2061546101917532E-10,
+                                                "tolerance":  1E-06
+                                            }
+                                        ],
+                          "checks":  [
+                                         {
+                                             "matlab_path":  "cost",
+                                             "expected":  7.456449778869561,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p1",
+                                             "expected":  4.2282248878814794,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p2",
+                                             "expected":  3.2282248909880815,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "d",
+                                             "expected":  3,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "k",
+                                             "expected":  2,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "s",
+                                             "expected":  500,
+                                             "tolerance":  0
+                                         }
+                                     ]
+                      },
+                      {
+                          "path":  "results/diagnostic/quair06_struct3_d4_k1.mat",
+                          "classification":  "diagnostic",
+                          "diagnostic_type":  "reduced_space_crosscheck",
+                          "current_sha256":  "ae23823cad355ec22b2ff8384d6db57fb84697d4be13a3e93fcae6c326a987f1",
+                          "source":  {
+                                         "snapshot_date":  "2026-08-07",
+                                         "source_root":  "pqga-full",
+                                         "path":  "results/struct3_d4_k1.mat",
+                                         "sha256":  "ae23823cad355ec22b2ff8384d6db57fb84697d4be13a3e93fcae6c326a987f1",
+                                         "live_hash_verified":  true
+                                     },
+                          "variables":  [
+                                            "b1",
+                                            "b2",
+                                            "cost",
+                                            "cvx_status",
+                                            "d",
+                                            "fres",
+                                            "k",
+                                            "maxnh",
+                                            "mineig",
+                                            "p1",
+                                            "p2",
+                                            "s",
+                                            "tpres"
+                                        ],
+                          "evidence":  {
+                                           "d":  4,
+                                           "k":  1,
+                                           "cost":  29.125,
+                                           "p1":  15.0625,
+                                           "p2":  14.062499999999998,
+                                           "status":  "Solved",
+                                           "sample_count":  500,
+                                           "canonical_optimum":  false
+                                       },
+                          "residuals":  [
+                                            {
+                                                "matlab_path":  "fres",
+                                                "value":  2.6177921107851539E-15,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "maxnh",
+                                                "value":  8.2386468196025052E-31,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "mineig",
+                                                "value":  0,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "tpres",
+                                                "value":  0,
+                                                "tolerance":  1E-06
+                                            }
+                                        ],
+                          "checks":  [
+                                         {
+                                             "matlab_path":  "cost",
+                                             "expected":  29.125,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p1",
+                                             "expected":  15.0625,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p2",
+                                             "expected":  14.062499999999998,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "d",
+                                             "expected":  4,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "k",
+                                             "expected":  1,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "s",
+                                             "expected":  500,
+                                             "tolerance":  0
+                                         }
+                                     ]
+                      },
+                      {
+                          "path":  "results/diagnostic/quair06_struct3_d4_k2.mat",
+                          "classification":  "diagnostic",
+                          "diagnostic_type":  "reduced_space_crosscheck",
+                          "current_sha256":  "db4e150e5c2066b465fb7de74262dc80eccfea8607721f8321087d46304840c4",
+                          "source":  {
+                                         "snapshot_date":  "2026-08-07",
+                                         "source_root":  "pqga-full",
+                                         "path":  "results/struct3_d4_k2.mat",
+                                         "sha256":  "db4e150e5c2066b465fb7de74262dc80eccfea8607721f8321087d46304840c4",
+                                         "live_hash_verified":  true
+                                     },
+                          "variables":  [
+                                            "b1",
+                                            "b2",
+                                            "cost",
+                                            "cvx_status",
+                                            "d",
+                                            "fres",
+                                            "k",
+                                            "maxnh",
+                                            "mineig",
+                                            "p1",
+                                            "p2",
+                                            "s",
+                                            "tpres"
+                                        ],
+                          "evidence":  {
+                                           "d":  4,
+                                           "k":  2,
+                                           "cost":  14.366215273518884,
+                                           "p1":  7.6831076369399449,
+                                           "p2":  6.6831076365789395,
+                                           "status":  "Solved",
+                                           "sample_count":  500,
+                                           "canonical_optimum":  false
+                                       },
+                          "residuals":  [
+                                            {
+                                                "matlab_path":  "fres",
+                                                "value":  5.7150184069710459E-09,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "maxnh",
+                                                "value":  8.9654246629853987E-15,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "mineig",
+                                                "value":  9.760323032034402E-09,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "tpres",
+                                                "value":  6.3214650412085047E-11,
+                                                "tolerance":  1E-06
+                                            }
+                                        ],
+                          "checks":  [
+                                         {
+                                             "matlab_path":  "cost",
+                                             "expected":  14.366215273518884,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p1",
+                                             "expected":  7.6831076369399449,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p2",
+                                             "expected":  6.6831076365789395,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "d",
+                                             "expected":  4,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "k",
+                                             "expected":  2,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "s",
+                                             "expected":  500,
+                                             "tolerance":  0
+                                         }
+                                     ]
+                      },
+                      {
+                          "path":  "results/diagnostic/quair06_y3_d4_k3.mat",
+                          "classification":  "diagnostic",
+                          "diagnostic_type":  "yalmip_crosscheck",
+                          "current_sha256":  "333361adbb2c916b765d74598a9396ea459cb4b7cb01a452a45a0b728a67d378",
+                          "source":  {
+                                         "snapshot_date":  "2026-08-07",
+                                         "source_root":  "pqga-full",
+                                         "path":  "results/y3_d4_k3.mat",
+                                         "sha256":  "333361adbb2c916b765d74598a9396ea459cb4b7cb01a452a45a0b728a67d378",
+                                         "live_hash_verified":  true
+                                     },
+                          "variables":  [
+                                            "b1",
+                                            "b2",
+                                            "cost",
+                                            "cvx_status",
+                                            "d",
+                                            "fres",
+                                            "k",
+                                            "maxnh",
+                                            "mineig",
+                                            "p1",
+                                            "p2",
+                                            "s",
+                                            "tpres"
+                                        ],
+                          "evidence":  {
+                                           "d":  4,
+                                           "k":  3,
+                                           "cost":  9.4538450381515524,
+                                           "p1":  5.2269225183622829,
+                                           "p2":  4.22692251978927,
+                                           "status":  "Successfully solved (MOSEK-SDP)",
+                                           "sample_count":  500,
+                                           "canonical_optimum":  false
+                                       },
+                          "residuals":  [
+                                            {
+                                                "matlab_path":  "fres",
+                                                "value":  8.3389161772335783E-09,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "maxnh",
+                                                "value":  5.6908968120164333E-14,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "mineig",
+                                                "value":  8.8625357727878479E-09,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "tpres",
+                                                "value":  1.6565924084949633E-11,
+                                                "tolerance":  1E-06
+                                            }
+                                        ],
+                          "checks":  [
+                                         {
+                                             "matlab_path":  "cost",
+                                             "expected":  9.4538450381515524,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p1",
+                                             "expected":  5.2269225183622829,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p2",
+                                             "expected":  4.22692251978927,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "d",
+                                             "expected":  4,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "k",
+                                             "expected":  3,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "s",
+                                             "expected":  500,
+                                             "tolerance":  0
+                                         }
+                                     ]
+                      },
+                      {
+                          "path":  "results/diagnostic/quair06_y3_d5_k2.mat",
+                          "classification":  "diagnostic",
+                          "diagnostic_type":  "yalmip_crosscheck",
+                          "current_sha256":  "e5ecfbb459fd14f41f20887e48e6d7b08cfab719442d206c8708e4fddfde5533",
+                          "source":  {
+                                         "snapshot_date":  "2026-08-07",
+                                         "source_root":  "pqga-full",
+                                         "path":  "results/y3_d5_k2.mat",
+                                         "sha256":  "e5ecfbb459fd14f41f20887e48e6d7b08cfab719442d206c8708e4fddfde5533",
+                                         "live_hash_verified":  true
+                                     },
+                          "variables":  [
+                                            "b1",
+                                            "b2",
+                                            "cost",
+                                            "cvx_status",
+                                            "d",
+                                            "fres",
+                                            "k",
+                                            "maxnh",
+                                            "mineig",
+                                            "p1",
+                                            "p2",
+                                            "s",
+                                            "tpres"
+                                        ],
+                          "evidence":  {
+                                           "d":  5,
+                                           "k":  2,
+                                           "cost":  23.324401999822811,
+                                           "p1":  12.162200999837376,
+                                           "p2":  11.162200999985437,
+                                           "status":  "Successfully solved (MOSEK-SDP)",
+                                           "sample_count":  500,
+                                           "canonical_optimum":  false
+                                       },
+                          "residuals":  [
+                                            {
+                                                "matlab_path":  "fres",
+                                                "value":  1.0392954369317953E-09,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "maxnh",
+                                                "value":  5.5727476780767422E-15,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "mineig",
+                                                "value":  5.2098001918161964E-10,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "tpres",
+                                                "value":  6.7062758981411224E-12,
+                                                "tolerance":  1E-06
+                                            }
+                                        ],
+                          "checks":  [
+                                         {
+                                             "matlab_path":  "cost",
+                                             "expected":  23.324401999822811,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p1",
+                                             "expected":  12.162200999837376,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p2",
+                                             "expected":  11.162200999985437,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "d",
+                                             "expected":  5,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "k",
+                                             "expected":  2,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "s",
+                                             "expected":  500,
+                                             "tolerance":  0
+                                         }
+                                     ]
+                      },
+                      {
+                          "path":  "results/diagnostic/quair06_yalmip_d3_k2.mat",
+                          "classification":  "diagnostic",
+                          "diagnostic_type":  "yalmip_crosscheck",
+                          "current_sha256":  "30bc2e173e874bf1365a8ed454e5b8716db9a3a65f8b24d1185f8228c1b306c1",
+                          "source":  {
+                                         "snapshot_date":  "2026-08-07",
+                                         "source_root":  "pqga-full",
+                                         "path":  "results/yalmip_d3_k2.mat",
+                                         "sha256":  "30bc2e173e874bf1365a8ed454e5b8716db9a3a65f8b24d1185f8228c1b306c1",
+                                         "live_hash_verified":  true
+                                     },
+                          "variables":  [
+                                            "b1",
+                                            "b2",
+                                            "cost",
+                                            "cvx_status",
+                                            "d",
+                                            "e1",
+                                            "e2",
+                                            "fres",
+                                            "k",
+                                            "p1",
+                                            "p2",
+                                            "s",
+                                            "tpr1",
+                                            "tpr2"
+                                        ],
+                          "evidence":  {
+                                           "d":  3,
+                                           "k":  2,
+                                           "cost":  7.4564498634962852,
+                                           "p1":  4.22822492988566,
+                                           "p2":  3.2282249336106248,
+                                           "status":  "Successfully solved (MOSEK-SDP)",
+                                           "sample_count":  500,
+                                           "canonical_optimum":  false
+                                       },
+                          "residuals":  [
+                                            {
+                                                "matlab_path":  "e1",
+                                                "value":  2.1959343449252668E-09,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "e2",
+                                                "value":  3.9441625576171782E-08,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "fres",
+                                                "value":  1.3634046333059277E-08,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "tpr1",
+                                                "value":  1.7249139630480809E-10,
+                                                "tolerance":  1E-06
+                                            },
+                                            {
+                                                "matlab_path":  "tpr2",
+                                                "value":  1.4359159145884379E-10,
+                                                "tolerance":  1E-06
+                                            }
+                                        ],
+                          "checks":  [
+                                         {
+                                             "matlab_path":  "cost",
+                                             "expected":  7.4564498634962852,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p1",
+                                             "expected":  4.22822492988566,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "p2",
+                                             "expected":  3.2282249336106248,
+                                             "tolerance":  1E-10
+                                         },
+                                         {
+                                             "matlab_path":  "d",
+                                             "expected":  3,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "k",
+                                             "expected":  2,
+                                             "tolerance":  0
+                                         },
+                                         {
+                                             "matlab_path":  "s",
+                                             "expected":  500,
+                                             "tolerance":  0
+                                         }
+                                     ]
                       }
-                  ]
+                  ],
+    "live_reconciliation":  {
+                                "date":  "2026-08-07",
+                                "source_file_count":  205,
+                                "roots":  {
+                                              "primary":  57,
+                                              "pqga-full":  148
+                                          },
+                                "live_hash_mismatches":  0,
+                                "remote_write_operations":  0,
+                                "sdp_solves":  0
+                            }
 }

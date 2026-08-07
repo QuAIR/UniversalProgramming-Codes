@@ -58,8 +58,8 @@ function found = contains_sensitive_path(value)
 found = false;
 if ischar(value) || isstring(value)
     text = string(value);
-    unixPersonal = "/home/" + "mingrui";
-    windowsPersonal = "C:" + "\\" + "Users" + "\\" + "johni";
+    unixPersonal = "/home/";
+    windowsPersonal = "C:" + "\\" + "Users" + "\\";
     found = any(contains(text, unixPersonal)) || ...
         any(contains(text, windowsPersonal));
 elseif isstruct(value)

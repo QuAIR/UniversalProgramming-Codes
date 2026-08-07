@@ -50,6 +50,16 @@ DIAGNOSTIC_MATS = {
     "historical_results_struct_d2_k4.mat",
     "historical_results_yalmip_d2_k3.mat",
     "historical_results_yalmip_d2_k4.mat",
+    "quair06_exact_d2_k5_saved_blocks.mat",
+    "quair06_exact_k56_checkpoint.mat",
+    "quair06_full_vs_linear_k1_k3.mat",
+    "quair06_struct2_d3_k1.mat",
+    "quair06_struct2_d3_k2.mat",
+    "quair06_struct3_d4_k1.mat",
+    "quair06_struct3_d4_k2.mat",
+    "quair06_y3_d4_k3.mat",
+    "quair06_y3_d5_k2.mat",
+    "quair06_yalmip_d3_k2.mat",
 }
 EXPECTED_COSTS = {
     (2, 1): "5.500000", (2, 2): "2.713330", (2, 3): "1.888291",
@@ -86,7 +96,7 @@ class ResultsPackageTest(unittest.TestCase):
         )
         self.assertEqual(actual, expected)
         self.assertEqual(len(CERTIFIED_GENERAL_D) + len(EXACT_D2), 13)
-        self.assertEqual(len(DIAGNOSTIC_MATS), 21)
+        self.assertEqual(len(DIAGNOSTIC_MATS), 31)
         tracked = subprocess.run(
             ["git", "ls-files"], cwd=ROOT, capture_output=True, text=True, check=True
         ).stdout.splitlines()
@@ -128,8 +138,8 @@ class ResultsPackageTest(unittest.TestCase):
         self.assertEqual(manifest["schema_version"], 1)
         self.assertEqual(manifest["source_commit"], "4512790")
         artifacts = manifest["artifacts"]
-        self.assertEqual(manifest["artifact_count"], 34)
-        self.assertEqual(len(artifacts), 34)
+        self.assertEqual(manifest["artifact_count"], 44)
+        self.assertEqual(len(artifacts), 44)
         by_path = {entry["path"]: entry for entry in artifacts}
         self.assertEqual(len(by_path), len(artifacts))
         tracked_mats = {
@@ -141,9 +151,15 @@ class ResultsPackageTest(unittest.TestCase):
             path = ROOT / relative_path
             digest = hashlib.sha256(path.read_bytes()).hexdigest()
             self.assertEqual(entry["current_sha256"], digest, relative_path)
-            self.assertTrue(entry["source"]["path"].startswith("research_code/results/"))
+            source = entry["source"]
             self.assertRegex(entry["source"]["sha256"], r"^[0-9a-f]{64}$")
-            self.assertRegex(entry["source"]["git_blob_sha1"], r"^[0-9a-f]{40}$")
+            if source.get("snapshot_date") == "2026-08-07":
+                self.assertIn(source["source_root"], {"primary", "pqga-full"})
+                self.assertNotIn("git_blob_sha1", source)
+                self.assertTrue(source["live_hash_verified"])
+            else:
+                self.assertTrue(source["path"].startswith("research_code/results/"))
+                self.assertRegex(source["git_blob_sha1"], r"^[0-9a-f]{40}$")
             self.assertTrue(entry["variables"], relative_path)
             self.assertEqual(entry["variables"], sorted(entry["variables"], key=str.casefold))
             self.assertIn(entry["classification"], {"certified", "diagnostic"})
@@ -219,7 +235,7 @@ class ResultsPackageTest(unittest.TestCase):
             capture_output=True,
             check=True,
         ).stdout.split(b"\0")
-        forbidden = (b"/home/" + b"mingrui", b"C:\\Users\\" + b"johni")
+        forbidden = (b"/home/", b"C:\\Users\\")
         for raw_path in filter(None, tracked):
             path = ROOT / os.fsdecode(raw_path)
             if not path.is_file():

@@ -1,12 +1,27 @@
 # Historical Result Evidence
 
-This directory restores curated evidence from source commit `4512790`; it does not report a new run. Values in `summary.csv` are universal-processor programming costs (overheads), not unitary-inversion fidelities.
+This directory restores curated evidence from source commit `4512790` and the
+read-only quair06 reconciliation of 2026-08-07. It does not report a new run.
+Values in `summary.csv` are universal-processor programming costs (overheads),
+not unitary-inversion fidelities.
 
 ## Inventory and classification
 
-All 34 non-partial MAT files in the historical `research_code/results` backup are retained. The nine validated general-d records are in `certified/general_d`, and the four final exact d=2 per-k records are in `certified/kcopy_d2`. The other 21 records are diagnostic, with collision-safe `historical_*` filenames. The four `*_partial.mat` and `*_partial.csv` files are deliberately excluded: they are resumable, ephemeral outputs forbidden by repository policy. No tarball, cache, crash dump, generated figure, or generated reduction PDF is retained.
+All 34 non-partial MAT files in the historical `research_code/results` backup
+are retained. The live reconciliation adds ten diagnostic MAT files: the full
+saved-block d=2,k=5 solution, the k=5/k=6 checkpoint, a historical full-versus-
+linear comparison, and seven independent general-d cross-checks. The complete
+inventory therefore contains 44 MAT files: 13 certified and 31 diagnostic.
+Ordinary partial outputs remain excluded unless they carry unique information;
+the k=5/k=6 checkpoint is the sole exception and is stored under a name that
+does not suggest a completed batch.
 
-`mat-artifacts.json` is the machine-readable inventory. For every retained MAT it records the current SHA-256, source-commit path and hash, variable names, classification, and available numerical/status/residual fields. Certified entries additionally contain scalar checks consumed by the MATLAB loader test.
+`mat-artifacts.json` is the machine-readable inventory. For every retained MAT
+it records the current SHA-256, source path and hash, variable names,
+classification, and available numerical, status, and residual fields. Live
+sources also record the snapshot date and the independently verified source
+root. Certified entries contain scalar checks consumed by the MATLAB loader
+test.
 
 ## MAT schemas
 
@@ -19,3 +34,23 @@ The d=2,k=1 formula also has a retained exact d=2 SDP MAT, so that row links to 
 The aggregate exact d=2 MAT was copied from source commit `4512790` and differs only in four `opts` path strings, which were replaced by neutral placeholders. The source file and source-commit Git blob agree, but their actual SHA-256 is `7c6a54ad675fe91986516cebe9edb37f0023250e19052eecb8df0cab3dff2002`, not the previously reported `7c6a54ad675fe91986516cebe9edb37f0023250e19052eecb8df0f6241ae3e3`. The exact fields and both hashes are recorded in `mat-artifacts.json`.
 
 `logs/` contains compact sanitized numerical evidence. `legacy/failed-runs/logs` retains under-sampled, unbounded, and post-solve-terminated records needed to explain exclusions.
+
+## Live k=5 and k=6 evidence
+
+`diagnostic/quair06_exact_d2_k5_saved_blocks.mat` contains the full saved
+blocks, coefficients, `p1`, `p2`, and residual information for the completed
+d=2,k=5 run. Its cost is `1.35153816332987`, with positive minimum eigenvalue
+and residuals below `3e-6`. The solver transcript also contains a
+`linsysolve` NaN/Inf warning, and the value differs from the canonical
+structured result `1.350907061612`. It is therefore a validated feasible
+diagnostic solution, not a canonical optimum.
+
+`diagnostic/quair06_exact_k56_checkpoint.mat` records k=5 as complete and k=6
+as `NaN`/incomplete. Four path strings in its `opts` struct were replaced by
+neutral placeholders. `logs/quair06_exact_k56_checkpoint.log` retains the
+sanitized human-readable evidence, and the adjacent CSV is machine-readable.
+No k=6 solution is claimed.
+
+The seven `quair06_struct*`, `quair06_y3*`, and `quair06_yalmip*` MAT files are
+cross-checks for existing canonical rows. They do not add or replace rows in
+`summary.csv`.
