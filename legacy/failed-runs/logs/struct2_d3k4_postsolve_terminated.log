@@ -1,4 +1,7 @@
-Historical sanitized diagnostic cross-check.
+Historical sanitized post-solve termination cross-check.
 method=nullspace structured SDP solver=CVX-MOSEK sample_count=500
 objective=3.619723965260 status=Solved
 agreement_with_yalmip=8.05e-05
+wrapper_exit_code=143
+objective_completed=true
+certificate_not_completed=true

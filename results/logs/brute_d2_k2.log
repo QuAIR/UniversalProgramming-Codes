@@ -1,0 +1,2 @@
+brute gamma_2(CPTP, d=2), D=64
+RESULT brute gamma_2(CPTP, 2) = 2.713331 [Solved]

@@ -1,4 +1,7 @@
-Historical sanitized diagnostic evidence.
+Historical sanitized post-solve termination evidence.
 method=YALMIP reduced SDP solver=MOSEK sample_count=500
 objective=3.619643423467 status=Successfully solved (MOSEK-SDP) runtime_s=8761.40
+wrapper_exit_code=143
+objective_completed=true
+certificate_not_completed=true
 full-space certificate unavailable at D=59049; CVX cross-check is retained separately.

@@ -4,6 +4,15 @@ This document maps every mathematical construction to its implementation
 in the code. Each section states the formula, explains the objects involved,
 and points to the code lines and variable names that realise it.
 
+> **Implementation status.** The derivation below is retained as a mathematical
+> and historical implementation reference. Every reference to
+> `legacy/general-d-baseline/gamma_k.m` identifies a known-defective archived
+> snapshot and is **not an executable entry point**: its `PermuteSystems`
+> convention is wrong for `k >= 3`. Supported exact qubit runs use
+> `src/matlab/kcopy_d2/gamma_k_d2_exact.m`; retained general-d experiment
+> snapshots are under `experiments/quair06/general_d`. The shared decomposition
+> helper is `src/matlab/common/decompose_brauer_algebra.m`.
+
 Throughout: d = local Hilbert-space dimension, k = number of programmer
 copies, n = k+1.
 
@@ -42,7 +51,7 @@ The optimisation becomes:
       (C2) Tr_{S'}[J_pm] = p_pm I                                (TP)
       (C3) sum_{j1,j2} (b_+(j1,j2) - b_-(j1,j2)) Pi(j1,j2,E) = d^k J_E   (Programming)
 
-**Code**: `gamma_k.m`, lines 175-219 (CVX block).
+**Historical code map (do not run)**: `legacy/general-d-baseline/gamma_k.m`, lines 175-219 (CVX block).
 Variables: `b1(m)` = b_+, `b2(m)` = b_-, `p1` = p_+, `p2` = p_-.
 
 
@@ -67,7 +76,7 @@ The total space factors as H_tot = H_U x H_V, where
 with dim H_U = dim H_V = D_sec = d^{n} = d^{k+1}, and total dimension
 D = D_sec^2 = d^{2(k+1)}.
 
-**Code**: `gamma_k.m`, lines 40-44.
+**Historical code map (do not run)**: `legacy/general-d-baseline/gamma_k.m`, lines 40-44.
 `n = k+1`, `Dsec = d^n`, `D = d^(2*k+2)`.
 
 ### 2.2 Commutant algebra
@@ -89,7 +98,7 @@ where e^(i)_j are basis elements of the two walled Brauer algebras, P is
 the reordering permutation from grouped to physical index ordering, and
 m = bl1 * bl2 is the total number of real coefficients.
 
-**Code**: `gamma_k.m`, lines 52-76.
+**Historical code map (do not run)**: `legacy/general-d-baseline/gamma_k.m`, lines 52-76.
 `all_perms` = all n! permutations of {1,...,n}.
 `mats_1k{p}` = matrix for permutation p in sector '1k'.
 `mats_k1{p}` = matrix for permutation p in sector 'k1'.
@@ -168,7 +177,7 @@ A maximal linearly independent subset is extracted by:
 The resulting bl satisfies bl = sum_lambda w_lambda^2 (sum of squared
 multiplicity-space dimensions in the Artin-Wedderburn decomposition).
 
-**Code**: `gamma_k.m`, lines 234-246 (local function `find_basis`).
+**Historical code map (do not run)**: `legacy/general-d-baseline/gamma_k.m`, lines 234-246 (local function `find_basis`).
 `[~, R, E] = qr(V, 0)` performs economy QR with column pivoting.
 `bl = sum(abs(diag(R)) > tol)`.
 
@@ -177,7 +186,7 @@ multiplicity-space dimensions in the Artin-Wedderburn decomposition).
 
 ## 5. Algebra Decomposition via the Regular Representation
 
-This is the core algorithm (decompose_brauer_algebra.m). It works entirely
+This is the core algorithm (`src/matlab/common/decompose_brauer_algebra.m`). It works entirely
 in the bl-dimensional algebra space, never touching the D_sec-dimensional
 Hilbert space after the structure constants are computed.
 
@@ -192,7 +201,7 @@ The coefficients c_{ijk} are computed by:
 2. Express the result in the basis: c_{:,i,j} = V^+ vec(B_i B_j),
    where V^+ is the pseudoinverse of the basis matrix.
 
-**Code**: `decompose_brauer_algebra.m`, lines 48-73.
+**Code**: `src/matlab/common/decompose_brauer_algebra.m`, lines 48-73.
 `V` = basis matrix (D_sec^2 x bl), `Vinv = pinv(V)`.
 `S(k, i, j) = c_{ijk}`.
 
@@ -214,7 +223,7 @@ i.e., right multiplication by B_j sends B_m to sum_k c_{mjk} B_k.
 
 Key property (associativity): [L_i, R_j] = 0 for all i, j.
 
-**Code**: `decompose_brauer_algebra.m`, lines 80-95.
+**Code**: `src/matlab/common/decompose_brauer_algebra.m`, lines 80-95.
 `L(:,:,i) = reshape(S(:,i,:), bl, bl)`.
 `R(:,:,i) = reshape(S(:,:,i), bl, bl)`.
 Commutation check: `norm(L(:,:,i)*R(:,:,j) - R(:,:,j)*L(:,:,i))`.
@@ -233,7 +242,7 @@ The null space of A_comm gives the centre basis vectors. The dimension of
 the centre equals the number of simple summands in the Artin-Wedderburn
 decomposition, i.e., the number of distinct irreps.
 
-**Code**: `decompose_brauer_algebra.m`, lines 99-129.
+**Code**: `src/matlab/common/decompose_brauer_algebra.m`, lines 99-129.
 `A_comm` = constraint matrix (bl*bl^2 x bl).
 `center_basis` = null space vectors (bl x cdim).
 `cdim` = centre dimension = number of irreps.
@@ -256,7 +265,7 @@ Therefore, eigenvalues of L_z come in clusters:
 
 Eigendecomposition of L_z identifies the isotypic components.
 
-**Code**: `decompose_brauer_algebra.m`, lines 134-171.
+**Code**: `src/matlab/common/decompose_brauer_algebra.m`, lines 134-171.
 `z` = random vector in centre.
 `Lz` = sum z(j) * L(:,:,j).
 `iso_evals` = distinct eigenvalues (one per irrep).
@@ -296,7 +305,7 @@ C^w x |v_j>, which are NOT invariant under other L_b (since L_b also
 acts on the second factor via R_lambda(b)). By contrast, R_b = R^T x I_w
 has eigenspaces |u_nu> x C^w, which ARE invariant under all L_a.
 
-**Code**: `decompose_brauer_algebra.m`, lines 177-241.
+**Code**: `src/matlab/common/decompose_brauer_algebra.m`, lines 177-241.
 `Rb` = sum beta(j) * R(:,:,j) (random right-regular element).
 `Rb_sub = G_iso' * Rb * G_iso` (projection onto isotypic subspace, w^2 x w^2).
 Eigendecomposition gives eigenspaces of size w.
@@ -379,7 +388,7 @@ The full basis elements in physical ordering are:
 
 where dims_all = (d, d, ..., d) with 2k+2 entries.
 
-**Code**: `gamma_k.m`, lines 126-142.
+**Historical code map (do not run)**: `legacy/general-d-baseline/gamma_k.m`, lines 126-142.
 `perm` = reordering permutation vector.
 `B{(j1-1)*bl2 + j2}` = full basis element in physical ordering.
 Uses QETLAB's `PermuteSystems`.
@@ -408,7 +417,7 @@ The PSD constraint J_pm >= 0 is equivalent to:
 This replaces ONE D x D PSD constraint with n1 * n2 small PSD constraints,
 where n1 = number of irreps in sector 1, n2 = number of irreps in sector 2.
 
-**Code**: `gamma_k.m`, lines 184-199.
+**Historical code map (do not run)**: `legacy/general-d-baseline/gamma_k.m`, lines 184-199.
 Loops over `bi = 1:nb1`, `bj = 1:nb2`.
 `J1_blk = sum b1(idx) * kron(red1{bi,j1}, red2{bj,j2})`.
 Constraint: `J1_blk >= 0` (CVX semidefinite constraint).
@@ -434,7 +443,7 @@ is a d^{2k+1} x d^{2k+1} matrix. The TP constraint is then:
 
     sum_j b_pm(j) T(:,:,j) = p_pm  I_{d^{2k+1}}
 
-**Code**: `gamma_k.m`, lines 145-148 (building T) and lines 202-209 (CVX).
+**Historical code map (do not run)**: `legacy/general-d-baseline/gamma_k.m`, lines 145-148 (building T) and lines 202-209 (CVX).
 `T(:,:,j) = PartialTrace(B{j}, 2*k+2, dims_all)`.
 `TP1 = sum b1(j) * T(:,:,j)`, constraint: `TP1 == p1 * eye(dim_tp)`.
 
@@ -480,7 +489,7 @@ The constraint is then:
 
 for each sampled channel c = 1, ..., s.
 
-**Code**: `gamma_k.m`, lines 151-168 (building P) and lines 212-218 (CVX).
+**Historical code map (do not run)**: `legacy/general-d-baseline/gamma_k.m`, lines 151-168 (building P) and lines 212-218 (CVX).
 `JC(:,:,c)` = Choi operator / d of random channel c.
 `JCk(:,:,c)` = k-fold tensor product of JC(:,:,c).
 `ins = Tensor(I_d, JCk(:,:,c).', I_d)` = insertion operator.
@@ -623,14 +632,14 @@ flattened to:
 
 so that idx runs from 1 to m = bl1 * bl2.
 
-**Code**: `gamma_k.m`, line 139 and line 192.
+**Historical code map (do not run)**: `legacy/general-d-baseline/gamma_k.m`, line 139 and line 192.
 
 
 ## Appendix B: Verification Checks in the Code
 
 The code includes several internal consistency checks:
 
-1. **Structure constants residual** (decompose_brauer_algebra.m, line 73):
+1. **Structure constants residual** (`src/matlab/common/decompose_brauer_algebra.m`, line 73):
    || B_i B_j - sum_k c_{ijk} B_k ||_F < 10^{-10}.
 
 2. **[L_i, R_j] commutation error** (line 95):
