@@ -44,6 +44,9 @@ USERNAME_FIELD = re.compile(r"(?m)^\s*Username:\s*")
 SAMPLE_COUNT_ASSIGNMENT = re.compile(
     r"(?im)^\s*opts\s*\.\s*s\s*=\s*([0-9]+)\s*;"
 )
+CERT_FRESH_ASSIGNMENT = re.compile(
+    r"(?im)^\s*opts\s*\.\s*certFresh\s*=\s*([0-9]+)\s*;"
+)
 LINEAR_ARGUMENT = re.compile(r"['\"]linear['\"]", re.IGNORECASE)
 LINEAR_RELAXATION_REFERENCE = re.compile(
     r"\blinear[- ](?:mode|relaxation)\b|\bm\s*=\s*0\s*,\s*1\b",
@@ -121,6 +124,13 @@ def _validate_exact_runners(root: Path, errors: list[str]) -> None:
             errors.append(f"{relative}: missing opts.s = 500")
         if any(sample_count < 500 for sample_count in sample_counts):
             errors.append(f"{relative}: opts.s is below 500")
+        cert_fresh_values = [
+            int(value) for value in CERT_FRESH_ASSIGNMENT.findall(content)
+        ]
+        if 50 not in cert_fresh_values:
+            errors.append(f"{relative}: missing opts.certFresh = 50")
+        if any(cert_fresh < 50 for cert_fresh in cert_fresh_values):
+            errors.append(f"{relative}: opts.certFresh is below 50")
         if any(
             LINEAR_ARGUMENT.search(args)
             for args in _function_calls(content, "gamma_k_d2")

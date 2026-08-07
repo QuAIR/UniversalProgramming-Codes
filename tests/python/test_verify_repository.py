@@ -33,7 +33,7 @@ class RepositoryVerifierTest(unittest.TestCase):
         )
         for name in ("run_exact_k14.m", "run_exact_k56.m"):
             (root / "experiments/quair06/kcopy_d2" / name).write_text(
-                "opts.s = 500;\n", encoding="utf-8"
+                "opts.s = 500;\nopts.certFresh = 50;\n", encoding="utf-8"
             )
 
     def test_valid_fixture_passes(self):
@@ -114,6 +114,31 @@ class RepositoryVerifierTest(unittest.TestCase):
             runner.write_text("opts.s = 600;\n", encoding="utf-8")
             self.assertIn(
                 "experiments/quair06/kcopy_d2/run_exact_k14.m: missing opts.s = 500",
+                validate_repository(root),
+            )
+
+    def test_missing_cert_fresh_of_50_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            runner = root / "experiments/quair06/kcopy_d2/run_exact_k14.m"
+            runner.write_text("opts.s = 500;\n", encoding="utf-8")
+            self.assertIn(
+                "experiments/quair06/kcopy_d2/run_exact_k14.m: missing opts.certFresh = 50",
+                validate_repository(root),
+            )
+
+    def test_later_cert_fresh_override_below_50_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            runner = root / "experiments/quair06/kcopy_d2/run_exact_k14.m"
+            runner.write_text(
+                "opts.s = 500;\nopts.certFresh = 50;\nopts.certFresh = 49;\n",
+                encoding="utf-8",
+            )
+            self.assertIn(
+                "experiments/quair06/kcopy_d2/run_exact_k14.m: opts.certFresh is below 50",
                 validate_repository(root),
             )
 

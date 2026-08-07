@@ -41,35 +41,37 @@ Tpartial = local_load_or_create_summary(partialMat, ks);
 for ii = 1:numel(ks)
     k = ks(ii);
     perKFile = fullfile(perKDir, sprintf('exact_d2_k%d.mat', k));
-    if local_is_completed(Tpartial, ii, perKFile)
-        fprintf('Skipping completed exact k=%d.\n', k);
-        continue;
-    end
-
-    fprintf('\n--- exact k=%d ---\n', k);
-    Tpartial.basisDim(ii) = local_catalan(k + 1);
-    Tpartial.productCoeffDim(ii) = Tpartial.basisDim(ii)^2;
-    Tpartial.denseHermitianGiB(ii) = ...
-        8 * Tpartial.productCoeffDim(ii)^2 / 1024^3;
-    fprintf('preflight: basisDim=%d productCoeffDim=%d denseHermitian=%.2f GiB\n', ...
-        Tpartial.basisDim(ii), Tpartial.productCoeffDim(ii), ...
-        Tpartial.denseHermitianGiB(ii));
-
     t0 = tic;
     try
+        if exact_batch_is_completed(Tpartial, ii, perKFile)
+            fprintf('Skipping completed exact k=%d.\n', k);
+            continue;
+        end
+
+        if exact_batch_has_invalid_saved_result(Tpartial, ii)
+            error('run_exact_k56:invalidResume', ...
+                'Resumed exact k=%d has unvalidated solver data.', k);
+        end
+
+        fprintf('\n--- exact k=%d ---\n', k);
+        Tpartial.basisDim(ii) = local_catalan(k + 1);
+        Tpartial.productCoeffDim(ii) = Tpartial.basisDim(ii)^2;
+        Tpartial.denseHermitianGiB(ii) = ...
+            8 * Tpartial.productCoeffDim(ii)^2 / 1024^3;
+        fprintf('preflight: basisDim=%d productCoeffDim=%d denseHermitian=%.2f GiB\n', ...
+            Tpartial.basisDim(ii), Tpartial.productCoeffDim(ii), ...
+            Tpartial.denseHermitianGiB(ii));
+
         [cost, info] = gamma_k_d2_exact(k, opts);
-        Tpartial = local_record_success(Tpartial, ii, cost, info, toc(t0));
+        Tpartial = exact_batch_record_success(Tpartial, ii, cost, info, toc(t0));
         local_save_summary(partialMat, partialCsv, Tpartial, opts);
         fprintf('RESULT k=%d gamma=%.12f status=%s runtime=%.2fs\n', ...
             k, Tpartial.gamma(ii), Tpartial.status{ii}, Tpartial.runtime_s(ii));
     catch ME
-        Tpartial.runtime_s(ii) = toc(t0);
-        Tpartial.status{ii} = 'ERROR';
-        Tpartial.errorMsg{ii} = ME.message;
+        Tpartial = exact_batch_record_error(Tpartial, ii, toc(t0), ME.message);
         local_save_summary(partialMat, partialCsv, Tpartial, opts);
         fprintf(2, 'ERROR k=%d after %.2fs: %s\n', ...
             k, Tpartial.runtime_s(ii), ME.message);
-        rethrow(ME);
     end
 end
 
@@ -79,6 +81,12 @@ writetable(T, fullfile(outputDir, 'exact_k56.csv'));
 
 fprintf('\n=== finished at %s ===\n', datestr(now));
 disp(T);
+
+failedKs = T.ks(strcmp(T.status, 'ERROR'));
+if ~isempty(failedKs)
+    error('run_exact_k56:batchFailed', ...
+        'Exact batch completed with errors for k=%s.', mat2str(failedKs.'));
+end
 
 function T = local_load_or_create_summary(partialMat, ks)
 if exist(partialMat, 'file') == 2
@@ -100,26 +108,6 @@ T = table(ks, nan(n, 1), nan(n, 1), nan(n, 1), repmat({''}, n, 1), ...
     'progRows', 'tpRows', 'hermDim', 'runtime_s', 'minEig', 'tpResidual', ...
     'freshProgResidual', 'basisDim', 'productCoeffDim', 'denseHermitianGiB', ...
     'errorMsg'});
-end
-
-function completed = local_is_completed(T, index, perKFile)
-completed = isfinite(T.gamma(index)) && ~isempty(T.status{index}) && ...
-    ~strcmp(T.status{index}, 'ERROR') && exist(perKFile, 'file') == 2;
-end
-
-function T = local_record_success(T, index, cost, info, runtime)
-T.gamma(index) = cost;
-T.pplus(index) = info.pplus;
-T.pminus(index) = info.pminus;
-T.status{index} = info.status;
-T.progRows(index) = info.progRows;
-T.tpRows(index) = info.tpRows;
-T.hermDim(index) = info.hermDim;
-T.runtime_s(index) = runtime;
-T.minEig(index) = info.minEig;
-T.tpResidual(index) = info.tpResidual;
-T.freshProgResidual(index) = info.freshProgResidual;
-T.errorMsg{index} = '';
 end
 
 function local_save_summary(partialMat, partialCsv, Tpartial, opts)
