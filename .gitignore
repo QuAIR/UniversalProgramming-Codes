@@ -1,0 +1,10 @@
+*.asv
+matlab_crash_dump.*
+__pycache__/
+*.py[cod]
+*.pid
+*.nohup
+*_partial.mat
+*_partial.csv
+local_config.m
+.migration-staging/
