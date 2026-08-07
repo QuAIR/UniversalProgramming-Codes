@@ -1,0 +1,48 @@
+{
+  "source_commit": "45127901a920384c3f4ec56f0ecfe15b78028d0a",
+  "scope_note": "This manifest records local hash evidence and recorded execution provenance. It is not self-contained proof of an external source repository or execution environment.",
+  "byte_identical_algorithms": [
+    {
+      "source_path": "research_code/core/gamma_k.m",
+      "source_blob_id": "39dbd409f3a0c6b273303cc10d954be294f6b9ba",
+      "destination_path": "legacy/general-d-baseline/gamma_k.m",
+      "destination_sha256": "5d124a8d3e4e5b10c7fe76207568efd28db083a60c88ff4d7d02f4960a51286c"
+    },
+    {
+      "source_path": "research_code/core/decompose_brauer_algebra.m",
+      "source_blob_id": "d9965cd582ab6a7fb86bc979b9b3ec0f1416835e",
+      "destination_path": "legacy/general-d-baseline/decompose_brauer_algebra.m",
+      "destination_sha256": "24685a0942771f48db9d9ee499f3ea5ff58fa244ee75c45f0ec02481942a3044"
+    },
+    {
+      "source_path": "research_code/kcopy_d2/gamma_k_d2.m",
+      "source_blob_id": "a77a42fb340761aa7ac4a282104e446371152129",
+      "destination_path": "legacy/qubit-reduced-prototype/gamma_k_d2.m",
+      "destination_sha256": "d4520f4ac42704491a9bb69cc47b4a0a1f861d9e6911b6baad9e9366f4864263"
+    }
+  ],
+  "fixed_protocol_recorded_source": {
+    "destination_path": "legacy/failed-runs/fixed_protocol_cost_check.m",
+    "thread_id": "019edee4-55ea-7eb0-8212-29e7fb828ead",
+    "turn_id": "019ee427-6a19-7e61-b49c-8cb73e03db88",
+    "allowed_current_file_transformations": [
+      "Replace environment-specific setup with repository-relative up_config and up_setup calls.",
+      "Do not alter the recorded k=1:3 loop, SDPT3 selection, or mathematical body."
+    ]
+  },
+  "allowed_current_file_transformations": {
+    "legacy/general-d-baseline/generators/gen.sh": [
+      "Validate integer command-line parameters before sed interpolation.",
+      "Embed an escaped generation-time repository-root fallback while preserving UP_REPO_ROOT override behavior.",
+      "Use portable in-place sed backup handling and save generated output under cfg.resultsRoot.",
+      "Preserve the historical method, permutation, equality-reduction, and PSD-symmetrization transformations."
+    ],
+    "legacy/general-d-baseline/generators/genfast.sh": [
+      "Use portable in-place sed backup handling while preserving the historical sparse and full conversion transformations."
+    ],
+    "legacy/general-d-baseline/generators/genbrute.sh": [
+      "Validate integer command-line parameters and retain the explicit missing brute.m provenance failure.",
+      "When the missing input is recovered, embed the same portable setup and cfg.resultsRoot output handling used by generated legacy scripts."
+    ]
+  }
+}
