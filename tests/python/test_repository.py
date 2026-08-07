@@ -1,11 +1,16 @@
 """Source-level checks for the supported SDP implementation."""
 
+import csv
 from pathlib import Path
 import re
+import sys
 import unittest
 
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools"))
+
+from verify_repository import REQUIRED_SUMMARY_COLUMNS, VALID_STATUSES, validate_repository
 
 
 class SupportedSourceTest(unittest.TestCase):
@@ -217,6 +222,145 @@ class SupportedSourceTest(unittest.TestCase):
                     relative,
                 )
             self._assert_mat_output_contract(relative, source, segment, output_pattern)
+
+
+class PublicDocumentationIntegrationTest(unittest.TestCase):
+    EXPECTED_EXPERIMENT_IDS = {
+        "UP-ANALYTIC-K1",
+        "UP-D2-EXACT-K14",
+        "UP-D2-K5-CANDIDATE",
+        "UP-D2-K6-CHECKPOINT",
+        "UP-GD-CVX-CANONICAL",
+        "UP-GD-YALMIP-LARGE",
+        "UP-GD-D3K4-POSTSOLVE",
+        "UP-DIAGNOSTIC-CROSSCHECKS",
+        "UP-D2-LINEAR-RELAXATION",
+        "UP-GD-DEFECTIVE-BASELINE",
+        "UP-FIXED-PROTOCOL-CHECK",
+        "UP-PBT-RECOVERED-CLAIM",
+    }
+    REQUIRED_MANIFEST_FIELDS = (
+        "Status",
+        "Dimensions and copy counts",
+        "Entry script",
+        "Dependencies and solver",
+        "Sample count",
+        "Output artifacts",
+        "Certificate or residual checks",
+        "Historical source",
+        "Known limitations",
+    )
+
+    @staticmethod
+    def _summary_rows():
+        with (ROOT / "results/summary.csv").open(
+            newline="", encoding="utf-8"
+        ) as handle:
+            return list(csv.DictReader(handle))
+
+    @staticmethod
+    def _manifest_sections():
+        text = (ROOT / "docs/experiment-manifest.md").read_text(encoding="utf-8")
+        matches = list(re.finditer(r"(?m)^## (UP-[A-Z0-9-]+)\s*$", text))
+        sections = {}
+        for index, match in enumerate(matches):
+            end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+            sections[match.group(1)] = text[match.end():end]
+        return sections
+
+    def test_required_public_docs_and_supported_entry_points_exist(self):
+        required = (
+            "README.md",
+            "docs/experiment-manifest.md",
+            "docs/mathematical-reduction/MATH_REFERENCE.md",
+            "docs/provenance/README.md",
+            "docs/provenance/quair06-live-inventory.json",
+            "experiments/quair06/README.md",
+            "experiments/quair06/kcopy_d2/run_exact_k14.m",
+            "experiments/quair06/kcopy_d2/run_exact_k56.m",
+            "experiments/quair06/general_d/gamma_struct3.m",
+            "experiments/quair06/general_d/gamma_y3.m",
+            "results/mat-artifacts.json",
+            "results/summary.csv",
+        )
+        for relative in required:
+            self.assertTrue((ROOT / relative).is_file(), relative)
+
+    def test_summary_schema_and_public_status_vocabulary(self):
+        with (ROOT / "results/summary.csv").open(
+            newline="", encoding="utf-8"
+        ) as handle:
+            reader = csv.DictReader(handle)
+            self.assertEqual(reader.fieldnames, REQUIRED_SUMMARY_COLUMNS)
+            rows = list(reader)
+        self.assertEqual(len(rows), 16)
+        self.assertTrue({row["status"] for row in rows} <= VALID_STATUSES)
+
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        manifest = (ROOT / "docs/experiment-manifest.md").read_text(
+            encoding="utf-8"
+        )
+        for status in ("validated", "diagnostic", "legacy", "incomplete"):
+            self.assertRegex(readme, rf"(?m)^\| \*\*{status}\*\* \| .+\|$")
+            self.assertRegex(manifest, rf"(?m)^- `{status}`: .+[.;]$")
+
+    def test_every_manifest_family_has_all_fields_and_existing_targets(self):
+        sections = self._manifest_sections()
+        self.assertEqual(set(sections), self.EXPECTED_EXPERIMENT_IDS)
+        for experiment_id, section in sections.items():
+            for field in self.REQUIRED_MANIFEST_FIELDS:
+                self.assertRegex(
+                    section,
+                    rf"(?m)^- \*\*{re.escape(field)}:\*\* .+$",
+                    f"{experiment_id}: missing {field}",
+                )
+
+            status = re.search(r"(?m)^- \*\*Status:\*\* `([^`]+)`", section)
+            self.assertIsNotNone(status, experiment_id)
+            self.assertIn(status.group(1), VALID_STATUSES, experiment_id)
+
+            for field in ("Entry script", "Output artifacts"):
+                line = re.search(
+                    rf"(?m)^- \*\*{re.escape(field)}:\*\* (.+)$", section
+                ).group(1)
+                for target in re.findall(r"\[[^]]+\]\(([^)]+)\)", line):
+                    self.assertFalse(target.startswith(("http://", "https://")))
+                    resolved = (ROOT / "docs" / target).resolve()
+                    self.assertTrue(resolved.exists(), f"{experiment_id}: {target}")
+
+    def test_readme_canonical_table_exactly_matches_summary(self):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        table = readme.split("<!-- canonical-summary:start -->", 1)[1].split(
+            "<!-- canonical-summary:end -->", 1
+        )[0]
+        parsed = []
+        for line in table.splitlines():
+            match = re.fullmatch(
+                r"\| (\d+) \| (\d+) \| ([0-9]+\.[0-9]{6}) \| "
+                r"(validated|diagnostic|legacy|incomplete) \|",
+                line,
+            )
+            if match:
+                parsed.append(match.groups())
+        expected = [
+            (row["d"], row["k"], row["gamma"], row["status"])
+            for row in self._summary_rows()
+        ]
+        self.assertEqual(parsed, expected)
+
+    def test_live_reconciliation_is_linked_and_factual(self):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        run_guide = (ROOT / "experiments/quair06/README.md").read_text(
+            encoding="utf-8"
+        )
+        for text in (readme, run_guide):
+            self.assertIn("205 files", text)
+            self.assertRegex(text, r"zero\s+source\s+SHA-256\s+mismatches")
+            self.assertIn("No remote job was started, stopped, or modified", text)
+            self.assertIn("quair06-live-inventory.json", text)
+
+    def test_complete_repository_passes_static_verifier(self):
+        self.assertEqual(validate_repository(ROOT), [])
 
 
 if __name__ == "__main__":

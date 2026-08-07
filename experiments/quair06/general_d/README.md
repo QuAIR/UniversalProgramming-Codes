@@ -2,7 +2,8 @@
 
 This directory preserves the exact general-dimension server scripts recovered
 from `4512790:research_code/results`, with only portable setup and output
-plumbing changed. No new remote run occurred during this local-only migration.
+plumbing changed. The live tree was later reconciled read-only; no new SDP run
+occurred during migration or reconciliation.
 
 Every MATLAB entry point resolves the repository root from its own location,
 loads `src/matlab`, and calls `up_config` plus `up_setup`. Set `UP_CVX_ROOT`
@@ -10,6 +11,11 @@ and `UP_QETLAB_ROOT` for all MATLAB scripts. The YALMIP entries also require
 `UP_YALMIP_ROOT`. The scripts retain their historical MOSEK solver choice;
 running them requires a working MOSEK installation and license available to
 the configured CVX or YALMIP environment.
+
+Portable local and compute-host commands, output locations, and resume
+behavior are documented in [`../README.md`](../README.md). These snapshots
+retain hard-coded historical parameter pairs; review them before changing a
+dimension or copy count.
 
 Generated MAT files are written under `cfg.resultsRoot/quair06/general_d`:
 `certificates` for certificate runs, `validated` for retained validated-run
