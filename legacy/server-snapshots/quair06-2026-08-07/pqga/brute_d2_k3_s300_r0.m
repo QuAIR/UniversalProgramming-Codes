@@ -1,4 +1,4 @@
-﻿% brute.m -- un-reduced k-copy programming SDP (independent check, no Brauer reduction)
+% brute.m -- un-reduced k-copy programming SDP (independent check, no Brauer reduction)
 d = 2; k = 3; s = 300;
 addpath(genpath("<QETLAB_ROOT>"));
 rng(0);

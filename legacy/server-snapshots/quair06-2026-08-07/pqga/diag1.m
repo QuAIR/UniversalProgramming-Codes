@@ -1,4 +1,4 @@
-﻿addpath(genpath("<QETLAB_ROOT>"));
+addpath(genpath("<QETLAB_ROOT>"));
 fprintf("=== (i) PermuteSystems convention probe ===\n");
 A2=[1 2;3 4]; B2=[0 1;1 0]; C2=[2 0;0 5];
 X = Tensor(A2,B2,C2);

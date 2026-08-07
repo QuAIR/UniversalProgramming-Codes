@@ -1,3 +1,3 @@
 k,status,cost,p1,p2,sample_count,cert_fresh,basis_dim,product_coeff_dim,dense_hermitian_gib,brauer_basis_1,brauer_basis_2,block_grid,block_widths_1,block_widths_2,hermitian_dim,tp_rows,programming_rows,min_eig,max_nonherm,tp_residual,fresh_programming_residual,runtime_s,warning
-5,diagnostic_validated_feasible,1.35153816332987,1.17576941409901,0.175768749230858,500,50,132,17424,2.262,132,132,4x4,"1;5;9;5","1;9;5;5",8912,5544,54,3.365947e-5,1.6446e-9,2.48638e-6,9.96877e-7,113324.414558,linsysolve_nan_or_inf
+5,diagnostic_numerical_candidate,1.35153816332987,1.17576941409901,0.175768749230858,500,50,132,17424,2.262,132,132,4x4,"1;5;9;5","1;9;5;5",8912,5544,54,3.365947e-5,1.6446e-9,2.48638e-6,9.96877e-7,113324.414558,linsysolve_nan_or_inf
 6,incomplete,NaN,NaN,NaN,500,50,429,184041,252.36,429,429,4x4,"1;14;6;14","1;6;14;14",NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,run_stopped_before_solve

@@ -42,8 +42,11 @@ blocks, coefficients, `p1`, `p2`, and residual information for the completed
 d=2,k=5 run. Its cost is `1.35153816332987`, with positive minimum eigenvalue
 and residuals below `3e-6`. The solver transcript also contains a
 `linsysolve` NaN/Inf warning, and the value differs from the canonical
-structured result `1.350907061612`. It is therefore a validated feasible
-diagnostic solution, not a canonical optimum.
+structured result `1.350907061612`. It is therefore only a diagnostic
+numerical candidate: its sampled constraints and checks on 50 fresh channels
+pass at the recorded residual tolerances, but these finite checks do not
+certify feasibility for every CPTP map. It is neither a rigorously certified
+all-CPTP feasible point nor an optimum.
 
 `diagnostic/quair06_exact_k56_checkpoint.mat` records k=5 as complete and k=6
 as `NaN`/incomplete. Four path strings in its `opts` struct were replaced by

@@ -1,4 +1,4 @@
-﻿# quair06 rerun plan for updated kcopy_d2
+# quair06 rerun plan for updated kcopy_d2
 
 This plan matches the updated proof split in `../kcopy_d2_reduction.tex`.
 

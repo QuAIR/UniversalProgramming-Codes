@@ -13,3 +13,9 @@ qubit project and 148 from the general-d project, with no SHA-256 mismatches.
 The per-file disposition is recorded in
 `docs/provenance/quair06-live-inventory.json`. No remote job was run or changed
 as part of that reconciliation.
+
+The additional saved-block d=2,k=5 artifact is retained only as a diagnostic
+numerical candidate. Its sampled and 50-fresh-channel residual checks pass,
+but it is not a rigorous all-CPTP feasibility certificate or an optimum; the
+canonical summary value is unchanged. The corresponding k=6 checkpoint is
+incomplete.

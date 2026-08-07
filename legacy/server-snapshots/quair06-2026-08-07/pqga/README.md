@@ -1,4 +1,4 @@
-﻿# Code for computing gamma_k(CPTP, d)
+# Code for computing gamma_k(CPTP, d)
 
 Block-diagonalised SDP for the k-copy quasi-quantum programming cost of all quantum channels, as described in Appendix F of the paper.
 

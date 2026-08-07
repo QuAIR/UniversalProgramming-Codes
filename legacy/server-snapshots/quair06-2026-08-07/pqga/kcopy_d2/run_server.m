@@ -1,4 +1,4 @@
-﻿% run_server.m -- server driver for gamma_k(CPTP, d=2), k=1..4
+% run_server.m -- server driver for gamma_k(CPTP, d=2), k=1..4
 % Detached run: matlab -batch "cd('~/projects/pqga/kcopy_d2'); run_server"
 
 addpath(genpath('<QINFO_ROOT>'));

@@ -1,4 +1,4 @@
-﻿"""
+"""
 Rebuild Fig. 3 of arxiv.tex as a CERTIFIED two-sided figure.
 
 Panel (a): certified sandwich.  For every (d,k),

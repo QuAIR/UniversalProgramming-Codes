@@ -1,4 +1,4 @@
-﻿clear; clc;
+clear; clc;
 
 addpath(pwd);
 

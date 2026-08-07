@@ -1,4 +1,4 @@
-﻿# pqga run status (recall manifest)
+# pqga run status (recall manifest)
 Updated 2026-06-13.
 
 DONE/CERTIFIED: gamma_k(CPTP,2) k=1..5; gamma_2(CPTP,d) d=2..5;

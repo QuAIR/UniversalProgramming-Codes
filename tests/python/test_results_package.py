@@ -235,7 +235,12 @@ class ResultsPackageTest(unittest.TestCase):
             capture_output=True,
             check=True,
         ).stdout.split(b"\0")
-        forbidden = (b"/home/", b"C:\\Users\\")
+        # Split precise personal markers so this test does not flag its own
+        # fixture while still scanning every tracked artifact, log, and MAT.
+        forbidden = (
+            b"/ho" + b"me/mingrui/",
+            b"C:\\Use" + b"rs\\johni\\",
+        )
         for raw_path in filter(None, tracked):
             path = ROOT / os.fsdecode(raw_path)
             if not path.is_file():

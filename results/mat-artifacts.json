@@ -2415,7 +2415,7 @@
                       {
                           "path":  "results/diagnostic/quair06_exact_d2_k5_saved_blocks.mat",
                           "classification":  "diagnostic",
-                          "diagnostic_type":  "validated_feasible_solution",
+                          "diagnostic_type":  "numerical_candidate",
                           "current_sha256":  "34e0237e6df364836066f493c7b6f49d0d1ed432f4c536d4562b59c933299ce6",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
@@ -2448,7 +2448,7 @@
                                            "p1":  1.17576941409901,
                                            "p2":  0.175768749230858,
                                            "status":  "Solved",
-                                           "classification_status":  "diagnostic_validated_feasible",
+                                           "classification_status":  "diagnostic_numerical_candidate",
                                            "sample_count":  500,
                                            "runtime_s":  113324.414558,
                                            "warning":  "linsysolve_nan_or_inf",
@@ -2585,15 +2585,15 @@
                                                  ],
                                            "status":  "k1_to_k3_complete_k4_incomplete",
                                            "full_costs":  [
-                                                              5.5,
-                                                              2.71333025586,
-                                                              1.88829144016,
+                                                           5.50000000000172,
+                                                           2.71333025587509,
+                                                           1.88829154191092,
                                                               "NaN"
                                                           ],
                                            "linear_costs":  [
-                                                                5.5,
-                                                                2.68514,
-                                                                1.83346,
+                                                             5.50000000000172,
+                                                             2.68514335040065,
+                                                             1.83346237769356,
                                                                 "NaN"
                                                             ],
                                            "canonical_optimum":  false

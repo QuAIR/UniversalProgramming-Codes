@@ -12,7 +12,8 @@
     "job_running_or_started":  false,
     "remote_mtime_note":  "Unavailable: the local snapshots were copied without metadata preservation, so local timestamps are not represented as remote mtimes.",
     "disposition_counts":  {
-                               "archived_sanitized":  57,
+                               "archived_exact":  7,
+                               "archived_sanitized":  50,
                                "condensed_sanitized_log":  2,
                                "imported_evidence":  9,
                                "imported_sanitized_evidence":  1,
@@ -45,9 +46,12 @@
                       "source_sha256":  "bb6cfb31d3bf926ed9059a31d14893aaea5e75ebadda0355df67f9be4d78bf01",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/primary/check_scheme_cost_tmp.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "8e2d134aa7cfe23e461413170e73cd4bc1f7ff4250177425866f637aeb917b53",
-                      "source_status":  "diagnostic_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "3fc917ee1723aa0e135de46312000e5bc8a7c33bda11ff8a86fc00b9abb4e9b7",
+                      "source_status":  "diagnostic_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "primary",
@@ -55,10 +59,13 @@
                       "bytes":  1051,
                       "source_mtime_utc":  null,
                       "source_sha256":  "7032d62ce57ae9375760aa39fa998d93005c4a2015c999db76d0970a0bd540ce",
-                      "disposition":  "archived_sanitized",
+                      "disposition":  "archived_exact",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/primary/CLAUDE_CODE_PLAN.md",
-                      "reason":  "Historical server documentation retained with personal paths neutralized.",
-                      "current_sha256":  "da5596f790a4e1340ee66a4be9a3dacef5b2068d9bdb254cb1874d48952ee5cf"
+                      "reason":  "Remote-only historical source retained byte-for-byte from the verified snapshot.",
+                      "current_sha256":  "7032d62ce57ae9375760aa39fa998d93005c4a2015c999db76d0970a0bd540ce",
+                      "transformations":  [
+
+                                          ]
                   },
                   {
                       "source_root":  "primary",
@@ -135,7 +142,7 @@
                       "disposition":  "condensed_sanitized_log",
                       "local_target":  "results/logs/quair06_exact_k56_checkpoint.log",
                       "reason":  "Only preflight, rank, solve, certificate, runtime, warning, and incomplete k=6 facts were retained.",
-                      "current_sha256":  "e06683d31a82865ca22b9b66393508096b7a34172d93a61f435773952d7068ac"
+                      "current_sha256":  "23e2b5f428d206d990f2f48ce5e6eef8330572eb1500cb1106b94cd5f75f9bf2"
                   },
                   {
                       "source_root":  "primary",
@@ -207,7 +214,7 @@
                       "disposition":  "condensed_sanitized_log",
                       "local_target":  "results/logs/quair06_exact_k56_checkpoint.csv",
                       "reason":  "Partial table is represented by the compact sanitized k=5/k=6 checkpoint CSV.",
-                      "current_sha256":  "25c5f1fe8ce32bb416181896b2df578cfdcb2b1afbc2d4b418561fc57cf5d8bf"
+                      "current_sha256":  "7381946dfabf9ee882845b8e82340b67093f1b46ce5229b4ceadb31db77a8def"
                   },
                   {
                       "source_root":  "primary",
@@ -390,8 +397,11 @@
                       "source_sha256":  "e29ceb6b57757d00a66b9d7e60457296dc386b29f40643b67fb77172b6b442b5",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/primary/README.md",
-                      "reason":  "Historical server documentation retained with personal paths neutralized.",
-                      "current_sha256":  "f410301a50f7ce6688d332018e9b407dd263c12152425cff1f2de8031e53e936"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "c054058e305f775a3a6bac6fb3e35603d1c5493bd4d9838c6a31aa54b17fae04",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "primary",
@@ -445,7 +455,7 @@
                       "source_sha256":  "34e0237e6df364836066f493c7b6f49d0d1ed432f4c536d4562b59c933299ce6",
                       "disposition":  "imported_evidence",
                       "local_target":  "results/diagnostic/quair06_exact_d2_k5_saved_blocks.mat",
-                      "reason":  "Validated feasible saved-block solution retained as diagnostic evidence; it is not the canonical optimum.",
+                      "reason":  "Diagnostic numerical candidate retained with saved blocks. Its sampled and 50-fresh-channel residual checks pass; it is neither an all-CPTP feasibility certificate nor an optimum.",
                       "current_sha256":  "34e0237e6df364836066f493c7b6f49d0d1ed432f4c536d4562b59c933299ce6"
                   },
                   {
@@ -588,9 +598,12 @@
                       "source_sha256":  "67794e82e2456b1da137de81a53954b4ad07f750187f648bdaecd921352e399c",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/primary/test_exact_reconstruct_from_saved.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "5f6b972c3036a752e2c782e8b8802c98b1e1e41170ad0711232a865977424d19",
-                      "source_status":  "historical_source"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "51ab155a661e482fdac5edc7926e1fe762f7eac9ef1614ac422688093bc7d824",
+                      "source_status":  "historical_source",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "primary",
@@ -662,9 +675,12 @@
                       "source_sha256":  "3a49b64962e1e22a3f47ec251d01e182cd8f21c45905eefaedc50d6716047062",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/brute.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "8d30db3d7887724eb8469d254af22e7aa26c1229c69a11532e6c968917126125",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "fcf033ecb0275993e59b87820acc487fdb7ca56e84cd9be635fc82bac93662fc",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -674,9 +690,12 @@
                       "source_sha256":  "3dc22740eb3b1d8ede75239b7f65f1460a9764d0a77018df5c29ff428d893f16",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/brute_d2_k1_s500_r0.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "4f5e0f07cb773d7130557d503ac6f4450b38cf1d2d6e5045ff93536ac4804436",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "8663478ba5c6d4de9af6155856018382def3492e67dec0400425a8e69eea622d",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -686,9 +705,12 @@
                       "source_sha256":  "8d77d370da22b7147d3218d6b58394ac343f9995190ec9e36f9ae1ab560b6d06",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/brute_d2_k3_s300_r0.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "a8c9fea3ecec0ed1c79c331ac2fe55503d309197de44ceee23d79021800337f7",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "3abeb79931c424ccc3dd3b9dc8c95592bf3e8ff180fa4a072026a9835a632bce",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -698,9 +720,12 @@
                       "source_sha256":  "e963f4c674f82021798391c70bc3c564a1ea8eae4372f4c771409e90a00902df",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/brute2.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "7b8c05336341b0484d58b30f6d6cb434ba1380c5c8ad211bd6ee27052f24dcf0",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "52c1d9af10e7d797527e78c5b1d15a6fa9589cf824daff1399b609bc8dea0746",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -710,9 +735,12 @@
                       "source_sha256":  "4c94c62f03116c7342bd8042783e04b2d16d5fd65282ac2f1cb1196be3af0e6e",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/brute3.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "fe5d0ab23ce8f8177ac5aaf7d13d7dc12bc9596173992a290bcb8cf6cec7f9f0",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "a4c30deafa3c8cc70f0df98bb56c90a131ce8e7691da985e92f44a083a38bdc3",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -806,9 +834,12 @@
                       "source_sha256":  "91bde5643d97e313e3d830bda6ea89136e9ed01d05f4bfdecc340a71b1ddbf2e",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/diag1.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "ee3a8240098cc680648c7f5be05487a8431ba9d9f08951d8758e2f8dd1633bf6",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "5c74ab1c5a10158593155282678fcb1dca153d6a99868107d45323ee58374a9a",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -818,9 +849,12 @@
                       "source_sha256":  "697fee22ef55fd02b3a28b0afb788601666b2d7f4af1cc70b3c37959f50ad640",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/diag2.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "3c998be5133b5816de9dfbb6ad1b237d355286af16d66f05b5bb32aba6c6cc93",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "6b95434fdae3ae3216f0c626766276a7d96081df05ed7afd696cbe5822fc98cf",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -830,9 +864,12 @@
                       "source_sha256":  "92ccbe382768bbfe0abaaaf63cd2201e725349b1ccd0b65df5c98aee9341fbf4",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/diag3.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "0205d63aa3ff6446cb9b64d82b15b399d6e62fa11afd72f1119bb7c5b44a221d",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "37a9ddc1ac5d6ef5c3e94f1116b20157b5cbc7d5c527786bc1140a47816c3612",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -842,9 +879,12 @@
                       "source_sha256":  "c7c2bd49a020f8c47624f5412ce3fbd237051ce7aafbaf1243a08fa8910a430b",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/diag4.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "8e7ae9f0a33e2f1370de5b88c90effc2afb139245631346711c111085bb98580",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "c4da5c9d381f45833ed7974fd6b984682844fd9083d6eb51212e60e269278412",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -852,11 +892,14 @@
                       "bytes":  436,
                       "source_mtime_utc":  null,
                       "source_sha256":  "dd68078923cb55420c24e774cad775bc6fe6563a743e2def55da6ded3170f11b",
-                      "disposition":  "archived_sanitized",
+                      "disposition":  "archived_exact",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/extract.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "3224a8fbfb6f6466792cfcc9724bffbf08e54e0d2c1885bf64ee8c0d620fbddc",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained byte-for-byte from the verified snapshot.",
+                      "current_sha256":  "dd68078923cb55420c24e774cad775bc6fe6563a743e2def55da6ded3170f11b",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -864,11 +907,14 @@
                       "bytes":  214,
                       "source_mtime_utc":  null,
                       "source_sha256":  "e72d76f763437b134ff07ce0a8444244bf8c9f02f71dfeb1f76eb0abe291799c",
-                      "disposition":  "archived_sanitized",
+                      "disposition":  "archived_exact",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/extract2.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "9f04257d0dcdea6482fe3afe272d8bc6733df906d4b66630b715fd6649608309",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained byte-for-byte from the verified snapshot.",
+                      "current_sha256":  "e72d76f763437b134ff07ce0a8444244bf8c9f02f71dfeb1f76eb0abe291799c",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -890,9 +936,12 @@
                       "source_sha256":  "fb8d8c07da9515743f02f3d39567e436a7d6560c1958d1e0b45639c9ee4b5120",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "6434b58b124abf35d3558d6bf1983144603589c4f37eda4352959da452f9b970",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "e268c960e54392ab7a8db0bd24c7aece50b530675a89e9c6666cedbe39517918",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -902,9 +951,13 @@
                       "source_sha256":  "9527289d1b36967888bd078433fc62b9d39795bdd972312216c8dd1ecfbc6d2c",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d2_k1_s500_r0.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "46926f449283c9793b7f4cc4552b9a3caa3f1532ef28fb24030164323ef6e24b",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "b33a94e4560eee84f7868a63c2d5da74008ba27d19220c445c8c3770b6f07eea",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized",
+                                              "trailing_whitespace_removed"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -914,9 +967,13 @@
                       "source_sha256":  "30fe11490965166688c3c547272c0320d7d6e4e7e3419471ee791f4a59017557",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d2_k2_s500_r0.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "71d7e056c766d7323a2ebd2a7b9413f80ac0c67ed692675ae62670a594bdf5c6",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "1433c03136de760938973409435ce8cff5be233b81630f0bf424b0f07d2b789d",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized",
+                                              "trailing_whitespace_removed"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -926,9 +983,13 @@
                       "source_sha256":  "ea760cabcdc74a8b54f51e41d7c6eb98aaf5410b3995a2883f22c6050e9b87ec",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d2_k2_s500_r7.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "3c91537afae61ad5f163c3fa86fed4cdc6f154b25233841422b715f4a475cc20",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "33597e87858277a42dc384d53272a36b8e6f170f085004e6f6846963b359e178",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized",
+                                              "trailing_whitespace_removed"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -938,9 +999,13 @@
                       "source_sha256":  "3bf845b7f4bea29913efc3804947aac8adea8c69d812ebb75322beb2870e32bf",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d2_k3_s500_r0.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "8811e41143da388037a50bf44cf031c6bef5228b8cfdf642f9c19af8abfc2aa7",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "dbc23b1dfa9a831f3ab580928f54d33eb3f866806978d66031cf95b87ba0907d",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized",
+                                              "trailing_whitespace_removed"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -950,9 +1015,13 @@
                       "source_sha256":  "7735bce3d488e44a438aa47245fb817235eac2e08b9a5c4bb86d3890b02e9ecf",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d2_k4_s500_r0.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "7f20807cda59d0151d4e0b45e36122dfd249cf83c053fa0d08c9c5f67df40a35",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "ab654e0bce553661127d527bbf9692e8b2a20aad5d49939a1dc7eab26e3506c6",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized",
+                                              "trailing_whitespace_removed"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -962,9 +1031,13 @@
                       "source_sha256":  "c89b97e5384c2235c08bb22aad970fcc8fb1a0ec49e718f35cc9a5ff2b7411a1",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d3_k1_s500_r0.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "c831e5fa14139e7beaf217b740671b7e1f3fe1d08b0f10324f20303c21ff8ec6",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "9a62c3b42011070a8d9c781ceeb91a74a24eadaf4674eedd3ed6f279065c1676",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized",
+                                              "trailing_whitespace_removed"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -974,9 +1047,13 @@
                       "source_sha256":  "49401432a4faa39adb0fc7b5ade26e043b55c5f85f0fbf90922293f500184778",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d3_k2_s500_r0.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "344af929382e6e13a1a1a372f1982f8cdc745a576714573a937af530117d5fe7",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "f8df112738576c7205b5d4a6fe822aa61cebeff3173bce769db60979481b606f",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized",
+                                              "trailing_whitespace_removed"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -986,9 +1063,12 @@
                       "source_sha256":  "d7515791417a791b0d8ebe2c0898f187140bd9f0ff0a5df2ee068b294e1154d0",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d3_k2_s800_r1.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "90965fd97412c2afc378325dbec3de814fe54b048a83a2a467054f66b0a20ce7",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "b490076b3b58634cc17b187d8cfef53806f12284d5e0c9cd1abd79baf22b328f",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -998,9 +1078,12 @@
                       "source_sha256":  "6b7dcc17666e1e44b843036a4127a3a3035c92b53b34981d75b6dc0ad63ed5e6",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_h.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "89d6905ae6a711ceb9a14a04a48fad95e639b3881e4101ef8eeffecffacc1190",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "496e025a48d33f83eb2c31a505cd661f5c6dc1776a05a2c8b6b18aebca2f2efb",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -1142,9 +1225,12 @@
                       "source_sha256":  "3aed14ffc4e595bcbdafa79146e7002b43ae95776bc60f75d7483d9d35af39bd",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/kcopy_d2/run_server.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "5c12b476cd4260362e2a534e8414be507b1a7453e79e93c7d37923a484d82427",
-                      "source_status":  "diagnostic_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "e881844431702a3790ce748801d1a64405e97d07270f7fd031e452bc47332624",
+                      "source_status":  "diagnostic_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -1548,9 +1634,12 @@
                       "source_sha256":  "55966e08418c169f82064770e99921fc36f8efc060d7b81c451308903066d461",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/pbt_bound/make_fig3.py",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "2227c4094e9340ef583bd35003ee3486185b9aed520448c3f54827dc1d81e874",
-                      "source_status":  "diagnostic_recovered_claim_not_reproved"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "cc42b36f4b9e37fa12b77ed9b6ef2024ea7ecb1ecb723d616e42ee1c076df838",
+                      "source_status":  "diagnostic_recovered_claim_not_reproved",
+                      "transformations":  [
+                                              "pbt_local_import_path"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -1558,11 +1647,14 @@
                       "bytes":  5357,
                       "source_mtime_utc":  null,
                       "source_sha256":  "0aa09e07ac7f4905d6c335ae65277bb56b04037511a98063b0746fd4ba13c135",
-                      "disposition":  "archived_sanitized",
+                      "disposition":  "archived_exact",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/pbt_bound/pbt_bound.py",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "29ebe37060309db7b6b332398a9bedf9d2cae7febb513c4e72e30348037bf5b2",
-                      "source_status":  "diagnostic_recovered_claim_not_reproved"
+                      "reason":  "Remote-only historical source retained byte-for-byte from the verified snapshot.",
+                      "current_sha256":  "0aa09e07ac7f4905d6c335ae65277bb56b04037511a98063b0746fd4ba13c135",
+                      "source_status":  "diagnostic_recovered_claim_not_reproved",
+                      "transformations":  [
+
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -1572,9 +1664,12 @@
                       "source_sha256":  "629b6b7193d45de0657fc5094ccfc6ff3ea7f08eebbf9d2e5097f416f70ccf41",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/ph_d2_k1.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "31f995b3c550489fee350ce7879581dac6ecc3484f0e6813d479ad2630e54486",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "20263fb774e96648ba48e22dda21253b38b2d3cd7e733d2d9d6c01e503479085",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -1584,9 +1679,12 @@
                       "source_sha256":  "374c3aa68cd402373208b269afb530723f7ac945e4be8ce7eab138dd0c05fb0f",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/ph_d3_k1.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "5c32bc2889d7fe77ba0a4e89db798eeaf11ab03b550170c778fb6c2c7fdb4428",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "17cb8256e4c756b5f14995d47ba52a192ae1507d1c42a43256f9cc8bc6463439",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -1596,9 +1694,12 @@
                       "source_sha256":  "f18438ca8a68532c1f4e4439464f249918a2b609eaff11ab25ef264bf61eadb6",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/plain_d2_k1.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "0a99a4ae38f859d94fcebc39e81ec622819952f089d316b16fa5f7d214f27375",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "85d6e6de32a977541681eecff06f15160cbb098d47ace2a9b12dc6299757243f",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -1608,9 +1709,12 @@
                       "source_sha256":  "af5472a0cbaa8f6bf42d45ede37b9a20a4413ca34db82128167d0db7498eebcf",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/plain_d3_k1.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "db21d6f5f324050ed2f73ffc4c5ed01823b64a73525252b79e862807ff31915e",
-                      "source_status":  "exploratory_diagnostic"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "82b1bd515f949fbcd087a217fc328d28f38dadcaf975c32cedff76be80670538",
+                      "source_status":  "exploratory_diagnostic",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -1642,10 +1746,13 @@
                       "bytes":  5903,
                       "source_mtime_utc":  null,
                       "source_sha256":  "e5ad5b09113db837a8c18f0ac41de2c3274d4dbe49a612521e2f22d98dca0aeb",
-                      "disposition":  "archived_sanitized",
+                      "disposition":  "archived_exact",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/README.md",
-                      "reason":  "Historical server documentation retained with personal paths neutralized.",
-                      "current_sha256":  "af0b08ee61ac052141e6a6b3ba34916a9df83b0ad35b3c51f2698ab7435a73f6"
+                      "reason":  "Remote-only historical source retained byte-for-byte from the verified snapshot.",
+                      "current_sha256":  "e5ad5b09113db837a8c18f0ac41de2c3274d4dbe49a612521e2f22d98dca0aeb",
+                      "transformations":  [
+
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2038,10 +2145,13 @@
                       "bytes":  408,
                       "source_mtime_utc":  null,
                       "source_sha256":  "fab03bc9cc08701ca873f67302e8788e38953ff71a75fd3790a53c71df3d5aba",
-                      "disposition":  "archived_sanitized",
+                      "disposition":  "archived_exact",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/RESULTS_d3.md",
-                      "reason":  "Historical server documentation retained with personal paths neutralized.",
-                      "current_sha256":  "56a45e9fc20def62660b34410b7882d19108ec729145f7997bf4e37b99677049"
+                      "reason":  "Remote-only historical source retained byte-for-byte from the verified snapshot.",
+                      "current_sha256":  "fab03bc9cc08701ca873f67302e8788e38953ff71a75fd3790a53c71df3d5aba",
+                      "transformations":  [
+
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2049,10 +2159,13 @@
                       "bytes":  1774,
                       "source_mtime_utc":  null,
                       "source_sha256":  "42d95d60f9543ac282ab2603cbdb489a035579031aee2525cf821de4ff822119",
-                      "disposition":  "archived_sanitized",
+                      "disposition":  "archived_exact",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/STATUS.md",
-                      "reason":  "Historical server documentation retained with personal paths neutralized.",
-                      "current_sha256":  "617dc70849d3b93862687935fcdc3b5e616458370791f8f45c06c717b91fce29"
+                      "reason":  "Remote-only historical source retained byte-for-byte from the verified snapshot.",
+                      "current_sha256":  "42d95d60f9543ac282ab2603cbdb489a035579031aee2525cf821de4ff822119",
+                      "transformations":  [
+
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2062,9 +2175,12 @@
                       "source_sha256":  "c9a76ed1f765305aac188f9758c92d7f2b9d78b8fab1248053c75cc9031b886b",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct_k3.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "6bd4be1c98fed558c01c98abe5c893ef73a98950b755cedd87c49647871e910c",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "dc49c1af3878e0e2fc08b2fc27704fae0dfab384134f955b8987f8d83c946aac",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2074,9 +2190,12 @@
                       "source_sha256":  "ec5418f4b056cbf78a2f125988112a21e41f18f9921aec4a94e62e8214aba10a",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct_k4.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "9335d4d65ba6c9ea33b245363966006d65c76ffb22534a75a0e09801fe629f1b",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "834f8f3d9ffcaa56526810ec0a219ba17996542929f2eee7088f93b38b70b315",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2086,9 +2205,12 @@
                       "source_sha256":  "1496770be1f18e0fe54430f82e107601054889c52b31a642d75747c0286ed59a",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct_k5.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "42047afd6c69341bdcff1be96feb95814eb118710e2139a10ddfce591ea42481",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "03a9ca1c668f422b58602a78c7015ead1d899ef2d5f280495bc20c35830a274e",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2098,9 +2220,12 @@
                       "source_sha256":  "170167bc01186c9bdf63e2a3f2273368b12b1bd0b7f0a28e22082779449aed5d",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_d3k1.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "b81a1efa6e41ce370f161efc5158cc8c368f3f874981eb16c4aebf75a46857f6",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "f7dd4d9458f024d8cf0af5729fac7fd8aebfe3e377a0bd5fc99af76c1b4976dd",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2110,9 +2235,12 @@
                       "source_sha256":  "10927e521256d51c2c5da9d2f47a1dd2eeb34f064c87b633a1aa6400a12c2bf9",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_d3k2.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "c7ddac2e04fb5e9788bf7ff9572479f35a06a53afbe9f2436d36748593b49011",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "54cdb059f219082d0b405f119d953b3e5cf274f64165e3936ed8d1b1de4f5731",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2122,9 +2250,12 @@
                       "source_sha256":  "9d91961786027e42e97ca2e1467c2c783b0067ac9bf507d11dfc164e645d50d1",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_d3k3.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "8eaef809bd8b5e2912ee0d59b1c1b1686f315a3dc021afcb0aa58136116c765d",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "6cb0076a685efabe39100c6343fc9f01638caa113439484765473e4bafdd2c26",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2134,9 +2265,12 @@
                       "source_sha256":  "7b3db1f172cc862da4e680af2f3768918945e1e01e9e19b0a5ffc50045d3a079",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_d3k4.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "7c11a54f4f235d01845c966dec607569124b98a8db5e48d16c079093fe7305e7",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "6dcc4fd85c0e24db5afb92de28996e62b3502d25993120a3103661a4f7856bf4",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2146,9 +2280,12 @@
                       "source_sha256":  "4060f055efafc9df2fbebbeb948ff3a0e26e332698fe2b108ef326e6074222a1",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_k3.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "f61c157ef5e50131ed3d970906cb48d32915553d40f3ea3adee622ba3a433d5c",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "991c305514bfb2b286260fe54f7e059c12f22a38294561b9462e67a17421664d",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2158,9 +2295,12 @@
                       "source_sha256":  "ae7bb6c0a2ad2d533b44eb210eb528e1bb48efee3f32dfba8d1d9042720b3134",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_k4.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "479175d61e9937b22bcb136724c0b4748c2eebf19c5d903424e99099058d3030",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "50876a24413f66759f23d5374a82a3547e16452b0046be16dd443316ce838c7a",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2170,9 +2310,12 @@
                       "source_sha256":  "639c1113f8668e854ea5bfda0e592feedc21b734726a2582777cfa88b1e5cb37",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_k5.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "c182d9053d429445aa01f92972c257242cfecc79e9499fa0fef478b1e1ed40b6",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "1cc464f502ec0b4f5af3f1884dd13d571d4eca417126e0cf43ddac40390ed374",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2182,9 +2325,12 @@
                       "source_sha256":  "d2c3f6c19793a42d5c0aec9ca0c4646cdcfb3b9a278dbe0803ca2b3adf6fe4bc",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct3_d4k1.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "be7f6a8f58adcd6157ce082f6dbbb92a2408bd5e8725055e34960f9ac67cca96",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "a95e73618f1caa0caef0368f26be95773269d1463c78d2f9985df67bc483faf2",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2194,9 +2340,12 @@
                       "source_sha256":  "fe26f41567f3893dd9073246af508c84e8f21219d712e2fcd31b92d601903dcb",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct3_d4k2.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "6a06a07404237413a62b7e254bdeec8656229288a4bec74ee101c56e8fba8309",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "6d76a145c739c0bfa4021f75cd3f5c39c105f2b064fbbef24cc5dc5f8b62eac8",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2206,9 +2355,12 @@
                       "source_sha256":  "cf2497e162afc353e286ad4c7a641e00661747888a927a8edc0238d44161566a",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/struct3_d4k3.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "7eb87b6e8e0ef67a7f64dbc3689aaf4c8895e84d0fd776bc4dc67eac233f2c83",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "a25b7126cfd6415f06ec23bc72080f3244a3ccf174d52fb9e50089a7f97d0be0",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2230,9 +2382,12 @@
                       "source_sha256":  "cf01efc46bf837db19f94c9416dc5fa23274e13b1fc376998dbe43848b3b0ea4",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/y_d3k2.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "f919b7ca90914b4fdbbf0b17508329d9e26889aea0a9eac5919a6576a1be25f8",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "16ba6045b6024ce187348c8a8760f7acab41cef8aea99be1940b04650c1e16ea",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2242,9 +2397,12 @@
                       "source_sha256":  "f14bd826081376e79074e4a22ae0a16019c3516c1dd5874f60006edc2593976c",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/y_d3k4.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "4b89d56ed74b8b56b6dbd5fff66dd2caef77170cc265ccd6ead898d27f78e46f",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "b51dc847baf7f6afe2a8236df3fc9e614b661af8660a73c4c57b7b85782e69ea",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2254,9 +2412,12 @@
                       "source_sha256":  "c284bee2c75a6d730a94be543b948370eb8642cfc6097d102315551a6dd0be29",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/y_k3.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "4e8e8354105518ed8b7db3582807e74b23662fc3aca155c9a3ee2372ec9c5b5d",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "d6ee224c151c123da94f1c89bf261b66c41d996994ea57e989397f30f9d83a81",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2266,9 +2427,12 @@
                       "source_sha256":  "fb94f9ad8e5687b12a35834d38139757d6d413a192d59527286113f01cbf364e",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/y_k4.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "ca770e0beea382940c9a4fca2aaf4b08361e3e2db559a2a13b29995f999d3bc6",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "00df50924981891aff0a63ecbfc57b13f5bdbf0e139c9a69d05d0dcfb99f7616",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2278,9 +2442,12 @@
                       "source_sha256":  "b2cb087c8838ac83a84a3f58bba0906e80528da638db40ca51cc12aa9945435a",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/y_k5.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "661c6863836ddb5b32c3138f44bd4d86e9adf3a9cb808fe0ae7b5e5c335600da",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "69bbe7cd8738d8bae98bf5762c5859a52fd8b33c0643a0520d74098d625101ae",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2290,9 +2457,12 @@
                       "source_sha256":  "c91f4d6fe20bd4762b13d7501196b3abde15f177293111342648f08ef1ff756f",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/y3_d4k3.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "a799b5387d5a03648f9c0af23901d0cf385fe742b2f1a3aaa4f90742e5598909",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "a468720f4ecf6fa6ba476f0b9646a2daf46e806f3426c569fcabaf5ae22a5a82",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2302,9 +2472,12 @@
                       "source_sha256":  "5016f87b119b59b8a803054cbc0e9917b78acdc86c61584cb8eb8206b288171d",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/y3_d4k4.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "d2b568c1110a8928cae6652910bedeb817ba3178f3f2041626554708aec427ac",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "230235c5286744e37181366948701db1c884a4ab54d1d40628922479bfa18593",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2314,9 +2487,12 @@
                       "source_sha256":  "8280424fc65f20ba6c5e8100dab26c4e1ca9caa31d29e5340f2f07b9dedb0dd1",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/y3_d5k2.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "6f57a6e2d34ae021a4aac6e381844ef189e7a45e4a63c205c8a7f826acc3c421",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "99bcf02edc1aeee990e02a0475688b5ebfd09eed8e084f6abfaf0f7280555a59",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   },
                   {
                       "source_root":  "pqga-full",
@@ -2326,9 +2502,12 @@
                       "source_sha256":  "a287dfbdfc837e815004b6826c6282d478cb36bfdfe78e49d5e1a18d48462594",
                       "disposition":  "archived_sanitized",
                       "local_target":  "legacy/server-snapshots/quair06-2026-08-07/pqga/y3_d5k3.m",
-                      "reason":  "Remote-only historical or generated source retained with host-specific paths neutralized.",
-                      "current_sha256":  "64b4513b8d27daf28aefa9d0a2e9476428a47e6c00f6c690f190cda8a3ca4430",
-                      "source_status":  "generated_historical_wrapper"
+                      "reason":  "Remote-only historical source retained with only the explicitly listed nonsemantic transformations.",
+                      "current_sha256":  "88c8577d5a4702bc5487c2947a4b5290de1e7f655e5fbba641d2fe29ae840fdc",
+                      "source_status":  "generated_historical_wrapper",
+                      "transformations":  [
+                                              "host_path_neutralized"
+                                          ]
                   }
               ]
 }

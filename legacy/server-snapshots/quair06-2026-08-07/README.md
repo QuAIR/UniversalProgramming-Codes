@@ -9,8 +9,13 @@ The archived MATLAB scripts include exploratory, generated, under-sampled,
 and known-defective variants. In particular, the old general-dimension
 baseline inherits the subsystem-permutation issue documented in
 `legacy/general-d-baseline/README.md`, and the qubit linear scripts are a
-relaxation rather than the exact k-copy SDP. Hard-coded server paths were
-replaced by neutral placeholders; no mathematical expression was changed.
+relaxation rather than the exact k-copy SDP. Files with no required change are
+byte-identical to the read-only source snapshot. In the remaining files,
+hard-coded server paths were replaced by neutral placeholders. Seven generated
+`gamma_run_*.m` files also had trailing whitespace removed so that repository
+whitespace checks remain clean. These transformations are recorded per file in
+`docs/provenance/quair06-live-inventory.json`; no mathematical expression was
+changed.
 
 The `pqga/pbt_bound` scripts are retained because they were present only in
 the live tree. Their description of a certified bound is a recovered claim,

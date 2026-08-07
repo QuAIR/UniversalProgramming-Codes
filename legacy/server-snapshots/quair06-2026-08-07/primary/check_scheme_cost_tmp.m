@@ -1,4 +1,4 @@
-﻿function check_scheme_cost_tmp()
+function check_scheme_cost_tmp()
 addpath('<CVX_ROOT>');
 cvx_setup quiet;
 for k = 1:3

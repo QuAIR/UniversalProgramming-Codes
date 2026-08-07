@@ -1,4 +1,4 @@
-﻿# k-copy programming cost at d=2: exact reduced SDP solver
+# k-copy programming cost at d=2: exact reduced SDP solver
 
 MATLAB/CVX code for the qubit k-copy quasi-quantum programming cost
 `gamma_k(CPTP, d=2)`.

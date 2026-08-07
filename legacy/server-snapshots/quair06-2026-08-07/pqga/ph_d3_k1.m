@@ -1,4 +1,4 @@
-﻿%% gamma_k.m
+%% gamma_k.m
 %  ---------------------------------------------------------------
 %  Compute the k-copy programming cost gamma_k(CPTP, d)
 %  via the block-diagonalised SDP of Appendix F.

@@ -1,4 +1,4 @@
-﻿%% gamma_k.m
+%% gamma_k.m
 %  ---------------------------------------------------------------
 %  Compute the k-copy programming cost gamma_k(CPTP, d)
 %  via the block-diagonalised SDP of Appendix F.
@@ -208,8 +208,8 @@ if ~isempty(AHR); AHR*b1 == 0; AHR*b2 == 0; end; ARED*(b1-b2) == BRED; TPR*[b1;p
     TP1 = zeros(dim_tp);
     TP2 = zeros(dim_tp);
     for j = 1:m
-        
-        
+
+
     end
       %#ok<EQEFF>
       %#ok<EQEFF>
@@ -218,7 +218,7 @@ if ~isempty(AHR); AHR*b1 == 0; AHR*b2 == 0; end; ARED*(b1-b2) == BRED; TPR*[b1;p
     for c = 1:s
         prog = zeros(d^2);
         for j = 1:m
-            
+
         end
           %#ok<EQEFF>
     end

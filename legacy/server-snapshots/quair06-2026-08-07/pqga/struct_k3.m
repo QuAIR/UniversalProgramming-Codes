@@ -1,4 +1,4 @@
-﻿% Structured-constraint gamma_k(CPTP,d) solver + certificate.
+% Structured-constraint gamma_k(CPTP,d) solver + certificate.
 % TP family imposed exactly via Gram reduction (no dim_tp^2 x m array);
 % programming family via the validated M1*Y*M2 factorization;
 % PSD blocks assembled as single vectorized CVX ops.

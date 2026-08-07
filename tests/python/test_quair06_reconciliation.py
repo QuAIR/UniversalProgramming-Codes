@@ -66,7 +66,10 @@ class Quair06ReconciliationTest(unittest.TestCase):
         ]
         self.assertEqual(len(source_entries), 95)
         for entry in source_entries:
-            self.assertIn(entry["disposition"], {"mapped_portable", "archived_sanitized"})
+            self.assertIn(
+                entry["disposition"],
+                {"mapped_portable", "archived_exact", "archived_sanitized"},
+            )
             self.assertIn("source_status", entry)
             target = ROOT / entry["local_target"]
             self.assertTrue(target.is_file(), entry)
@@ -75,6 +78,44 @@ class Quair06ReconciliationTest(unittest.TestCase):
                 entry["current_sha256"],
                 entry,
             )
+
+    def test_archives_are_bom_free_and_transformations_are_explicit(self):
+        attributes = (ROOT / ".gitattributes").read_text(encoding="utf-8")
+        self.assertIn(
+            "legacy/server-snapshots/quair06-2026-08-07/** text eol=lf",
+            attributes,
+        )
+        archived = [
+            entry
+            for entry in self._inventory()["files"]
+            if entry["disposition"] in {"archived_exact", "archived_sanitized"}
+        ]
+        self.assertEqual(len(archived), 57)
+        self.assertEqual(
+            sum(entry["disposition"] == "archived_exact" for entry in archived),
+            7,
+        )
+        self.assertEqual(
+            sum(entry["disposition"] == "archived_sanitized" for entry in archived),
+            50,
+        )
+        allowed = {
+            "host_path_neutralized",
+            "pbt_local_import_path",
+            "trailing_whitespace_removed",
+        }
+        for entry in archived:
+            transformations = entry.get("transformations")
+            self.assertIsInstance(transformations, list, entry)
+            self.assertTrue(set(transformations) <= allowed, entry)
+            content = (ROOT / entry["local_target"]).read_bytes()
+            self.assertFalse(content.startswith(b"\xef\xbb\xbf"), entry)
+            if entry["disposition"] == "archived_exact":
+                self.assertEqual(transformations, [], entry)
+                self.assertEqual(entry["current_sha256"], entry["source_sha256"])
+                self.assertEqual(len(content), entry["bytes"])
+            else:
+                self.assertTrue(transformations, entry)
 
     def test_mat_manifest_covers_the_ten_live_only_evidence_files(self):
         manifest = self._mat_manifest()
@@ -99,7 +140,7 @@ class Quair06ReconciliationTest(unittest.TestCase):
         self.assertEqual({row["k"] for row in rows}, {"5", "6"})
         k5 = next(row for row in rows if row["k"] == "5")
         k6 = next(row for row in rows if row["k"] == "6")
-        self.assertEqual(k5["status"], "diagnostic_validated_feasible")
+        self.assertEqual(k5["status"], "diagnostic_numerical_candidate")
         self.assertEqual(k5["warning"], "linsysolve_nan_or_inf")
         self.assertEqual(k6["status"], "incomplete")
         self.assertEqual(k6["cost"], "NaN")
@@ -107,9 +148,22 @@ class Quair06ReconciliationTest(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn("warning=linsysolve_nan_or_inf", log)
+        self.assertIn("all_cptp_feasibility_certified=false", log)
         self.assertIn("k=6 status=incomplete", log)
         self.assertIn("solve_completed=false", log)
         self.assertNotIn("/home/", log)
+
+        entry = next(
+            item
+            for item in self._mat_manifest()["artifacts"]
+            if item["path"]
+            == "results/diagnostic/quair06_exact_d2_k5_saved_blocks.mat"
+        )
+        self.assertEqual(entry["diagnostic_type"], "numerical_candidate")
+        self.assertEqual(
+            entry["evidence"]["classification_status"],
+            "diagnostic_numerical_candidate",
+        )
 
     def test_canonical_d2_k5_value_is_unchanged(self):
         with (ROOT / "results/summary.csv").open(newline="", encoding="utf-8") as handle:

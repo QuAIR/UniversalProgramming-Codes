@@ -1,4 +1,4 @@
-﻿"""
+"""
 Exact finite-k standard (deterministic, PGM) port-based teleportation fidelity,
 and the resulting CERTIFIED finite-k upper bound on nu_k(CPTP_d).
 

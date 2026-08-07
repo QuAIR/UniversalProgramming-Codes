@@ -1,4 +1,4 @@
-﻿addpath(genpath("<QETLAB_ROOT>"));
+addpath(genpath("<QETLAB_ROOT>"));
 d=2; k=1; n=k+1; Dsec=d^n; dk=d^k; dim_tp=d^(2*k+1); I_d=eye(d);
 rng(0);
 % pipeline as in runner
