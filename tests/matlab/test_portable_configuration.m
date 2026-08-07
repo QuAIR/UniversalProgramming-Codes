@@ -8,12 +8,15 @@ function setupOnce(testCase)
 testCase.TestData.repoRoot = fileparts(fileparts(fileparts(mfilename('fullpath'))));
 testCase.TestData.matlabRoot = fullfile(testCase.TestData.repoRoot, 'src', ...
     'matlab');
+testCase.TestData.originalPath = path;
 testCase.TestData.tempRoot = tempname;
 testCase.TestData.environment = local_environment_values();
 mkdir(testCase.TestData.tempRoot);
 
 testCase.addTeardown(@() local_restore_environment(testCase.TestData.environment));
+testCase.addTeardown(@() local_restore_path(testCase.TestData.originalPath));
 testCase.addTeardown(@() local_remove_directory(testCase.TestData.tempRoot));
+testCase.addTeardown(@local_restore_default_path);
 end
 
 function setup(testCase)
@@ -77,6 +80,17 @@ up_setup(cfg, false);
 verifyError(testCase, @() up_setup(cfg, true), 'up_setup:missingYALMIP');
 end
 
+function testSetupRunsCvxSetupWhenConfiguredCvxIsFirstAdded(testCase)
+cvxRoot = local_fake_cvx(testCase, false);
+qetlabRoot = local_fake_function(testCase, 'qetlab', ...
+    'RandomSuperoperator', 'function RandomSuperoperator; end');
+cfg = up_config(struct('cvxRoot', cvxRoot, 'qetlabRoot', qetlabRoot));
+
+up_setup(cfg, false);
+
+verifyEqual(testCase, getenv('UP_TEST_CVX_SETUP_CALLED'), 'true');
+end
+
 function testSetupSkipsCvxSetupWhenCvxIsAlreadyAvailable(testCase)
 cvxRoot = local_fake_cvx(testCase, true);
 qetlabRoot = local_fake_function(testCase, 'qetlab', ...
@@ -114,7 +128,10 @@ if failIfSetupRuns
         '    ''cvx_setup should not run when cvx_begin is available.'');', newline, ...
         'end'];
 else
-    setupSource = 'function cvx_setup; end';
+    setupSource = [ ...
+        'function cvx_setup', newline, ...
+        'setenv(''UP_TEST_CVX_SETUP_CALLED'', ''true'');', newline, ...
+        'end'];
 end
 
 root = local_fake_function(testCase, 'cvx', 'cvx_begin', ...
@@ -167,9 +184,18 @@ for index = 1:numel(names)
 end
 end
 
+function local_restore_path(originalPath)
+path(originalPath);
+end
+
+function local_restore_default_path()
+restoredefaultpath;
+end
+
 function names = local_environment_names()
 names = {'UP_CVX_ROOT', 'UP_QETLAB_ROOT', 'UP_YALMIP_ROOT', ...
-    'UP_MATLAB_BIN', 'UP_SDP_SOLVER', 'UP_RESULTS_ROOT'};
+    'UP_MATLAB_BIN', 'UP_SDP_SOLVER', 'UP_RESULTS_ROOT', ...
+    'UP_TEST_CVX_SETUP_CALLED'};
 end
 
 function local_remove_directory(directory)
