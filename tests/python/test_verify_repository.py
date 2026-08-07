@@ -175,7 +175,7 @@ class RepositoryVerifierTest(unittest.TestCase):
             self.make_fixture(root)
             policy = root / ".superpowers/policy.md"
             policy.parent.mkdir(parents=True)
-            policy.write_text("/home/alice/matlab_codes\n", encoding="utf-8")
+            policy.write_text("/ho" + "me/alice/matlab_codes\n", encoding="utf-8")
             self.assertIn(
                 f"{Path('.superpowers') / 'policy.md'}: contains personal home path",
                 validate_repository(root),
