@@ -9,6 +9,8 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "docs" / "provenance" / "legacy-task-5-manifest.json"
 SOURCE_COMMIT = "45127901a920384c3f4ec56f0ecfe15b78028d0a"
+RECORDED_SOURCE_SHA256 = "bb6cfb31d3bf926ed9059a31d14893aaea5e75ebadda0355df67f9be4d78bf01"
+RECORDED_SOURCE_BYTE_COUNT = 1960
 
 
 def lf_normalized_utf8(path):
@@ -39,7 +41,8 @@ class LegacyProvenanceManifestTest(unittest.TestCase):
         self.assertTrue(manifest["allowed_current_file_transformations"])
         self.assertEqual(recorded["source_provenance"], "recorded external source")
         self.assertEqual(recorded["newline_normalization"], "LF-normalized UTF-8 text")
-        self.assertRegex(recorded["recorded_source_sha256"], r"^[0-9a-f]{64}$")
+        self.assertEqual(recorded["recorded_source_sha256"], RECORDED_SOURCE_SHA256)
+        self.assertEqual(recorded["recorded_source_byte_count"], RECORDED_SOURCE_BYTE_COUNT)
 
         destination = ROOT / recorded["destination_path"]
         digest = hashlib.sha256(lf_normalized_utf8(destination)).hexdigest()
