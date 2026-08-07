@@ -23,6 +23,10 @@
   ],
   "fixed_protocol_recorded_source": {
     "destination_path": "legacy/failed-runs/fixed_protocol_cost_check.m",
+    "source_provenance": "recorded external source",
+    "newline_normalization": "LF-normalized UTF-8 text",
+    "recorded_source_sha256": "67245b5c0cdaa3ccb3d09c395395c2d06abf8a150e91ea7145c5864cadd5ccd3",
+    "destination_sha256": "03200fbd1c11c65aa1f8625d4598393281e968132e21c7d2d6349c6654a94b22",
     "thread_id": "019edee4-55ea-7eb0-8212-29e7fb828ead",
     "turn_id": "019ee427-6a19-7e61-b49c-8cb73e03db88",
     "allowed_current_file_transformations": [

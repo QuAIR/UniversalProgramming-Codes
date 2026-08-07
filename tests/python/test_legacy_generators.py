@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -11,6 +12,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 GENERATORS = ROOT / "legacy" / "general-d-baseline" / "generators"
 BASH = shutil.which("bash")
+MATLAB = shutil.which("matlab")
 
 
 @unittest.skipUnless(BASH, "bash is required to exercise the generator wrappers")
@@ -74,6 +76,43 @@ class LegacyGeneratorTest(unittest.TestCase):
         self.assertIn('mkdir(outputDir)', source)
         self.assertIn('save(fullfile(outputDir, sprintf("gamma_d%d_k%d_s%d_r%d.mat"', source)
         self.assertNotIn('sprintf("results/gamma_', source)
+
+    def test_gen_embeds_a_matlab_usable_fallback_and_probes_configuration(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output_root = Path(temporary) / "outputs"
+            result = self.run_generator("gen.sh", 2, 2, output_root=output_root)
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            generated = Path(result.stdout.strip().splitlines()[-1])
+            source = generated.read_text(encoding="ascii")
+            match = re.search(
+                r'if isempty\(repo_root\), repo_root = "([^"\\]*)"; end;', source
+            )
+            self.assertIsNotNone(match)
+            fallback = match.group(1)
+
+            if os.name == "nt":
+                self.assertRegex(fallback, r"^[A-Za-z]:/")
+            else:
+                self.assertTrue(fallback.startswith("/"), fallback)
+
+            if MATLAB:
+                command = (
+                    "addpath('"
+                    + fallback.replace("'", "''")
+                    + "/src/matlab'); cfg = up_config(); "
+                    "assert(isfield(cfg, 'resultsRoot'));"
+                )
+                probe = subprocess.run(
+                    [MATLAB, "-batch", command],
+                    cwd=ROOT,
+                    env={**os.environ, "UP_RESULTS_ROOT": str(output_root)},
+                    text=True,
+                    capture_output=True,
+                    check=False,
+                    timeout=60,
+                )
+                self.assertEqual(probe.returncode, 0, probe.stderr)
 
     def test_generators_reject_noninteger_and_malicious_arguments(self):
         invalid_argument_sets = (

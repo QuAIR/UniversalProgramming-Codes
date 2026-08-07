@@ -11,6 +11,11 @@ MANIFEST = ROOT / "docs" / "provenance" / "legacy-task-5-manifest.json"
 SOURCE_COMMIT = "45127901a920384c3f4ec56f0ecfe15b78028d0a"
 
 
+def lf_normalized_utf8(path):
+    text = path.read_text(encoding="utf-8")
+    return text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+
+
 class LegacyProvenanceManifestTest(unittest.TestCase):
     def test_byte_identical_historical_algorithms_match_manifest_hashes(self):
         manifest = json.loads(MANIFEST.read_text(encoding="ascii"))
@@ -32,6 +37,13 @@ class LegacyProvenanceManifestTest(unittest.TestCase):
         self.assertEqual(recorded["turn_id"], "019ee427-6a19-7e61-b49c-8cb73e03db88")
         self.assertTrue(recorded["allowed_current_file_transformations"])
         self.assertTrue(manifest["allowed_current_file_transformations"])
+        self.assertEqual(recorded["source_provenance"], "recorded external source")
+        self.assertEqual(recorded["newline_normalization"], "LF-normalized UTF-8 text")
+        self.assertRegex(recorded["recorded_source_sha256"], r"^[0-9a-f]{64}$")
+
+        destination = ROOT / recorded["destination_path"]
+        digest = hashlib.sha256(lf_normalized_utf8(destination)).hexdigest()
+        self.assertEqual(digest, recorded["destination_sha256"])
 
 
 if __name__ == "__main__":

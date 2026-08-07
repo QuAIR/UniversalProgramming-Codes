@@ -23,18 +23,29 @@ sed_in_place() {
     rm -f "${file}.bak"
 }
 
+sed_append_after() {
+    local file=$1
+    local address=$2
+    local text=$3
+    sed_in_place "$file" "${address}a\\
+${text}"
+}
+
+host_to_matlab_path() {
+    local value=$1
+    if command -v cygpath >/dev/null 2>&1; then
+        cygpath -m "$value"
+    elif command -v wslpath >/dev/null 2>&1; then
+        wslpath -m "$value"
+    else
+        printf '%s' "$value"
+    fi
+}
+
 matlab_escape() {
     local value=$1
     value=${value//\\/\\\\}
     value=${value//\"/\\\"}
-    printf '%s' "$value"
-}
-
-sed_replacement_escape() {
-    local value=$1
-    value=${value//\\/\\\\}
-    value=${value//&/\\&}
-    value=${value//|/\\|}
     printf '%s' "$value"
 }
 
@@ -53,7 +64,7 @@ repo_root="$(cd "$script_dir/../../.." && pwd)"
 brute_source="$script_dir/brute.m"
 generated_dir="${UP_RESULTS_ROOT:-$repo_root/results/generated}/legacy/general-d-baseline/generated"
 OUT="$generated_dir/brute_d${D}_k${K}_s${S}_r${SEED}.m"
-fallback_repo_root="$(sed_replacement_escape "$(matlab_escape "$repo_root")")"
+fallback_repo_root="$(matlab_escape "$(host_to_matlab_path "$repo_root")")"
 
 if [[ ! -f "$brute_source" ]]; then
     printf '%s\n' "Missing historical provenance input: $brute_source" >&2
@@ -62,6 +73,6 @@ fi
 
 mkdir -p "$generated_dir"
 sed "s/^d = DVAL; k = 2; s = 500;/d = $D; k = $K; s = $S;/; s/rng(0);/rng($SEED);/" "$brute_source" > "$OUT"
-sed_in_place "$OUT" "1a legacy_repo_root = getenv(\"UP_REPO_ROOT\"); if isempty(legacy_repo_root), legacy_repo_root = \"$fallback_repo_root\"; end; addpath(fullfile(legacy_repo_root, \"src\", \"matlab\")); cfg = up_config(); up_setup(cfg, false);"
-sed_in_place "$OUT" "/^cost = p1 + p2;/a outputDir = fullfile(cfg.resultsRoot, \"legacy\", \"general-d-baseline\"); if exist(outputDir, \"dir\") ~= 7, mkdir(outputDir); end; save(fullfile(outputDir, sprintf(\"brute_d%d_k%d_s%d_r%d.mat\",d,k,s,$SEED)),\"cost\",\"d\",\"k\",\"s\",\"cvx_status\");"
+sed_append_after "$OUT" "1" "legacy_repo_root = getenv(\"UP_REPO_ROOT\"); if isempty(legacy_repo_root), legacy_repo_root = \"$fallback_repo_root\"; end; addpath(fullfile(legacy_repo_root, \"src\", \"matlab\")); cfg = up_config(); up_setup(cfg, false);"
+sed_append_after "$OUT" "/^cost = p1 + p2;/" "outputDir = fullfile(cfg.resultsRoot, \"legacy\", \"general-d-baseline\"); if exist(outputDir, \"dir\") ~= 7, mkdir(outputDir); end; save(fullfile(outputDir, sprintf(\"brute_d%d_k%d_s%d_r%d.mat\",d,k,s,$SEED)),\"cost\",\"d\",\"k\",\"s\",\"cvx_status\");"
 printf '%s\n' "$OUT"
