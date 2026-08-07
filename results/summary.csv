@@ -5,7 +5,7 @@ d,k,gamma,status,method,solver,sample_count,certificate,artifact
 2,4,1.529423,validated,full_space_certified_sdp,cvx-mosek,500,full-space certificate with 200 fresh channels,results/certified/general_d/cert_d2_k4.mat
 2,5,1.350907,validated,nullspace_structured_sdp,cvx-mosek,500,reduced certificate with 50 fresh channels,results/certified/general_d/struct2_d2_k5.mat
 3,1,15.222222,validated,analytic_formula,analytic,0,proved 2d^2-3+2/d^2,
-3,2,7.456450,validated,hilbert_reduced_sdp,cvx-sdpt3,800,stable across fixed and 500/800-sample Hilbert runs,results/diagnostic/historical_results_gamma_d3_k2_s800_r1.mat
+3,2,7.456450,diagnostic,hilbert_reduced_sdp,cvx-sdpt3,800,stable across fixed and 500/800-sample Hilbert runs but no retained residual certificate,results/diagnostic/historical_results_gamma_d3_k2_s800_r1.mat
 3,3,4.882170,validated,nullspace_structured_sdp,cvx-mosek,500,reduced certificate with 50 fresh channels,results/certified/general_d/struct2_d3_k3.mat
 3,4,3.619643,diagnostic,reduced_sdp_cross_check,yalmip-mosek,500,objective completed before wrapper exit 143; CVX agreement; full-space certificate unavailable,legacy/failed-runs/logs/y_d3k4_postsolve_terminated.log
 4,1,29.125000,validated,analytic_formula,analytic,0,proved 2d^2-3+2/d^2,

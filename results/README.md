@@ -21,7 +21,12 @@ it records the current SHA-256, source path and hash, variable names,
 classification, and available numerical, status, and residual fields. Live
 sources also record the snapshot date and the independently verified source
 root. Certified entries contain scalar checks consumed by the MATLAB loader
-test.
+test. The `checks[].tolerance` and `residuals[].tolerance` fields are snapshot
+comparison tolerances: they verify that the MAT value still agrees with the
+manifest and are not feasibility thresholds. Repository-level numerical
+acceptance is stated separately as residual magnitude at most `3e-6` and
+minimum PSD eigenvalue at least `-3e-6`. The MATLAB test evaluates both the
+snapshot match and these acceptance inequalities.
 
 ## MAT schemas
 
@@ -29,7 +34,7 @@ MATLAB `whos('-file', ...)` inspected every retained MAT. The exact d=2 files ha
 
 The full general-d certificates have `cost, d, k, s, cvx_status`, coefficients `b1,b2`, `p1,p2`, eigenvalue/Hermiticity/TP fields, and `fres`. Structured records use the same core fields; reduced-space and YALMIP records instead record `mineig`, `maxnh`, `tpres`, and `fres`. Older gamma and brute records only retain `cost, d, k, s, cvx_status` (and often `method`), so they are not certificates.
 
-The d=2,k=1 formula also has a retained exact d=2 SDP MAT, so that row links to `certified/kcopy_d2/exact_d2_k1.mat`; it remains an analytic value. The other k=1 rows have no historical per-row MAT, so their artifacts are intentionally blank. The d=2,k=2 row uses the retained exact d=2 MAT while its certificate text records the independent Hilbert checks and the brute-force evidence in `results/logs/brute_d2_k2.log`. The d=3,k=2 row points to the 800-sample diagnostic MAT and is supported by its fixed and 500-sample repeats. The d=3,k=4 objective and status were printed before both historical wrappers exited with code 143, but neither completed its certificate stage. Those logs are therefore classified as post-solve terminations under `legacy/failed-runs/logs`; the summary remains diagnostic.
+The d=2,k=1 formula also has a retained exact d=2 SDP MAT, so that row links to `certified/kcopy_d2/exact_d2_k1.mat`; it remains an analytic value. The other k=1 rows have no historical per-row MAT, so their artifacts are intentionally blank. The d=2,k=2 row uses the retained exact d=2 MAT while its certificate text records the independent Hilbert checks and the brute-force evidence in `results/logs/brute_d2_k2.log`. The d=3,k=2 row points to the 800-sample diagnostic MAT and is supported by its fixed and 500-sample repeats, but it remains diagnostic because none of those files contains residual fields. The d=3,k=4 objective and status were printed before both historical wrappers exited with code 143, but neither completed its certificate stage. Those logs are therefore classified as post-solve terminations under `legacy/failed-runs/logs`; the summary remains diagnostic.
 
 The aggregate exact d=2 MAT was copied from source commit `4512790` and differs only in four `opts` path strings, which were replaced by neutral placeholders. The source file and source-commit Git blob agree, but their actual SHA-256 is `7c6a54ad675fe91986516cebe9edb37f0023250e19052eecb8df0cab3dff2002`, not the previously reported `7c6a54ad675fe91986516cebe9edb37f0023250e19052eecb8df0f6241ae3e3`. The exact fields and both hashes are recorded in `mat-artifacts.json`.
 
@@ -44,7 +49,7 @@ and residuals below `3e-6`. The solver transcript also contains a
 `linsysolve` NaN/Inf warning, and the value differs from the canonical
 structured result `1.350907061612`. It is therefore only a diagnostic
 numerical candidate: its sampled constraints and checks on 50 fresh channels
-pass at the recorded residual tolerances, but these finite checks do not
+have recorded residual magnitudes below `3e-6`, but these finite checks do not
 certify feasibility for every CPTP map. It is neither a rigorously certified
 all-CPTP feasible point nor an optimum.
 

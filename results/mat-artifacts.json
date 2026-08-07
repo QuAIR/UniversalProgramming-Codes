@@ -1,5 +1,17 @@
 {
-    "schema_version":  1,
+    "schema_version":  2,
+    "snapshot_tolerance_note":  "The tolerance fields under checks and residuals compare the retained MAT value with this manifest snapshot; they are not feasibility tolerances. Numerical acceptance uses the separate criteria below.",
+    "numerical_acceptance":  {
+                                  "scope":  "Repository-level acceptance of retained numerical certificates; finite fresh-channel tests are not symbolic all-CPTP proofs.",
+                                  "maximum_residual":  3E-6,
+                                  "minimum_psd_eigenvalue":  -3E-6,
+                                  "psd_metrics":  [
+                                                      "e1",
+                                                      "e2",
+                                                      "mineig",
+                                                      "info.minEig"
+                                                  ]
+                              },
     "source_commit":  "4512790",
     "artifact_count":  44,
     "artifacts":  [

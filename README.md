@@ -97,9 +97,9 @@ preserve `sample_count=500` and `certFresh=50`.
 ## Canonical numerical results
 
 This table is checked against [`results/summary.csv`](results/summary.csv),
-which is the machine-readable source of record. `d=3,k=4` remains diagnostic;
-all other listed rows are classified as validated under the checks stated in
-the [experiment manifest](docs/experiment-manifest.md).
+which is the machine-readable source of record. `d=3,k=2` and `d=3,k=4`
+remain diagnostic; all other listed rows are classified as validated under the
+checks stated in the [experiment manifest](docs/experiment-manifest.md).
 
 <!-- canonical-summary:start -->
 | d | k | gamma | status |
@@ -110,7 +110,7 @@ the [experiment manifest](docs/experiment-manifest.md).
 | 2 | 4 | 1.529423 | validated |
 | 2 | 5 | 1.350907 | validated |
 | 3 | 1 | 15.222222 | validated |
-| 3 | 2 | 7.456450 | validated |
+| 3 | 2 | 7.456450 | diagnostic |
 | 3 | 3 | 4.882170 | validated |
 | 3 | 4 | 3.619643 | diagnostic |
 | 4 | 1 | 29.125000 | validated |
@@ -137,6 +137,11 @@ python -m unittest discover -s tests/python -p "test_*.py"
 python tools/verify_repository.py
 ```
 
+The static verifier scans JSON as well as source and documentation, checks the
+MAT inventory hashes and declared schemas, and cross-checks MAT-backed summary
+rows. MATLAB performs the actual variable-level schema and numerical residual
+checks.
+
 MATLAB evidence and configuration checks load retained files but do not solve
 the large SDPs:
 
@@ -154,6 +159,8 @@ run('tests/matlab/test_quair06_evidence.m')
 The quair06 trees were reconciled read-only on 2026-08-07: 57 files from the
 qubit tree and 148 from the general-`d` tree, for 205 files total and zero
 source SHA-256 mismatches. No remote job was started, stopped, or modified.
+Remote modification times were captured read-only on 2026-08-08 and normalized
+to UTC after access was restored; the source hashes remained unchanged.
 See the [live inventory](docs/provenance/quair06-live-inventory.json), the
 [artifact manifest](results/mat-artifacts.json), and the
 [provenance notes](docs/provenance/README.md).

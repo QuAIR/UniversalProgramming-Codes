@@ -386,7 +386,7 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "hilbert_reduced_sdp",
             "cvx-sdpt3",
             "800",
-            "validated",
+            "diagnostic",
             "results/diagnostic/historical_results_gamma_d3_k2_s800_r1.mat",
         ),
         ("3", "3"): (
@@ -587,14 +587,18 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "dimensions": ("`d=2,3`", "`k=1,2,3`"),
             "solver": ("MATLAB, CVX, QETLAB", "usually SDPT3"),
             "samples": ("`300`, `500`, or `800`",),
-            "entries": ("../legacy/general-d-baseline", "../legacy/failed-runs"),
+            "entries": (
+                "../legacy/general-d-baseline",
+                "../legacy/failed-runs",
+                "../legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d3_k2_s800_r1.m",
+            ),
             "outputs": (
                 "../results/logs/brute_d2_k2.log",
                 "../results/diagnostic/historical_results_gamma_d3_k2_s800_r1.mat",
                 "../results/diagnostic/historical_results_brute_d2_k3_s300_r0.mat",
                 "../results/mat-artifacts.json",
             ),
-            "limitations": ("do not define rows in `results/summary.csv`",),
+            "limitations": ("canonical `d=3,k=2` row remains diagnostic",),
         },
         "UP-D2-LINEAR-RELAXATION": {
             "status": "legacy",

@@ -14,6 +14,11 @@ canonical numerical rows. Files under `results/diagnostic` are cross-checks or
 historical evidence unless a canonical row explicitly cites one. The complete
 MAT-level hashes and schemas are in
 [`results/mat-artifacts.json`](../results/mat-artifacts.json).
+For certified numerical artifacts, repository acceptance means residual
+magnitude at most `3e-6` and minimum PSD eigenvalue at least `-3e-6`.
+Snapshot-comparison tolerances in the artifact manifest serve a different
+purpose and are not feasibility thresholds. Finite fresh-channel checks remain
+numerical evidence rather than a symbolic all-CPTP proof.
 
 ## UP-ANALYTIC-K1
 
@@ -103,13 +108,13 @@ MAT-level hashes and schemas are in
 
 - **Status:** `diagnostic`
 - **Dimensions and copy counts:** Brute and Hilbert checks for `d=2,3`, mainly `k=1,2,3`; under-sampled probes include `d=2,k=3,s=300`.
-- **Entry script:** Historical wrappers archived under [`legacy/general-d-baseline`](../legacy/general-d-baseline) and [`legacy/failed-runs`](../legacy/failed-runs); there is no supported aggregate launcher.
+- **Entry script:** Historical wrappers archived under [`legacy/general-d-baseline`](../legacy/general-d-baseline) and [`legacy/failed-runs`](../legacy/failed-runs); there is no supported aggregate launcher. The parameter-specific source of the retained `d=3,k=2,s=800` row is [`gamma_run_d3_k2_s800_r1.m`](../legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d3_k2_s800_r1.m).
 - **Dependencies and solver:** Historical MATLAB, CVX, QETLAB, usually SDPT3.
 - **Sample count:** `300`, `500`, or `800`, as encoded in the filename and MAT record.
 - **Output artifacts:** [`results/logs/brute_d2_k2.log`](../results/logs/brute_d2_k2.log), [`historical_results_gamma_d3_k2_s800_r1.mat`](../results/diagnostic/historical_results_gamma_d3_k2_s800_r1.mat), and [`historical_results_brute_d2_k3_s300_r0.mat`](../results/diagnostic/historical_results_brute_d2_k3_s300_r0.mat). The full set is indexed by [`results/mat-artifacts.json`](../results/mat-artifacts.json).
 - **Certificate or residual checks:** Agreement of repeated objectives or solver status where recorded; these artifacts generally lack the full certificate fields.
 - **Historical source:** Source commit `45127901a920384c3f4ec56f0ecfe15b78028d0a` and historical server logs.
-- **Known limitations:** Under-sampled, brute, and Hilbert files are cross-check evidence. Except for the explicit canonical `d=3,k=2` artifact, they do not define rows in `results/summary.csv`.
+- **Known limitations:** Under-sampled, brute, and Hilbert files are cross-check evidence. The canonical `d=3,k=2` row remains diagnostic because repeated objectives agree but the retained files contain no residual certificate. The other files do not define rows in `results/summary.csv`.
 
 ## UP-D2-LINEAR-RELAXATION
 

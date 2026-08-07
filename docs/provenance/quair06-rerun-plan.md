@@ -5,6 +5,8 @@ files in the qubit tree and 148 files in the general-d tree matched the local
 snapshot source hashes, for 205 files and zero SHA-256 mismatches. No remote
 job was started, stopped, or modified. The per-file record is
 [`quair06-live-inventory.json`](quair06-live-inventory.json).
+Remote modification times were captured separately and read-only on
+2026-08-08 after access was restored; the file hashes remained unchanged.
 
 The reconciliation recovered a completed exact-qubit `k=5` saved-block file
 and a `k=5,6` checkpoint. The former is classified only as a diagnostic

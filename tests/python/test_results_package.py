@@ -69,14 +69,7 @@ EXPECTED_COSTS = {
     (4, 4): "7.003853", (5, 1): "47.080000", (5, 2): "23.324402",
     (5, 3): "15.410364",
 }
-EXPECTED_FIGURE_NU = {
-    (2, 1): "5.5000", (2, 2): "2.7133", (2, 3): "1.8883",
-    (2, 4): "1.5294", (2, 5): "1.3509", (3, 1): "15.222",
-    (3, 2): "7.4565", (3, 3): "4.8822", (3, 4): "3.6197",
-    (4, 1): "29.125", (4, 2): "14.3662", (4, 3): "9.4538",
-    (4, 4): "7.0039", (5, 1): "47.080", (5, 2): "23.3244",
-    (5, 3): "15.4104",
-}
+EXPECTED_DIAGNOSTIC_ROWS = {(3, 2), (3, 4)}
 
 
 class ResultsPackageTest(unittest.TestCase):
@@ -120,7 +113,8 @@ class ResultsPackageTest(unittest.TestCase):
                 self.assertEqual(artifact, "", key)
             else:
                 self.assertTrue((ROOT / artifact).is_file(), (key, artifact))
-        self.assertEqual(actual[(3, 4)]["status"], "diagnostic")
+        for key in EXPECTED_DIAGNOSTIC_ROWS:
+            self.assertEqual(actual[key]["status"], "diagnostic")
         self.assertEqual(
             actual[(2, 2)]["artifact"], "results/certified/kcopy_d2/exact_d2_k2.mat"
         )
@@ -135,8 +129,16 @@ class ResultsPackageTest(unittest.TestCase):
 
     def test_manifest_covers_and_hashes_every_mat_artifact(self):
         manifest = self._manifest()
-        self.assertEqual(manifest["schema_version"], 1)
+        self.assertEqual(manifest["schema_version"], 2)
         self.assertEqual(manifest["source_commit"], "4512790")
+        acceptance = manifest["numerical_acceptance"]
+        self.assertEqual(acceptance["maximum_residual"], 3e-6)
+        self.assertEqual(acceptance["minimum_psd_eigenvalue"], -3e-6)
+        self.assertEqual(
+            set(acceptance["psd_metrics"]),
+            {"e1", "e2", "mineig", "info.minEig"},
+        )
+        self.assertIn("not feasibility", manifest["snapshot_tolerance_note"])
         artifacts = manifest["artifacts"]
         self.assertEqual(manifest["artifact_count"], 44)
         self.assertEqual(len(artifacts), 44)
@@ -166,6 +168,21 @@ class ResultsPackageTest(unittest.TestCase):
             if entry["classification"] == "certified":
                 self.assertTrue(entry["checks"], relative_path)
                 self.assertTrue(entry["residuals"], relative_path)
+                for residual in entry["residuals"]:
+                    metric = residual["matlab_path"]
+                    value = residual["value"]
+                    if metric in acceptance["psd_metrics"]:
+                        self.assertGreaterEqual(
+                            value,
+                            acceptance["minimum_psd_eigenvalue"],
+                            (relative_path, metric),
+                        )
+                    else:
+                        self.assertLessEqual(
+                            abs(value),
+                            acceptance["maximum_residual"],
+                            (relative_path, metric),
+                        )
 
     def test_summary_mat_rows_link_to_manifest_values(self):
         by_path = {entry["path"]: entry for entry in self._manifest()["artifacts"]}
@@ -295,7 +312,15 @@ class ResultsPackageTest(unittest.TestCase):
         )
         self.assertEqual(
             {(int(row["d"]), int(row["k"])): row["nu"] for row in rows},
-            EXPECTED_FIGURE_NU,
+            EXPECTED_COSTS,
+        )
+        self.assertEqual(
+            {
+                (int(row["d"]), int(row["k"]))
+                for row in rows
+                if row["status"] == "diagnostic"
+            },
+            EXPECTED_DIAGNOSTIC_ROWS,
         )
         if importlib.util.find_spec("matplotlib") is None:
             self.skipTest("matplotlib is not available in the configured Python runtime")
@@ -311,6 +336,8 @@ class ResultsPackageTest(unittest.TestCase):
             )
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertTrue((output_dir / "fig3_kcopy_decay.png").is_file())
+            svg = (output_dir / "fig3_kcopy_decay.svg").read_text(encoding="utf-8")
+            self.assertIn("diagnostic numerical point", svg)
 
 
 if __name__ == "__main__":

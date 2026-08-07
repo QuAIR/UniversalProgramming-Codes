@@ -97,9 +97,12 @@ batch writes:
 - a MATLAB diary log.
 
 A restarted batch skips a row only when the partial table marks it complete
-and the corresponding per-`k` result exists with validated solver data. An
-inconsistent saved result causes an error. The runners do not recursively
-delete an output tree, but reuse of the same root is not archival: a launcher
+and the corresponding per-`k` result passes the metadata and content checks.
+The resume guard matches `d`, `k`, objective, positive and negative weights,
+solver status, `sampleCount=500`, `certFresh=50`, required block variables,
+and the `3e-6` numerical residual threshold. An inconsistent, stale, or corrupt
+saved result causes an error. The runners do not recursively delete an output
+tree, but reuse of the same root is not archival: a launcher
 truncates its fixed `.nohup` log through shell redirection and replaces its PID
 file, while MATLAB may rewrite partial/final MAT and CSV files, diary logs,
 per-`k` results, and failed-row state. Set a new `UP_RESULTS_ROOT` before each

@@ -212,6 +212,7 @@ info.pminus = p2;
 info.status = cvx_status;
 info.solveTime = solveTime;
 info.sampleCount = opts.s;
+info.certFresh = opts.certFresh;
 info.progRows = progRows;
 info.tpRows = size(TPb, 1);
 info.hermDim = nn;

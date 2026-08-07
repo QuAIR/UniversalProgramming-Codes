@@ -46,8 +46,8 @@ PALETTE = {
 }
 
 
-def load_rows() -> list[dict[str, float]]:
-    rows: list[dict[str, float]] = []
+def load_rows() -> list[dict[str, float | str]]:
+    rows: list[dict[str, float | str]] = []
     with DATA.open(newline="") as handle:
         for row in csv.DictReader(handle):
             rows.append(
@@ -55,6 +55,7 @@ def load_rows() -> list[dict[str, float]]:
                     "d": float(row["d"]),
                     "k": float(row["k"]),
                     "nu": float(row["nu"]),
+                    "status": row["status"],
                 }
             )
     return rows
@@ -86,20 +87,44 @@ def main() -> None:
         subset = sorted((r for r in rows if int(r["d"]) == d), key=lambda r: r["k"])
         ks = np.array([r["k"] for r in subset])
         nus = np.array([r["nu"] for r in subset])
+        validated = [r for r in subset if r["status"] == "validated"]
+        diagnostic = [r for r in subset if r["status"] == "diagnostic"]
+        fit_ks = np.array([r["k"] for r in validated])
+        fit_nus = np.array([r["nu"] for r in validated])
         color = PALETTE[d]
-        fit_a, fit_b = fit_inverse_k(ks, nus)
+        fit_a, fit_b = fit_inverse_k(fit_ks, fit_nus)
 
         ax.plot(
             ks,
             nus,
+            color=color,
+            zorder=2,
+        )
+        ax.plot(
+            fit_ks,
+            fit_nus,
             marker="o",
             markersize=5.1,
             color=color,
             markerfacecolor=color,
             markeredgecolor="white",
             markeredgewidth=0.55,
+            linestyle="None",
             zorder=3,
         )
+        if diagnostic:
+            ax.plot(
+                [r["k"] for r in diagnostic],
+                [r["nu"] for r in diagnostic],
+                marker="D",
+                markersize=5.0,
+                color=color,
+                markerfacecolor="white",
+                markeredgecolor=color,
+                markeredgewidth=0.9,
+                linestyle="None",
+                zorder=4,
+            )
 
         if max(ks) < 5:
             fit_k = np.linspace(max(ks), 5.0, 80)
@@ -147,6 +172,17 @@ def main() -> None:
         linewidth=1.0,
         label="physical limit",
     )
+    diagnostic_handle = Line2D(
+        [0],
+        [0],
+        color="#4A4A4A",
+        marker="D",
+        markersize=4.8,
+        markerfacecolor="white",
+        markeredgecolor="#4A4A4A",
+        linestyle="None",
+        label="diagnostic numerical point",
+    )
 
     ax.set_xlim(0.8, 5.2)
     ax.set_ylim(0.0, 51.0)
@@ -170,7 +206,7 @@ def main() -> None:
     )
     ax.add_artist(dim_legend)
     ax.legend(
-        handles=[limit_handle],
+        handles=[limit_handle, diagnostic_handle],
         loc="upper right",
         bbox_to_anchor=(0.992, 0.735),
         handlelength=1.45,

@@ -2,6 +2,10 @@ root = fileparts(fileparts(fileparts(mfilename('fullpath'))));
 manifest = jsondecode(fileread(fullfile(root, 'results', 'mat-artifacts.json')));
 artifacts = manifest.artifacts;
 assert(manifest.artifact_count == numel(artifacts));
+assert(manifest.schema_version == 2);
+assert(manifest.numerical_acceptance.maximum_residual == 3e-6);
+assert(manifest.numerical_acceptance.minimum_psd_eigenvalue == -3e-6);
+psdMetrics = string(manifest.numerical_acceptance.psd_metrics);
 
 for i = 1:numel(artifacts)
     if iscell(artifacts)
@@ -23,6 +27,29 @@ for i = 1:numel(artifacts)
     if strcmp(artifact.classification, 'certified')
         assert(isfield(artifact, 'checks') && ~isempty(artifact.checks), ...
             'Certified artifact lacks checks: %s', artifact.path);
+        assert(isfield(artifact, 'residuals') && ~isempty(artifact.residuals), ...
+            'Certified artifact lacks residuals: %s', artifact.path);
+        for j = 1:numel(artifact.residuals)
+            if iscell(artifact.residuals)
+                residual = artifact.residuals{j};
+            else
+                residual = artifact.residuals(j);
+            end
+            actual = get_nested_field(data, residual.matlab_path);
+            assert(isnumeric(actual) && isscalar(actual) && isfinite(actual));
+            assert(abs(double(actual) - double(residual.value)) <= residual.tolerance, ...
+                'Residual snapshot mismatch for %s:%s', ...
+                artifact.path, residual.matlab_path);
+            if any(psdMetrics == string(residual.matlab_path))
+                assert(actual >= manifest.numerical_acceptance.minimum_psd_eigenvalue, ...
+                    'PSD acceptance failure for %s:%s', ...
+                    artifact.path, residual.matlab_path);
+            else
+                assert(abs(actual) <= manifest.numerical_acceptance.maximum_residual, ...
+                    'Residual acceptance failure for %s:%s', ...
+                    artifact.path, residual.matlab_path);
+            end
+        end
     end
 
     if isfield(artifact, 'checks') && ~isempty(artifact.checks)

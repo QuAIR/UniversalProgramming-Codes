@@ -1,11 +1,15 @@
 """Static checks for the public experiment-code repository."""
 
 import csv
+import hashlib
+import json
 from pathlib import Path
 import re
 
 
-TEXT_SUFFIXES = {".csv", ".log", ".m", ".md", ".py", ".sh", ".tex", ".txt", ".tsv"}
+TEXT_SUFFIXES = {
+    ".csv", ".json", ".log", ".m", ".md", ".py", ".sh", ".tex", ".txt", ".tsv"
+}
 REQUIRED_SUMMARY_COLUMNS = [
     "d", "k", "gamma", "status", "method", "solver",
     "sample_count", "certificate", "artifact",
@@ -19,6 +23,7 @@ REQUIRED_FILES = (
     "experiments/quair06/kcopy_d2/run_exact_k56.m",
     "docs/experiment-manifest.md",
     "legacy/README.md",
+    "results/mat-artifacts.json",
     "results/summary.csv",
 )
 EXACT_RUNNERS = (
@@ -88,7 +93,73 @@ def _validate_sensitive_text(root: Path, errors: list[str]) -> None:
             errors.append(f"{relative}: contains private-key marker")
 
 
-def _validate_summary(root: Path, errors: list[str]) -> None:
+def _validate_mat_manifest(root: Path, errors: list[str]) -> dict[str, dict]:
+    manifest_path = root / "results/mat-artifacts.json"
+    if not manifest_path.is_file():
+        return {}
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        errors.append(f"results/mat-artifacts.json: cannot parse manifest: {exc}")
+        return {}
+
+    artifacts = manifest.get("artifacts")
+    if not isinstance(artifacts, list):
+        errors.append("results/mat-artifacts.json: artifacts must be a list")
+        return {}
+    if manifest.get("artifact_count") != len(artifacts):
+        errors.append("results/mat-artifacts.json: artifact_count mismatch")
+
+    by_path = {}
+    for entry in artifacts:
+        if not isinstance(entry, dict) or not isinstance(entry.get("path"), str):
+            errors.append("results/mat-artifacts.json: artifact entry lacks a path")
+            continue
+        relative = entry["path"]
+        relative_path = Path(relative)
+        if (
+            "\\" in relative
+            or relative_path.is_absolute()
+            or ".." in relative_path.parts
+            or relative_path.parts[:1] != ("results",)
+            or relative_path.suffix.lower() != ".mat"
+        ):
+            errors.append(f"results/mat-artifacts.json: invalid artifact path {relative}")
+            continue
+        if relative in by_path:
+            errors.append(f"results/mat-artifacts.json: duplicate artifact {relative}")
+            continue
+        by_path[relative] = entry
+        path = root / relative
+        if not path.is_file():
+            errors.append(f"{relative}: artifact listed in manifest is missing")
+            continue
+        expected_digest = entry.get("current_sha256")
+        actual_digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        if expected_digest != actual_digest:
+            errors.append(f"{relative}: SHA-256 does not match mat-artifacts.json")
+        variables = entry.get("variables")
+        if not isinstance(variables, list) or not variables:
+            errors.append(f"{relative}: artifact manifest has no variables")
+        if entry.get("classification") not in {"certified", "diagnostic"}:
+            errors.append(f"{relative}: invalid artifact classification")
+
+    actual_mats = {
+        path.relative_to(root).as_posix()
+        for path in (root / "results").rglob("*.mat")
+        if path.is_file()
+    }
+    for relative in sorted(actual_mats - set(by_path)):
+        errors.append(f"{relative}: MAT artifact is absent from mat-artifacts.json")
+    for relative in sorted(set(by_path) - actual_mats):
+        if (root / relative).is_file():
+            errors.append(f"{relative}: manifest entry is not a results MAT artifact")
+    return by_path
+
+
+def _validate_summary(
+    root: Path, errors: list[str], mat_artifacts: dict[str, dict]
+) -> None:
     summary = root / "results/summary.csv"
     if not summary.is_file():
         return
@@ -109,6 +180,44 @@ def _validate_summary(root: Path, errors: list[str]) -> None:
                 errors.append(
                     f"results/summary.csv:{line_number}: missing artifact {artifact}"
                 )
+            if not artifact.endswith(".mat"):
+                continue
+            entry = mat_artifacts.get(artifact)
+            if entry is None:
+                errors.append(
+                    f"results/summary.csv:{line_number}: MAT artifact is absent "
+                    "from mat-artifacts.json"
+                )
+                continue
+            if status == "validated" and entry.get("classification") != "certified":
+                errors.append(
+                    f"results/summary.csv:{line_number}: validated row references "
+                    "diagnostic MAT artifact"
+                )
+            evidence = entry.get("evidence", {})
+            expected = {
+                "d": row["d"],
+                "k": row["k"],
+                "cost": row["gamma"],
+                "sample_count": row["sample_count"],
+            }
+            for field, text_value in expected.items():
+                if field not in evidence:
+                    errors.append(
+                        f"results/summary.csv:{line_number}: MAT evidence lacks {field}"
+                    )
+                    continue
+                try:
+                    if field in {"d", "k", "sample_count"}:
+                        matches = int(evidence[field]) == int(text_value)
+                    else:
+                        matches = abs(float(evidence[field]) - float(text_value)) <= 1e-5
+                except (TypeError, ValueError):
+                    matches = False
+                if not matches:
+                    errors.append(
+                        f"results/summary.csv:{line_number}: MAT evidence {field} mismatch"
+                    )
 
 
 def _validate_exact_runners(root: Path, errors: list[str]) -> None:
@@ -194,7 +303,8 @@ def validate_repository(root: Path) -> list[str]:
         if not (root / relative).is_file():
             errors.append(f"missing required file: {relative}")
     _validate_sensitive_text(root, errors)
-    _validate_summary(root, errors)
+    mat_artifacts = _validate_mat_manifest(root, errors)
+    _validate_summary(root, errors, mat_artifacts)
     _validate_exact_runners(root, errors)
     _validate_linear_relaxation_documentation(root, errors)
     return errors

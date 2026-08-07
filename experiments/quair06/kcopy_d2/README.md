@@ -11,7 +11,9 @@ covers `k=5,6` and records the historical memory preflight values.
 All output is rooted at `cfg.resultsRoot`, which defaults to
 `results/generated`. Each batch creates a per-`k` MAT file under `per_k/`,
 saves a partial MAT and CSV summary after each completed value, and can resume
-from that partial summary when its corresponding per-`k` result file exists.
+from that partial summary only when the corresponding per-`k` result passes
+the saved metadata, block-field, 500/50-sample, status, objective, and residual
+checks. A merely existing MAT file is not accepted as completed work.
 
 Run a foreground batch through the matching shell wrapper:
 

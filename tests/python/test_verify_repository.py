@@ -1,3 +1,5 @@
+import hashlib
+import json
 from pathlib import Path
 import tempfile
 import sys
@@ -26,6 +28,29 @@ class RepositoryVerifierTest(unittest.TestCase):
         artifact = root / "results/certified/example.mat"
         artifact.parent.mkdir(parents=True, exist_ok=True)
         artifact.write_bytes(b"MAT")
+        (root / "results/mat-artifacts.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": 2,
+                    "artifact_count": 1,
+                    "artifacts": [
+                        {
+                            "path": "results/certified/example.mat",
+                            "classification": "certified",
+                            "current_sha256": hashlib.sha256(b"MAT").hexdigest(),
+                            "variables": ["cost"],
+                            "evidence": {
+                                "d": 2,
+                                "k": 1,
+                                "cost": 5.5,
+                                "sample_count": 500,
+                            },
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
         (root / "results/summary.csv").write_text(
             "d,k,gamma,status,method,solver,sample_count,certificate,artifact\n"
             "2,1,5.5,validated,exact,sdpt3,500,baseline,results/certified/example.mat\n",
@@ -50,6 +75,68 @@ class RepositoryVerifierTest(unittest.TestCase):
                 "/home/" + "example/matlab_codes/cvx\n", encoding="utf-8"
             )
             self.assertTrue(validate_repository(root))
+
+    def test_sensitive_path_inside_json_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            path = root / "docs/provenance/example.json"
+            path.parent.mkdir(parents=True)
+            path.write_text(
+                json.dumps({"source": "/home/" + "alice/private-result.mat"}),
+                encoding="utf-8",
+            )
+            self.assertIn(
+                f"{Path('docs/provenance/example.json')}: contains personal home path",
+                validate_repository(root),
+            )
+
+    def test_mat_manifest_hash_and_schema_contract_fail_when_tampered(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            manifest_path = root / "results/mat-artifacts.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["artifacts"][0]["current_sha256"] = "0" * 64
+            manifest["artifacts"][0]["variables"] = []
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            errors = validate_repository(root)
+            self.assertIn(
+                "results/certified/example.mat: SHA-256 does not match mat-artifacts.json",
+                errors,
+            )
+            self.assertIn(
+                "results/certified/example.mat: artifact manifest has no variables",
+                errors,
+            )
+
+    def test_validated_summary_row_rejects_diagnostic_mat(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            manifest_path = root / "results/mat-artifacts.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["artifacts"][0]["classification"] = "diagnostic"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            self.assertIn(
+                "results/summary.csv:2: validated row references diagnostic MAT artifact",
+                validate_repository(root),
+            )
+
+    def test_mat_manifest_rejects_path_outside_results(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "repository"
+            self.make_fixture(root)
+            outside = Path(tmp) / "outside.mat"
+            outside.write_bytes(b"MAT")
+            manifest_path = root / "results/mat-artifacts.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["artifacts"][0]["path"] = "../outside.mat"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            self.assertIn(
+                "results/mat-artifacts.json: invalid artifact path ../outside.mat",
+                validate_repository(root),
+            )
 
     def test_invalid_summary_columns_fail(self):
         with tempfile.TemporaryDirectory() as tmp:

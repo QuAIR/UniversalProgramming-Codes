@@ -1,6 +1,7 @@
 """Checks for the read-only 2026-08-07 quair06 reconciliation."""
 
 import csv
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
@@ -39,12 +40,15 @@ class Quair06ReconciliationTest(unittest.TestCase):
 
     def test_inventory_covers_the_two_verified_live_roots(self):
         inventory = self._inventory()
+        self.assertEqual(inventory["schema_version"], 2)
         self.assertEqual(inventory["reconciliation_date"], "2026-08-07")
+        self.assertEqual(inventory["mtime_capture_date"], "2026-08-08")
         self.assertEqual(inventory["file_count"], 205)
         self.assertEqual(inventory["roots"], {"primary": 57, "pqga-full": 148})
         self.assertEqual(inventory["live_hash_mismatches"], 0)
         self.assertTrue(inventory["read_only"])
         self.assertFalse(inventory["job_running_or_started"])
+        self.assertIn("captured directly", inventory["remote_mtime_note"].lower())
         entries = inventory["files"]
         self.assertEqual(len(entries), 205)
         keys = {(entry["source_root"], entry["relative_path"]) for entry in entries}
@@ -52,6 +56,10 @@ class Quair06ReconciliationTest(unittest.TestCase):
         for entry in entries:
             self.assertRegex(entry["source_sha256"], r"^[0-9a-f]{64}$")
             self.assertGreaterEqual(entry["bytes"], 0)
+            modified = datetime.fromisoformat(
+                entry["source_mtime_utc"].replace("Z", "+00:00")
+            )
+            self.assertEqual(modified.tzinfo, timezone.utc)
             self.assertIn("disposition", entry)
             self.assertIn("reason", entry)
             target = entry.get("local_target")

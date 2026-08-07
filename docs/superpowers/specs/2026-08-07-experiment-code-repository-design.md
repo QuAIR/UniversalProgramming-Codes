@@ -168,6 +168,11 @@ remains unreachable, the repository is published from the recovered Git
 objects and downloaded server artifacts, and the final report states that a
 live remote reconciliation could not be completed.
 
+The completed reconciliation followed that policy. Hashes and contents were
+checked read-only on 2026-08-07. Because the first local copies lacked metadata,
+modification times were subsequently read directly from the unchanged live
+trees on 2026-08-08 and normalized to UTC in the inventory.
+
 ## Error Handling
 
 Run scripts fail early when MATLAB, CVX, QETLAB, or the selected solver is
@@ -177,8 +182,11 @@ Configuration errors identify the missing path or dependency without
 modifying source files.
 
 Repository verification fails if it finds personal absolute paths, an exact
-runner invoking the linear relaxation, missing manifest targets, or result
-files lacking their required variables.
+runner invoking the linear relaxation, missing manifest targets, MAT hash or
+coverage mismatches, or a validated summary row backed only by diagnostic
+evidence. The dependency-light Python verifier checks declared MAT schemas;
+`tests/matlab/test_result_artifacts.m` loads the files and checks their actual
+variables, retained values, and numerical acceptance inequalities.
 
 ## Publication
 
