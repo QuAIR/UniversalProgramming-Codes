@@ -57,6 +57,42 @@ class SupportedSourceTest(unittest.TestCase):
         ):
             self.assertIn(identifier, setup)
 
+    def test_general_d_snapshots_use_portable_setup_and_result_roots(self):
+        matlab_files = {
+            "experiments/quair06/general_d/cert_d2_k3.m": (False, True),
+            "experiments/quair06/general_d/cert_d2_k4.m": (False, True),
+            "experiments/quair06/general_d/cert_d4_k2.m": (False, True),
+            "experiments/quair06/general_d/cert_d5_k2.m": (False, True),
+            "experiments/quair06/general_d/gamma_struct3.m": (False, True),
+            "experiments/quair06/general_d/gamma_y3.m": (True, True),
+            "experiments/quair06/general_d/validate_fastP.m": (False, False),
+            "experiments/quair06/general_d/diagnostics/gamma_struct.m": (False, True),
+            "experiments/quair06/general_d/diagnostics/gamma_struct2.m": (False, True),
+            "experiments/quair06/general_d/diagnostics/gamma_y.m": (True, True),
+            "experiments/quair06/general_d/diagnostics/probe_d4k4.m": (False, False),
+        }
+        for relative, (requires_yalmip, saves_result) in matlab_files.items():
+            path = ROOT / relative
+            self.assertTrue(path.is_file(), relative)
+            if not path.is_file():
+                continue
+            source = path.read_text(encoding="ascii")
+            self.assertIn("addpath(fullfile(repoRoot, 'src', 'matlab'));", source)
+            self.assertIn("cfg = up_config();", source)
+            self.assertIn(
+                f"up_setup(cfg, {'true' if requires_yalmip else 'false'});", source
+            )
+            if saves_result:
+                self.assertIn("cfg.resultsRoot", source)
+            self.assertNotIn("/usr/local/", source)
+
+        cert = (ROOT / "experiments/quair06/general_d/cert_d2_k3.m").read_text(
+            encoding="ascii"
+        )
+        self.assertIn("cvx_solver mosek", cert)
+        self.assertIn("s=500;", cert)
+        self.assertIn("rng(0);", cert)
+
 
 if __name__ == "__main__":
     unittest.main()
