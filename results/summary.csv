@@ -1,0 +1,17 @@
+d,k,gamma,status,method,solver,sample_count,certificate,artifact
+2,1,5.500000,validated,analytic_formula_exact_sdp_check,cvx-sdpt3,500,proved formula plus retained exact d=2 SDP record,results/certified/kcopy_d2/exact_d2_k1.mat
+2,2,2.713330,validated,exact_reduced_sdp,cvx-sdpt3,500,retained exact d=2 record; three Hilbert runs plus brute cross-check,results/certified/kcopy_d2/exact_d2_k2.mat
+2,3,1.888291,validated,exact_reduced_sdp,cvx-sdpt3,500,full-space certificate with 200 fresh channels,results/certified/general_d/cert_d2_k3.mat
+2,4,1.529423,validated,exact_reduced_sdp,cvx-sdpt3,500,full-space certificate with 200 fresh channels,results/certified/general_d/cert_d2_k4.mat
+2,5,1.350907,validated,nullspace_structured_sdp,cvx-mosek,500,reduced certificate with 50 fresh channels,results/certified/general_d/struct2_d2_k5.mat
+3,1,15.222222,validated,analytic_formula,analytic,0,proved 2d^2-3+2/d^2,
+3,2,7.456450,validated,hilbert_reduced_sdp,cvx-sdpt3,800,stable across fixed and 500/800-sample Hilbert runs,results/diagnostic/historical_results_gamma_d3_k2_s800_r1.mat
+3,3,4.882170,validated,nullspace_structured_sdp,cvx-mosek,500,reduced certificate with 50 fresh channels,results/certified/general_d/struct2_d3_k3.mat
+3,4,3.619643,diagnostic,reduced_sdp_cross_check,yalmip-mosek,500,YALMIP-MOSEK and CVX agreement; full-space certificate unavailable,results/logs/y_d3k4.log
+4,1,29.125000,validated,analytic_formula,analytic,0,proved 2d^2-3+2/d^2,
+4,2,14.366215,validated,exact_reduced_sdp,cvx-mosek,500,full certificate with 50 fresh channels,results/certified/general_d/cert_d4_k2.mat
+4,3,9.453850,validated,reduced_space_structured_sdp,cvx-mosek,500,reduced certificate with 50 fresh channels,results/certified/general_d/struct3_d4_k3.mat
+4,4,7.003853,validated,reduced_space_structured_sdp,yalmip-mosek,128,reduced certificate with 12 fresh channels,results/certified/general_d/y3_d4_k4.mat
+5,1,47.080000,validated,analytic_formula,analytic,0,proved 2d^2-3+2/d^2,
+5,2,23.324402,validated,exact_reduced_sdp,cvx-mosek,500,full certificate with 25 fresh channels,results/certified/general_d/cert_d5_k2.mat
+5,3,15.410364,validated,reduced_space_structured_sdp,yalmip-mosek,256,reduced certificate with 12 fresh channels,results/certified/general_d/y3_d5_k3.mat

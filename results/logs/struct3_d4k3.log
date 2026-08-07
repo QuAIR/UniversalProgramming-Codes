@@ -1,0 +1,4 @@
+Historical sanitized reduced-space certificate evidence.
+method=reduced-space structured SDP solver=CVX-MOSEK sample_count=500 fresh_channels=50
+objective=9.453849965935 status=Solved
+min_eig=2.278e-08 nonherm=5.47e-14 tp_residual=4.56e-11 fresh_prog_residual=2.972e-08

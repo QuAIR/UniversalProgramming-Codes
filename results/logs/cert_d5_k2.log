@@ -1,0 +1,4 @@
+Historical sanitized certificate evidence.
+method=full-space reduced SDP solver=CVX-MOSEK sample_count=500 fresh_channels=25
+objective=23.324402 status=Solved
+herm_residual=3.36e-14/4.19e-15 min_eig=1.607e-08/2.307e-07 tp_residual=1.52e-06/6.21e-07 fresh_prog_residual=1.162e-08

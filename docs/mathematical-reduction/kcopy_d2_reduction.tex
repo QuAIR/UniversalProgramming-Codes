@@ -1,0 +1,401 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\SU}{\mathrm{SU}}
+\newcommand{\CPTP}{\mathrm{CPTP}}
+\newcommand{\HPTP}{\mathrm{HPTP}}
+\newcommand{\ox}{\otimes}
+\newcommand{\dg}{\dagger}
+\newcommand{\Hu}{\HH_U}
+\newcommand{\Hv}{\HH_V}
+\title{\bf Symmetry reduction of the $k$-copy programming SDP at $d=2$\\[2pt]
+\large (working note --- qubit special case)}
+\author{}
+\date{\today}
+\begin{document}
+\maketitle
+\vspace{-2.2em}
+
+\noindent\emph{Scope.} This note derives, rigorously and from scratch, the symmetry-reduced
+form of the exact $k$-copy programming cost $\gamma_k(\CPTP,d)$ specialised to qubits
+($d=2$). It starts from the unreduced semidefinite program (the boxed primal of the
+$k$-copy appendix), applies the bipartite $\SU(2)\times\SU(2)$ covariance, exploits the
+qubit identity $W^\ast\cong W$ to collapse the walled-Brauer commutant to ordinary
+$\SU(2)$ Schur--Weyl duality, and reduces every constraint to a finite system indexed by
+spin sectors. The final section separates the exact finite SDP from the three-transfer
+linear relaxation. Nothing here is written into the manuscript; it is a derivation for
+discussion.
+
+\section{The unreduced problem}
+Let all elementary systems be qubits, $\HH_S\cong\HH_{S'}\cong\CC^2$ (signal in/out) and
+$\HH_P=\HH_A\ox\HH_B$ the single program register, with $\HH_A\cong\HH_S$ (input type) and
+$\HH_B\cong\HH_{S'}$ (output type). For a channel $\cE$, the unnormalised Choi operator is
+$J_\cE=(\id_A\ox\cE)(\Omega_2)\in\BB(\HH_A\ox\HH_B)$, with $\Tr_B J_\cE=I_A$ and
+$\Tr J_\cE=2$; the program state is the normalised Choi state $\pi_\cE=J_\cE/2$.
+
+The processor $\cP$ is a Hermitian-preserving trace-preserving (HPTP) map
+$\BB(\HH_S\ox\HH_P^{\ox k})\to\BB(\HH_{S'})$ with Choi operator $J_\cP$ on
+\begin{equation}
+\HH_{\mathrm{tot}}\;=\;\HH_S\ox\HH_P^{\ox k}\ox\HH_{S'},\qquad
+\dim\HH_{\mathrm{tot}}=D:=2^{2(k+1)} .
+\end{equation}
+Writing $J_\cP=J_+-J_-$ as a difference of two positive-semidefinite operators and
+$\Tr_{S'}[J_\pm]=p_\pm I_{S,P^{\ox k}}$ for the trace-preservation scalars, the cost is the
+SDP
+\begin{equation}\label{eq:sdp}
+\boxed{\;
+\begin{aligned}
+\gamma_k(\CPTP,2)=\min\;& p_++p_- \\
+\text{s.t. }& J_\cP:=J_+-J_-,\\
+&\Tr_{P^{\ox k}}\!\big[J_\cP\,(I_S\ox(J_\cE^{T})^{\ox k}\ox I_{S'})\big]=2^{k}J_\cE,
+   \quad\forall\,\cE\in\CPTP(\CC^2),\\
+&J_+\ge0,\ \Tr_{S'}[J_+]=p_+I_{S,P^{\ox k}},\\
+&J_-\ge0,\ \Tr_{S'}[J_-]=p_-I_{S,P^{\ox k}} .
+\end{aligned}\;}
+\end{equation}
+The programming equality (line 3) is the operator form of
+$\cP(\rho\ox\pi_\cE^{\ox k})=\cE(\rho)$ for all $\rho,\cE$. We abbreviate the three
+constraint groups as (C3) (programming), (C1) ($J_\pm\ge0$), (C2) (trace preservation).
+
+The two obstacles to solving \eqref{eq:sdp} directly are (i) the variable $J_\pm$ lives in
+dimension $D=4^{k+1}$, and (ii) the programming constraint is a continuum, indexed by all
+$\cE\in\CPTP$. We remove both with symmetry.
+
+\section{Covariance and the commutant}
+Recall the bipartite covariance of the channel set: for $U,V\in\SU(2)$ and
+$\cE\in\CPTP$, the twisted map $\widehat{\cE}=\mathrm{Ad}_{V}\circ\cE\circ\mathrm{Ad}_{U^\dg}$
+is again in $\CPTP$, and its Choi operator is
+$J_{\widehat\cE}=(\bar U_A\ox V_B)\,J_\cE\,(\bar U_A\ox V_B)^\dg$, where
+$\bar U=U^\ast$. Lifting this action to $\HH_{\mathrm{tot}}$ defines the induced
+representation
+\begin{equation}\label{eq:induced}
+\varrho_k(U,V)\;=\;U_S\;\ox\;\big[\bar U_A\ox V_B\big]^{\ox k}\;\ox\;\bar V_{S'},
+\qquad (U,V)\in\SU(2)\times\SU(2).
+\end{equation}
+A direct computation (the $G$-symmetrisation argument) shows that conjugating any feasible
+$J_\pm$ by $\varrho_k(U,V)$ preserves \eqref{eq:sdp}: positivity and the trace conditions
+are manifestly invariant, and the programming constraint is mapped to the constraint for
+$\widehat{\cE}\in\CPTP$. Averaging $J_\pm$ over the Haar measure of
+$\SU(2)\times\SU(2)$ therefore yields a feasible point with the same objective value
+($\|\cdot\|_\diamond$ being convex and unitarily invariant). Hence:
+
+\begin{lemma}\label{lem:comm}
+Without loss of generality the optimal $J_+$ and $J_-$ each lie in the commutant
+$\mathfrak{C}_k:=\{X:[\varrho_k(U,V),X]=0\ \forall U,V\in\SU(2)\}$.
+\end{lemma}
+
+\section{The qubit collapse $W^\ast\cong W$}
+For $\SU(2)$ the fundamental representation is pseudoreal: with $\varepsilon:=-i\sigma_y$
+(unitary, $\varepsilon^\dg=\varepsilon^{-1}$) one has
+\begin{equation}\label{eq:flip}
+\varepsilon\,U^\ast\,\varepsilon^{\dg}=U,\qquad\forall\,U\in\SU(2).
+\end{equation}
+Define the unitary $\Theta:=I_S\ox\big(\bigotimes_{i=1}^k\varepsilon_{A_i}\big)\ox
+\big(\bigotimes_{i=1}^k I_{B_i}\big)\ox\varepsilon_{S'}$, i.e. a spin flip on every
+conjugate-representation factor ($A_1,\dots,A_k$ and $S'$). Using \eqref{eq:flip} on each
+flipped factor,
+\begin{equation}\label{eq:rhotilde}
+\Theta\,\varrho_k(U,V)\,\Theta^\dg
+=\underbrace{\big(U^{\ox(k+1)}\big)}_{\text{on }\Hu}\ox
+ \underbrace{\big(V^{\ox(k+1)}\big)}_{\text{on }\Hv},
+\end{equation}
+where we have regrouped the tensor factors into two blocks of $k+1$ qubits each,
+\begin{equation}
+\Hu:=\HH_S\ox\HH_{A_1}\ox\cdots\ox\HH_{A_k},\qquad
+\Hv:=\HH_{B_1}\ox\cdots\ox\HH_{B_k}\ox\HH_{S'} .
+\end{equation}
+Thus, in the rotated variables $\widetilde J_\pm:=\Theta J_\pm\Theta^\dg$, the induced
+representation becomes the \emph{plain} $\SU(2)\times\SU(2)$ action
+$U^{\ox(k+1)}\ox V^{\ox(k+1)}$ with both blocks carrying only the fundamental
+representation. This is the substance of the $d=2$ simplification: the mixed (walled-Brauer)
+problem becomes an ordinary Schur--Weyl problem on $k+1$ spins.
+
+\section{Schur--Weyl block form}
+$\SU(2)$ Schur--Weyl duality on $(\CC^2)^{\ox(k+1)}$ reads
+\begin{equation}\label{eq:sw}
+(\CC^2)^{\ox(k+1)}\;\cong\;\bigoplus_{\mu}\;\mathcal{U}_\mu\ox\mathcal{M}_\mu,
+\end{equation}
+where $\mu$ runs over two-row Young diagrams $\mu=(k+1-r,r)$, $0\le r\le\lfloor(k+1)/2\rfloor$,
+equivalently spins $j_\mu=(k+1-2r)/2$. The irrep factor $\mathcal{U}_\mu$ has dimension
+$d_\mu=2j_\mu+1$, and the multiplicity (Specht) space $\mathcal{M}_\mu$ has dimension
+$m_\mu=\binom{k+1}{r}-\binom{k+1}{r-1}$. The commutant of $U^{\ox(k+1)}$ is
+$\bigoplus_\mu I_{\mathcal{U}_\mu}\ox\operatorname{End}(\mathcal{M}_\mu)$, isomorphic to the
+Temperley--Lieb algebra $\mathrm{TL}_{k+1}(\delta\!=\!2)$ of dimension
+\begin{equation}
+\sum_\mu m_\mu^{\,2}\;=\;\mathrm{Cat}(k+1)\;=\;\frac{1}{k+2}\binom{2(k+1)}{k+1}.
+\end{equation}
+
+Applying \eqref{eq:sw} to $\Hu$ (sectors $\mu$) and $\Hv$ (sectors $\nu$) and using
+Schur's lemma on the product action $U^{\ox(k+1)}\ox V^{\ox(k+1)}$ (Lemma~\ref{lem:comm}
+together with \eqref{eq:rhotilde}) gives the block form:
+\begin{proposition}\label{prop:block}
+Every optimal $\widetilde J_\pm$ may be taken of the form
+\begin{equation}\label{eq:block}
+\widetilde J_\pm\;=\;\bigoplus_{\mu,\nu}\;
+   I_{\mathcal{U}_\mu}\ox I_{\mathcal{U}_\nu}\ox C^{\pm}_{\mu\nu},
+\qquad C^{\pm}_{\mu\nu}\in\operatorname{Herm}(\mathcal{M}_\mu\ox\mathcal{M}_\nu),
+\end{equation}
+and $\widetilde J_\pm\ge0\iff C^{\pm}_{\mu\nu}\ge0$ for all $\mu,\nu$. The number of real
+parameters per sign is $\sum_{\mu,\nu}(m_\mu m_\nu)^2=\mathrm{Cat}(k+1)^2$, and the number
+of $(\mu,\nu)$ blocks is $(\lfloor(k+1)/2\rfloor+1)^2$.
+\end{proposition}
+
+\section{Reduction of the constraints}
+Write the objective and all three constraints in the variables of
+Proposition~\ref{prop:block}.
+
+\paragraph{Objective and (C1$'$).} $\Theta$ is unitary, so the objective is unchanged:
+$\min(p_++p_-)$; positivity is the blockwise condition $C^{\pm}_{\mu\nu}\ge0$.
+
+\paragraph{(C2$'$) trace preservation.} Because $\Theta$ acts on $S'$ by the unitary
+$\varepsilon$ and partial traces are invariant under unitary conjugation of the traced
+factor, $\Tr_{S'}[J_\pm]=p_\pm I\iff\Tr_{S'}[\widetilde J_\pm]=p_\pm I_{S,P^{\ox k}}$. Here
+$S'$ is the last qubit of $\Hv$; tracing it is the $\SU(2)$ branching
+$(\CC^2)^{\ox(k+1)}\!\downarrow\!(\CC^2)^{\ox k}$, under which a spin-$\nu$ sector maps to
+spins $\alpha\in\{\nu-\tfrac12,\nu+\tfrac12\}$. In the Schur basis this is implemented by
+the branching isometries $X_{\alpha\nu}:\mathcal{M}^{V'}_\alpha\hookrightarrow\mathcal{M}_\nu$
+(adding the $(k+1)$-th box), and the condition becomes, for every $U$-sector $\mu$ and every
+$k$-qubit $V'$-sector $\alpha$,
+\begin{equation}\label{eq:C2red}
+\sum_{\nu:\,\alpha\in\nu\mp\frac12}\frac{d_\nu}{d_\alpha}\,
+   \big(I_{\mathcal{M}_\mu}\ox X_{\alpha\nu}\big)^\dg\,C^{\pm}_{\mu\nu}\,
+   \big(I_{\mathcal{M}_\mu}\ox X_{\alpha\nu}\big)
+\;=\;p_\pm\,I_{\mathcal{M}_\mu\ox\mathcal{M}^{V'}_\alpha}.
+\end{equation}
+(The $U$-sector $\mu$ is a spectator, as $\Tr_{S'}$ does not act on $\Hu$.)
+
+\paragraph{(C3$'$) programming.} This is the only constraint ranging over the continuum
+$\cE\in\CPTP$. We reduce it in three steps: an explicit basis of the channel space~(i); a
+covariant transfer map whose Schur structure turns ``$\forall\cE$'' into finitely many
+\emph{scalar} conditions~(ii); and the observation that the apparent combinatorial growth is
+an artefact removed by the Schmidt rank of the Choi operator~(iii).
+
+\smallskip\noindent\emph{(i) The channel basis.} Expand a qubit Choi operator in the Pauli
+basis, $J_\cE=\sum_{\mu,\nu=0}^{3}c_{\mu\nu}\,\sigma_\mu\ox\sigma_\nu$ ($\sigma_0=I$, $c$
+real). Trace preservation $\Tr_B J_\cE=I_A$ fixes $c_{00}=\tfrac12$ and forces
+$c_{x0}=c_{y0}=c_{z0}=0$; the trace condition is then automatic. So the real span of CPTP
+Choi operators is $13$-dimensional --- all Pauli pairs \emph{except} the three
+$\sigma_{x,y,z}\ox I$ --- and decomposes under
+$\SU(2)_{\mathrm{in}}\times\SU(2)_{\mathrm{out}}$ ($(j_{\mathrm{in}},j_{\mathrm{out}})$
+labels) as
+\begin{center}\small
+\begin{tabular}{lccl}
+\hline
+irrep & basis elements & dim & meaning\\\hline
+$(0,0)$ & $\sigma_0\ox\sigma_0$ & $1$ & trace ($=J_0$, depolarising Choi)\\
+$(0,1)$ & $\sigma_0\ox\sigma_{x,y,z}$ & $3$ & non-unitality\\
+$(1,1)$ & $\sigma_{x,y,z}\ox\sigma_{x,y,z}$ & $9$ & transfer matrix\\\hline
+$(1,0)$ & $\sigma_{x,y,z}\ox\sigma_0$ & $3$ & \emph{excluded by TP}\\
+\hline
+\end{tabular}
+\end{center}
+Thus $J_\cE=J_0+\delta$ with the deviation $\delta\in V_\delta:=(0,1)\oplus(1,1)$.
+
+\smallskip\noindent\emph{(ii) Covariant collapse.} Define the \emph{transfer map}
+\begin{equation}\label{eq:transfer}
+g(J_\cE)\;:=\;\Tr_{P^{\ox k}}\!\big[J_\cP\,(I_S\ox(J_\cE^T)^{\ox k}\ox I_{S'})\big]
+\ \in\ \operatorname{ops}(\HH_S\ox\HH_{S'}),
+\end{equation}
+so that (C3) is exactly $g(J_\cE)=2^k J_\cE$ for all $\cE$. Two properties pin it down:
+\emph{(1)~covariance} --- since $J_\cP\in\mathfrak{C}_k$ (Lemma~\ref{lem:comm}),
+$g\big((\bar U\ox V)J_\cE(\bar U\ox V)^\dg\big)=(\bar U\ox V)\,g(J_\cE)\,(\bar U\ox V)^\dg$
+for all $U,V\in\SU(2)$ (identifying $\HH_S\ox\HH_{S'}\cong\HH_A\ox\HH_B$); and
+\emph{(2)}~$g$ is a polynomial of degree $k$ in $J_\cE$. Both domain and codomain
+$\operatorname{ops}(\HH_A\ox\HH_B)$ carry $(0,0)\oplus(0,1)\oplus(1,0)\oplus(1,1)$,
+\emph{each with multiplicity one}.
+
+Substitute $J_\cE=J_0+\delta$ into $(J_\cE^T)^{\ox k}$ and collect terms by the number $m$ of
+$\delta$-factors:
+\begin{equation}\label{eq:gm}
+g(J_0+\delta)=\sum_{m=0}^{k}g_m(\delta),\qquad
+g_m(\delta):=\Tr_{P^{\ox k}}\!\Big[J_\cP\big(I_S\ox\operatorname{Sym}_m(\delta^T;J_0^T)\ox I_{S'}\big)\Big],
+\end{equation}
+where $\operatorname{Sym}_m(\delta^T;J_0^T)$ denotes the sum over the $\binom{k}{m}$ placements
+of $m$ copies of $\delta^T$ and $k-m$ copies of $J_0^T$ in the $k$ program slots. Thus
+\emph{$g_m$ is the part of $g$ homogeneous of degree $m$ in the deviation} $\delta$: a
+covariant, symmetric $m$-linear map
+$g_m:\operatorname{Sym}^m(V_\delta)\to\operatorname{ops}(\HH_S\ox\HH_{S'})$, with
+$g_0=g(J_0)$ the value at the depolarising point and $g_1=Dg|_{J_0}$ the derivative.
+Throughout we write $g_m(\delta)\in\operatorname{ops}(\HH_S\ox\HH_{S'})$ for the \emph{value}
+of this degree-$m$ form on $\delta$, so that $g(J_0+\delta)=\sum_{m}g_m(\delta)$ is an
+identity of operators. Matching it against $2^k(J_0+\delta)$ order by order in $\delta$
+gives, for every $\delta\in V_\delta$, the operator equations
+\begin{equation}\label{eq:gorders}
+g_0=2^k J_0,\qquad g_1(\delta)=2^k\,\delta,\qquad g_m(\delta)=0\quad(m\ge2),
+\end{equation}
+where $g_0=g(J_0)$ is the constant degree-$0$ term and, on the right-hand side, $\delta$ is
+read inside $\operatorname{ops}(\HH_S\ox\HH_{S'})$ via
+$V_\delta\subset\operatorname{ops}(\HH_A\ox\HH_B)\cong\operatorname{ops}(\HH_S\ox\HH_{S'})$.
+The target representation contains each irrep
+$(0,0),(0,1),(1,0),(1,1)$ with multiplicity one, but the source
+$\operatorname{Sym}^m(V_\delta)$ need not be multiplicity-free. Write
+\begin{equation}\label{eq:symmult}
+\operatorname{Sym}^m(V_\delta)
+\;\cong\;\bigoplus_{r}\mathcal R_r\ox \mathbb C^{\,n_{m,r}},
+\qquad
+\operatorname{ops}(\HH_S\ox\HH_{S'})
+\;\cong\;\bigoplus_{r\in R_{\rm out}}\mathcal R_r,
+\end{equation}
+where $R_{\rm out}=\{(0,0),(0,1),(1,0),(1,1)\}$ and $n_{m,r}$ is the multiplicity of
+$r$ in the $m$-th symmetric power. Schur's lemma therefore leaves one reduced linear
+functional for each copy of $r$ in the source, not one scalar for the whole isotypic
+component when $n_{m,r}>1$. Equivalently, the $r$-component of $g_m$ has the form
+$I_{\mathcal R_r}\ox \ell_{m,r}$ with
+$\ell_{m,r}:\mathbb C^{n_{m,r}}\to\mathbb C$.
+
+Projecting onto irreps gives an explicit finite real-linear system in
+$C_{\mu\nu}:=C^{+}_{\mu\nu}-C^{-}_{\mu\nu}$. After choosing a multiplicity basis in
+\eqref{eq:symmult}, let $\Gamma_{m,r,a}(C)$ denote the corresponding reduced matrix
+element of $g_m$, $a=1,\dots,n_{m,r}$. Then \eqref{eq:gorders} is equivalent to
+\begin{equation}\label{eq:C3scalar}
+\Gamma_{m,r,a}(C)\;=\;2^k\,\beta_{m,r,a},
+\qquad 0\le m\le k,\quad r\in R_{\rm out},\quad a=1,\dots,n_{m,r}.
+\end{equation}
+The constants $\beta_{m,r,a}$ encode the fixed right-hand side
+$J_0+\delta$: they are nonzero only for the constant component
+$(m,r)=(0,(0,0))$ and for the two first-order components
+$(m,r)=(1,(0,1))$ and $(m,r)=(1,(1,1))$, after the natural identification of
+$V_\delta$ with its image in the output operator space. Every $m\ge2$ equation is
+homogeneous. In particular, if a $(1,0)$ component appears in
+$\operatorname{Sym}^m(V_\delta)$ for $m\ge2$, it must also vanish; it is absent only from
+the first-order TP-affine tangent space. The number of reduced conditions,
+$\sum_{m=0}^k\sum_{r\in R_{\rm out}} n_{m,r}$, is
+\begin{center}\small
+\begin{tabular}{c|cccc|c}
+$m$ & $(0,0)$ & $(0,1)$ & $(1,0)$ & $(1,1)$ & total\\\hline
+$0$ & $1$ & $0$ & $0$ & $0$ & $1$\\
+$1$ & $0$ & $1$ & $0$ & $1$ & $2$\\
+$2$ & $2$ & $0$ & $1$ & $2$ & $5$\\
+$3$ & $1$ & $3$ & $1$ & $5$ & $10$\\
+$4$ & $5$ & $2$ & $3$ & $8$ & $18$\\
+\end{tabular}
+\end{center}
+with totals $3,8,18,36,66$ for $k=1,\dots,5$. Only the $m=0,1$ rows have an
+inhomogeneous right-hand side; the $m\ge2$ rows are nevertheless part of the exact
+programming constraint.
+
+\smallskip\noindent\emph{(iii) No $\mathrm{Sym}_M$ blow-up.} A separate copy-permutation
+symmetry controls the cost of assembling the exact rows. The SDP is invariant under a
+simultaneous permutation of the $k$ program copies, since the program input is
+$(J_\cE^T)^{\ox k}$. Averaging over this finite symmetry allows one to take the
+processor $S_k$-invariant in addition to $\SU(2)\times\SU(2)$-covariant. Across the operator cut
+$\operatorname{ops}(\HH_A)\,|\,\operatorname{ops}(\HH_B)$ the Choi operator has \emph{Schmidt
+rank $\le4$}, $J_\cE^T=\sum_{r=1}^{4}s_r\,A_r\ox B_r$, so $(J_\cE^T)^{\ox k}$ uses only four
+``letters,'' and the $S_k$-symmetry of $J_\cP$ makes $g$ depend only on the \emph{multiset}
+of $r$-indices. The left-hand side is then a sum of $\binom{k+3}{3}=O(k^3)$ factorised
+reduced matrix elements $F(\vec m)=F_1(\vec m)\ox F_2(\vec m)$ --- exactly the factorisation
+$\Pi=\sum_{\vec r}\big(\prod_i s_{r_i}\big)\,F_1\ox F_2$ of the general-$d$ appendix --- never
+the $\binom{12+k}{k}$ Pauli monomials:
+\begin{center}\small
+\begin{tabular}{l|ccccc}
+$k$ & $1$ & $2$ & $3$ & $4$ & $5$\\\hline
+naive monomials $\binom{12+k}{k}$ & $13$ & $91$ & $455$ & $1820$ & $6188$\\
+rank-$4$ terms / channel $\binom{k+3}{3}$ & $4$ & $10$ & $20$ & $35$ & $56$\\
+independent conditions & $3$ & $8$ & $18$ & $36$ & $66$\\
+three-transfer relaxation rows & $3$ & $3$ & $3$ & $3$ & $3$
+\end{tabular}
+\end{center}
+Hence the LHS costs $O(k^3)$ per channel (the $F_1\ox F_2$ factorisation), and the
+independent exact conditions grow only polynomially. This complexity statement does not
+remove the homogeneous $m\ge2$ rows; it only explains how to assemble them without the
+naive Pauli-monomial blow-up.
+
+\section{The exact SDP and the linear relaxation}
+Collecting the exact constraints gives:
+\begin{theorem}\label{thm:reduced}
+$\gamma_k(\CPTP,2)$ equals the optimum of the following finite SDP. With
+$\widetilde J_\pm:=\bigoplus_{\mu,\nu}I_{\mathcal U_\mu}\ox I_{\mathcal U_\nu}\ox C^{\pm}_{\mu\nu}$
+and $J_\cP:=\Theta^{\dg}(\widetilde J_+-\widetilde J_-)\Theta$,
+\begin{equation}\label{eq:sdpfinal}
+\begin{aligned}
+\min_{\,p_\pm\ge0,\ C^{\pm}_{\mu\nu}\in\operatorname{Herm}(\mathcal M_\mu\ox\mathcal M_\nu)}\ & p_++p_-\\[2pt]
+\text{s.t.}\quad
+&\text{(C1$'$)}\quad C^{\pm}_{\mu\nu}\succeq0\quad(\forall\,\mu,\nu);\\[2pt]
+&\text{(C2$'$)}\quad \Tr_{S'}\big[\widetilde J_\pm\big]=p_\pm\,I_{S,P^{\ox k}}
+   \quad(\text{block form }\eqref{eq:C2red});\\[2pt]
+&\text{(C3$'$)}\quad \Gamma_{m,r,a}(C)=2^k\beta_{m,r,a}
+   \quad(0\le m\le k,\ r\in R_{\rm out},\ 1\le a\le n_{m,r}),
+\end{aligned}
+\end{equation}
+where $\mu,\nu$ range over two-row Young diagrams of $k+1$ boxes, $g_m$ is the degree-$m$
+form~\eqref{eq:gm} (linear in $C^{+}_{\mu\nu}-C^{-}_{\mu\nu}$), and (C3$'$) is the
+finite reduced system~\eqref{eq:C3scalar}.
+The variable dimension is $\mathrm{Cat}(k+1)^2$ per sign and the number of blocks is
+$(\lfloor(k+1)/2\rfloor+1)^2$, independent of the ambient $D=4^{k+1}$.
+\end{theorem}
+
+\begin{proof}
+The Haar averaging of Lemma~\ref{lem:comm}, the spin-flip equivalence
+\eqref{eq:rhotilde}, and Schur--Weyl duality give the block form
+\eqref{eq:block} without changing the objective. Positivity is blockwise positivity.
+Trace preservation is exactly \eqref{eq:C2red}, or equivalently the unreduced partial
+trace condition written in the rotated frame. For programming, the CPTP set contains a
+relative open neighbourhood of $J_0$ inside the affine TP space
+$J_0+V_\delta$. Hence the polynomial
+$g(J_0+\delta)-2^k(J_0+\delta)$ vanishes on all CPTP Choi operators if and only if
+all its homogeneous parts in $\delta$ vanish on $V_\delta$, with the first two orders
+matching the right-hand side in \eqref{eq:gorders}. The Wigner--Eckart/Schur reduction
+of these homogeneous equations is precisely \eqref{eq:C3scalar}. Thus every feasible
+point of the original SDP has a unique reduced description satisfying
+\eqref{eq:sdpfinal}, and conversely every solution of \eqref{eq:sdpfinal} reconstructs
+a feasible processor by $J_\cP=\Theta^\dg(\widetilde J_+-\widetilde J_-)\Theta$.
+\end{proof}
+
+\begin{proposition}[Three-transfer relaxation]\label{prop:linearrelax}
+Let $\gamma_k^{\rm lin}$ denote the optimum of the same SDP after keeping only the
+rows of \eqref{eq:C3scalar} with $m=0$ and $m=1$. Then
+\begin{equation}
+\gamma_k^{\rm lin}\le \gamma_k(\CPTP,2).
+\end{equation}
+Equality holds exactly when the dropped homogeneous rows with $m\ge2$ are non-binding,
+i.e., when an optimal solution of the relaxation can be chosen to satisfy all rows of
+\eqref{eq:C3scalar}. In general this relaxation is not an equivalent reduction.
+\end{proposition}
+
+\begin{proof}
+The exact feasible set of Theorem~\ref{thm:reduced} is contained in the feasible set
+obtained by deleting equality constraints. The objective is unchanged, so the relaxed
+optimum is a lower bound. Equality is equivalent to the existence of a relaxed optimum
+that also satisfies the deleted homogeneous equations.
+\end{proof}
+
+\paragraph{Sanity checks and scale.} The reduction is exact (each step is an equivalence,
+not a relaxation), provided the full row system~\eqref{eq:C3scalar} is imposed. The
+three-transfer problem of Proposition~\ref{prop:linearrelax} is only a diagnostic lower
+bound. In the available certified walled-Brauer computations for $d=2$, the full
+programming row ranks are $18$ for $k=3$ and $36$ for $k=4$, matching the table above.
+Those checks support the exact row count but do not make the linear relaxation exact.
+The table below contrasts the reduced size with the generic walled-Brauer count
+$(k+1)!$:
+\begin{center}
+\begin{tabular}{c|cccc}
+$k$ & spins/side & block dims $m_\mu$ & $\mathrm{Cat}(k+1)$ (comm. dim) & $(k+1)!$ \\ \hline
+$1$ & $2$ & $1,1$ & $2$ & $2$\\
+$2$ & $2$ & $1,2$ & $5$ & $6$\\
+$3$ & $3$ & $1,3,2$ & $14$ & $24$\\
+$4$ & $3$ & $1,4,5$ & $42$ & $120$\\
+$5$ & $4$ & $1,5,9,5$ & $132$ & $720$\\
+\end{tabular}
+\end{center}
+
+\begin{remark}
+The processor itself is recovered from the optimiser: $J_\cP=\Theta^\dg\widetilde J_\cP\Theta$
+with $\widetilde J_\cP=\bigoplus_{\mu\nu}I\ox I\ox(C^{+}_{\mu\nu}-C^{-}_{\mu\nu})$, giving a
+general $\SU(2)$-covariant form of the programming map for all qubit CPTP channels in terms
+of the program Choi states. Solving Theorem~\ref{thm:reduced} symbolically in $k$ is the
+route to the explicit formula for $\gamma_k(\CPTP,2)$.
+\end{remark}
+
+\end{document}

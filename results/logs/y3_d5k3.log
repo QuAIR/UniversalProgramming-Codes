@@ -1,0 +1,4 @@
+Historical sanitized reduced-space certificate evidence.
+method=YALMIP nullspace SDP solver=MOSEK sample_count=256 fresh_channels=12
+objective=15.410364254085 status=Successfully solved (MOSEK-SDP) runtime_s=2.15
+min_eig=1.329e-07 nonherm=8.29e-14 tp_residual=7.05e-10 fresh_prog_residual=1.281e-07

@@ -1,0 +1,6 @@
+Historical sanitized evidence from 4512790: k=1..4 exact d=2 batch.
+solver=CVX-SDPT3 sample_count=500 fresh_channels=50
+k=1 objective=5.50000000000047 status=Solved runtime_s=0.810162 fresh_residual=9.64e-14
+k=2 objective=2.71333025586459 status=Inaccurate/Solved runtime_s=0.955421 fresh_residual=2.75e-15
+k=3 objective=1.88829144016005 status=Inaccurate/Solved runtime_s=3.505244 fresh_residual=1.19e-13
+k=4 objective=1.52942317637871 status=Inaccurate/Solved runtime_s=68.019433 fresh_residual=6.19e-11

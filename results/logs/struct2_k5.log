@@ -1,0 +1,4 @@
+Historical sanitized structured-run evidence.
+method=nullspace structured SDP solver=CVX-MOSEK sample_count=500 fresh_channels=50
+objective=1.350907061612 status=Solved runtime_s=not recorded in retained summary
+herm_residual=1.07e-08/1.54e-09 min_eig=-2.363e-09/6.755e-09 tp_residual=4.36e-09/6.15e-10 fresh_prog_residual=8.053e-09

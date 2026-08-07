@@ -1,0 +1,4 @@
+Historical under-sampled run; retained only to explain exclusion.
+method=unreduced brute SDP solver=CVX-SDPT3 sample_count=300
+objective=1.844820 status=Solved
+This is below the certified 1.888291 because 300 samples under-constrain the 256-dimensional problem.

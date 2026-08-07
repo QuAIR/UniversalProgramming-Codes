@@ -1,0 +1,3 @@
+Historical sanitized diagnostic evidence.
+method=Hilbert reduced SDP solver=CVX-SDPT3 sample_count=800 seed=1
+objective=7.456450 status=Solved

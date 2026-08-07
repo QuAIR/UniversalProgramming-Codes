@@ -1,0 +1,4 @@
+Historical sanitized diagnostic cross-check.
+method=nullspace structured SDP solver=CVX-MOSEK sample_count=500
+objective=3.619723965260 status=Solved
+agreement_with_yalmip=8.05e-05

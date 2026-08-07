@@ -1,0 +1,4 @@
+Historical failed run; retained only to explain exclusion.
+method=algebra solver=CVX-SDPT3 sample_count=500
+objective=-1.000000 status=Unbounded
+The historical algebra reduction was not a faithful reduction.
