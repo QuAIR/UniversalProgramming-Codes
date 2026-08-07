@@ -51,6 +51,130 @@ class RepositoryVerifierTest(unittest.TestCase):
             )
             self.assertTrue(validate_repository(root))
 
+    def test_invalid_summary_columns_fail(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            (root / "results/summary.csv").write_text(
+                "d,k,gamma,status\n2,1,5.5,validated\n", encoding="utf-8"
+            )
+            self.assertIn(
+                "results/summary.csv: invalid summary columns",
+                validate_repository(root),
+            )
+
+    def test_invalid_summary_status_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            summary = root / "results/summary.csv"
+            summary.write_text(
+                summary.read_text(encoding="utf-8").replace(
+                    "validated", "unverified"
+                ),
+                encoding="utf-8",
+            )
+            self.assertIn(
+                "results/summary.csv:2: invalid status 'unverified'",
+                validate_repository(root),
+            )
+
+    def test_missing_summary_artifact_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            summary = root / "results/summary.csv"
+            summary.write_text(
+                summary.read_text(encoding="utf-8").replace(
+                    "results/certified/example.mat", "results/certified/missing.mat"
+                ),
+                encoding="utf-8",
+            )
+            self.assertIn(
+                "results/summary.csv:2: missing artifact results/certified/missing.mat",
+                validate_repository(root),
+            )
+
+    def test_later_sample_count_override_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            runner = root / "experiments/quair06/kcopy_d2/run_exact_k14.m"
+            runner.write_text("opts.s = 500;\nopts.s = 1;\n", encoding="utf-8")
+            self.assertIn(
+                "experiments/quair06/kcopy_d2/run_exact_k14.m: opts.s is below 500",
+                validate_repository(root),
+            )
+
+    def test_nested_expression_linear_call_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            runner = root / "experiments/quair06/kcopy_d2/run_exact_k14.m"
+            runner.write_text(
+                "opts.s = 500;\n"
+                "result = gamma_k_d2(build_input(alpha(beta)), ...\n"
+                "    'linear', opts);\n",
+                encoding="utf-8",
+            )
+            self.assertIn(
+                "experiments/quair06/kcopy_d2/run_exact_k14.m: exact runner invokes gamma_k_d2 linear mode",
+                validate_repository(root),
+            )
+
+    def test_generic_sensitive_markers_fail(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            path = root / "README.md"
+            path.write_text(
+                "/home/" + "alice/project\n" + "192." + "168.1.15\n",
+                encoding="utf-8",
+            )
+            errors = validate_repository(root)
+            self.assertIn("README.md: contains personal home path", errors)
+            self.assertIn("README.md: contains IP address", errors)
+            path.write_text(
+                "-" * 5 + "BEGIN PRIVATE KEY" + "-" * 5 + "\n",
+                encoding="utf-8",
+            )
+            self.assertIn(
+                "README.md: contains private-key marker", validate_repository(root)
+            )
+
+    def test_superpowers_is_excluded_and_placeholder_home_path_is_allowed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            (root / "docs/experiment-manifest.md").write_text(
+                "/home/<user>/project\n", encoding="utf-8"
+            )
+            staging = root / ".superpowers/sdd"
+            staging.mkdir(parents=True)
+            (staging / "notes.md").write_text(
+                "/home/" + "alice/matlab_codes\n" + "10.4." + "6.4\n"
+                + "-" * 5 + "BEGIN RSA PRIVATE KEY" + "-" * 5 + "\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(validate_repository(root), [])
+
+    def test_linear_relaxation_requires_clear_legacy_labeling(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            legacy = root / "legacy/README.md"
+            legacy.write_text("This documents the legacy linear relaxation.\n", encoding="utf-8")
+            errors = validate_repository(root)
+            self.assertIn(
+                "legacy: linear-relaxation documentation must state lower-bound and not-equivalent wording",
+                errors,
+            )
+            legacy.write_text(
+                "This legacy linear relaxation is a lower-bound result and is not equivalent to the exact result.\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(validate_repository(root), [])
+
 
 if __name__ == "__main__":
     unittest.main()

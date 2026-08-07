@@ -25,23 +25,41 @@ EXACT_RUNNERS = (
     "experiments/quair06/kcopy_d2/run_exact_k14.m",
     "experiments/quair06/kcopy_d2/run_exact_k56.m",
 )
-PERSONAL_MATLAB_HOME = re.compile(r"/home/[^/\s]+/matlab_codes")
-PRIVATE_ADDRESS = re.compile(r"(?<![0-9.])10\.4\.6\.[0-9]{1,3}(?![0-9.])")
+POSIX_PERSONAL_HOME = re.compile(
+    r"(?<![\w/])/(?:home|Users)/[A-Za-z0-9][A-Za-z0-9._-]*(?=/|$)"
+)
+WINDOWS_PERSONAL_HOME = re.compile(
+    r"(?<![\w\\])[A-Za-z]:\\Users\\[A-Za-z0-9][A-Za-z0-9._-]*(?=\\|$)",
+    re.IGNORECASE,
+)
+IP_ADDRESS = re.compile(
+    r"(?<![0-9.])(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])"
+    r"(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}(?![0-9.])"
+)
 CVX_LICENSE_URL = re.compile(
     r"https?://[^\s\"']*(?:cvxr\.com/cvx/academic|cvx[^\s\"']*license)",
     re.IGNORECASE,
 )
 USERNAME_FIELD = re.compile(r"(?m)^\s*Username:\s*")
-LINEAR_EXACT_CALL = re.compile(r"gamma_k_d2\s*\([^)]*['\"]linear['\"]", re.IGNORECASE)
-PRIVATE_KEY_MARKERS = tuple(
-    "BEGIN " + key_type + " PRIVATE KEY"
-    for key_type in ("OPENSSH", "RSA", "EC", "DSA")
+SAMPLE_COUNT_ASSIGNMENT = re.compile(
+    r"(?im)^\s*opts\s*\.\s*s\s*=\s*([0-9]+)\s*;"
 )
+LINEAR_ARGUMENT = re.compile(r"['\"]linear['\"]", re.IGNORECASE)
+LINEAR_RELAXATION_REFERENCE = re.compile(
+    r"\blinear[- ](?:mode|relaxation)\b|\bm\s*=\s*0\s*,\s*1\b",
+    re.IGNORECASE,
+)
+PRIVATE_KEY_MARKER = re.compile(
+    r"-----BEGIN (?:[A-Z0-9]+ )?PRIVATE KEY-----"
+)
+LOWER_BOUND_WORDING = re.compile(r"\blower[- ]bound\b", re.IGNORECASE)
+NOT_EQUIVALENT_WORDING = re.compile(r"\bnot[- ]equivalent\b", re.IGNORECASE)
 
 
 def _text_files(root: Path):
     for path in root.rglob("*"):
-        if ".git" in path.relative_to(root).parts:
+        relative = path.relative_to(root)
+        if relative.parts and relative.parts[0] in {".git", ".superpowers"}:
             continue
         if path.is_file() and path.suffix.lower() in TEXT_SUFFIXES:
             yield path
@@ -49,8 +67,9 @@ def _text_files(root: Path):
 
 def _validate_sensitive_text(root: Path, errors: list[str]) -> None:
     checks = (
-        (PERSONAL_MATLAB_HOME, "personal MATLAB home path"),
-        (PRIVATE_ADDRESS, "private 10.4.6.* address"),
+        (POSIX_PERSONAL_HOME, "personal home path"),
+        (WINDOWS_PERSONAL_HOME, "personal home path"),
+        (IP_ADDRESS, "IP address"),
         (CVX_LICENSE_URL, "CVX license URL"),
         (USERNAME_FIELD, "Username field"),
     )
@@ -60,8 +79,8 @@ def _validate_sensitive_text(root: Path, errors: list[str]) -> None:
         for pattern, description in checks:
             if pattern.search(content):
                 errors.append(f"{relative}: contains {description}")
-        if any(marker in content for marker in PRIVATE_KEY_MARKERS):
-            errors.append(f"{relative}: contains SSH private-key marker")
+        if PRIVATE_KEY_MARKER.search(content):
+            errors.append(f"{relative}: contains private-key marker")
 
 
 def _validate_summary(root: Path, errors: list[str]) -> None:
@@ -93,10 +112,67 @@ def _validate_exact_runners(root: Path, errors: list[str]) -> None:
         if not runner.is_file():
             continue
         content = runner.read_text(encoding="utf-8", errors="replace")
-        if "opts.s = 500" not in content:
+        sample_counts = [
+            int(value) for value in SAMPLE_COUNT_ASSIGNMENT.findall(content)
+        ]
+        if not sample_counts:
             errors.append(f"{relative}: missing opts.s = 500")
-        if LINEAR_EXACT_CALL.search(content):
+        elif any(sample_count < 500 for sample_count in sample_counts):
+            errors.append(f"{relative}: opts.s is below 500")
+        if any(
+            LINEAR_ARGUMENT.search(args)
+            for args in _function_calls(content, "gamma_k_d2")
+        ):
             errors.append(f"{relative}: exact runner invokes gamma_k_d2 linear mode")
+
+
+def _function_calls(content: str, name: str):
+    call_start = re.compile(rf"\b{re.escape(name)}\s*\(")
+    for match in call_start.finditer(content):
+        depth = 1
+        quote = None
+        index = match.end()
+        arguments_start = index
+        while index < len(content) and depth:
+            character = content[index]
+            if quote:
+                if character == quote:
+                    if (
+                        quote == "'"
+                        and index + 1 < len(content)
+                        and content[index + 1] == quote
+                    ):
+                        index += 2
+                        continue
+                    quote = None
+            elif character in "'\"":
+                quote = character
+            elif character == "(":
+                depth += 1
+            elif character == ")":
+                depth -= 1
+            index += 1
+        if depth == 0:
+            yield content[arguments_start:index - 1]
+
+
+def _validate_linear_relaxation_documentation(root: Path, errors: list[str]) -> None:
+    legacy = root / "legacy"
+    if not legacy.is_dir():
+        return
+
+    documentation = "\n".join(
+        path.read_text(encoding="utf-8", errors="replace")
+        for path in _text_files(legacy)
+    )
+    if LINEAR_RELAXATION_REFERENCE.search(documentation) and (
+        not LOWER_BOUND_WORDING.search(documentation)
+        or not NOT_EQUIVALENT_WORDING.search(documentation)
+    ):
+        errors.append(
+            "legacy: linear-relaxation documentation must state lower-bound "
+            "and not-equivalent wording"
+        )
 
 
 def validate_repository(root: Path) -> list[str]:
@@ -108,6 +184,7 @@ def validate_repository(root: Path) -> list[str]:
     _validate_sensitive_text(root, errors)
     _validate_summary(root, errors)
     _validate_exact_runners(root, errors)
+    _validate_linear_relaxation_documentation(root, errors)
     return errors
 
 
