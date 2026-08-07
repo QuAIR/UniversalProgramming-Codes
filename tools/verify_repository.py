@@ -59,7 +59,9 @@ NOT_EQUIVALENT_WORDING = re.compile(r"\bnot[- ]equivalent\b", re.IGNORECASE)
 def _text_files(root: Path):
     for path in root.rglob("*"):
         relative = path.relative_to(root)
-        if relative.parts and relative.parts[0] in {".git", ".superpowers"}:
+        if relative.parts and relative.parts[0] == ".git":
+            continue
+        if relative.parts[:2] == (".superpowers", "sdd"):
             continue
         if path.is_file() and path.suffix.lower() in TEXT_SUFFIXES:
             yield path
@@ -115,9 +117,9 @@ def _validate_exact_runners(root: Path, errors: list[str]) -> None:
         sample_counts = [
             int(value) for value in SAMPLE_COUNT_ASSIGNMENT.findall(content)
         ]
-        if not sample_counts:
+        if 500 not in sample_counts:
             errors.append(f"{relative}: missing opts.s = 500")
-        elif any(sample_count < 500 for sample_count in sample_counts):
+        if any(sample_count < 500 for sample_count in sample_counts):
             errors.append(f"{relative}: opts.s is below 500")
         if any(
             LINEAR_ARGUMENT.search(args)

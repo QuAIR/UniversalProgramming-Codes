@@ -106,6 +106,17 @@ class RepositoryVerifierTest(unittest.TestCase):
                 validate_repository(root),
             )
 
+    def test_sample_count_of_600_without_500_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            runner = root / "experiments/quair06/kcopy_d2/run_exact_k14.m"
+            runner.write_text("opts.s = 600;\n", encoding="utf-8")
+            self.assertIn(
+                "experiments/quair06/kcopy_d2/run_exact_k14.m: missing opts.s = 500",
+                validate_repository(root),
+            )
+
     def test_nested_expression_linear_call_fails(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -142,7 +153,7 @@ class RepositoryVerifierTest(unittest.TestCase):
                 "README.md: contains private-key marker", validate_repository(root)
             )
 
-    def test_superpowers_is_excluded_and_placeholder_home_path_is_allowed(self):
+    def test_superpowers_sdd_is_excluded_and_placeholder_home_path_is_allowed(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.make_fixture(root)
@@ -157,6 +168,18 @@ class RepositoryVerifierTest(unittest.TestCase):
                 encoding="utf-8",
             )
             self.assertEqual(validate_repository(root), [])
+
+    def test_superpowers_policy_file_is_scanned(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_fixture(root)
+            policy = root / ".superpowers/policy.md"
+            policy.parent.mkdir(parents=True)
+            policy.write_text("/home/alice/matlab_codes\n", encoding="utf-8")
+            self.assertIn(
+                f"{Path('.superpowers') / 'policy.md'}: contains personal home path",
+                validate_repository(root),
+            )
 
     def test_linear_relaxation_requires_clear_legacy_labeling(self):
         with tempfile.TemporaryDirectory() as tmp:
