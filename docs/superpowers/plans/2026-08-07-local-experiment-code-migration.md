@@ -665,6 +665,11 @@ git push origin main
 
 Expected: `origin/main` advances to the final local commit.
 
-- [ ] **Step 6: Report deferred remote reconciliation**
+- [x] **Step 6: Record completed remote reconciliation (supersedes the local-only contingency)**
 
-State that quair06 was intentionally not accessed in this phase. The later remote pass must checksum `~/projects/kcopy_d2`, recover any newer `k=5,6` files, update the manifest and results, rerun verification, and push a separate commit.
+The original local-only contingency was superseded after read-only access
+became available. On 2026-08-07, 57 files from the qubit tree and 148 files
+from the general-`d` tree were reconciled, for 205 files total with zero source
+SHA-256 mismatches. Newer `k=5,6` checkpoints and the general-`d` cross-checks
+were classified in the manifests. No remote job was started, stopped, or
+modified during that reconciliation.

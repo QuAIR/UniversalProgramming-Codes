@@ -5,6 +5,15 @@ from `4512790:research_code/results`, with only portable setup and output
 plumbing changed. The live tree was later reconciled read-only; no new SDP run
 occurred during migration or reconciliation.
 
+Only the four `cert_*.m` files below are parameter-specific supported entries
+for their stated canonical points. `gamma_struct3.m`, `gamma_y3.m`, and the
+`diagnostics/gamma_*.m` files are portable implementation templates with
+hard-coded `d=2,k=5,s=500` defaults. They must not be presented as direct
+reproduction commands for canonical results at other parameter values. Exact
+historical wrappers for those rows are indexed in the experiment manifest;
+they remain unsupported provenance snapshots and require reviewed portability
+adaptation before use.
+
 Every MATLAB entry point resolves the repository root from its own location,
 loads `src/matlab`, and calls `up_config` plus `up_setup`. Set `UP_CVX_ROOT`
 and `UP_QETLAB_ROOT` for all MATLAB scripts. The YALMIP entries also require
@@ -30,8 +39,8 @@ MAT filenames are unchanged.
 | `cert_d2_k4.m` | `d=2`, `k=4`, `s=500`, `rng(0)`, 200 fresh channels with `rng(777)` | `certificates/cert_d2_k4.mat` | CVX, QETLAB, MOSEK |
 | `cert_d4_k2.m` | `d=4`, `k=2`, `s=500`, `rng(0)`, 50 fresh channels with `rng(777)` | `certificates/cert_d4_k2.mat` | CVX, QETLAB, MOSEK |
 | `cert_d5_k2.m` | `d=5`, `k=2`, `s=500`, `rng(0)`, 25 fresh channels with `rng(777)` | `certificates/cert_d5_k2.mat` | CVX, QETLAB, MOSEK |
-| `gamma_struct3.m` | `d=2`, `k=5`, `s=500`, `rng(0)`, 50 fresh channels with `rng(777)` | `validated/struct3_d2_k5.mat` | CVX, QETLAB, MOSEK |
-| `gamma_y3.m` | `d=2`, `k=5`, `s=500`, `rng(0)`, 12 fresh channels with `rng(777)` | `validated/y3_d2_k5.mat` | YALMIP, QETLAB, MOSEK |
+| `gamma_struct3.m` (template) | `d=2`, `k=5`, `s=500`, `rng(0)`, 50 fresh channels with `rng(777)` | `validated/struct3_d2_k5.mat`; not the canonical `struct2_d2_k5.mat` producer | CVX, QETLAB, MOSEK |
+| `gamma_y3.m` (template) | `d=2`, `k=5`, `s=500`, `rng(0)`, 12 fresh channels with `rng(777)` | `validated/y3_d2_k5.mat`; not a direct producer of the canonical `d=4,k=4` or `d=5,k=3` artifacts | YALMIP, QETLAB, MOSEK |
 | `validate_fastP.m` | `(d,k)=(2,2),(2,3)`, `rng(0)`, 3 test channels each | prints fast-versus-direct assembly residuals; no MAT output | CVX, QETLAB |
 
 These are retained snapshots of historically validated runs, not a claim that

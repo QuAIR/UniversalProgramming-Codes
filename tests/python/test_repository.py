@@ -250,6 +250,116 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
         "Historical source",
         "Known limitations",
     )
+    EXPECTED_MANIFEST_FACTS = {
+        "UP-ANALYTIC-K1": (
+            "**Status:** `validated`",
+            "`k=1`, `d=2,3,4,5`",
+            "None; analytic evaluation.",
+            "**Sample count:** `0`.",
+            "analytic formula `2d^2-3+2/d^2`",
+            "results/summary.csv",
+            "does not by itself establish a bound uniform in both `d` and `k`",
+        ),
+        "UP-D2-EXACT-K14": (
+            "**Status:** `validated`",
+            "`d=2`, `k=1,2,3,4`",
+            "default SDPT3",
+            "`500` programming samples and `50` fresh-channel checks",
+            "experiments/quair06/kcopy_d2/run_exact_k14.m",
+            "results/certified/kcopy_d2/exact_d2_k4.mat",
+            "not an exact symbolic proof",
+        ),
+        "UP-D2-K5-CANDIDATE": (
+            "**Status:** `diagnostic`",
+            "`d=2`, `k=5`",
+            "SDPT3 in the retained run",
+            "`500` programming samples and `50` fresh-channel checks",
+            "experiments/quair06/kcopy_d2/run_exact_k56.m",
+            "results/diagnostic/quair06_exact_d2_k5_saved_blocks.mat",
+            "does not replace the canonical structured value",
+        ),
+        "UP-D2-K6-CHECKPOINT": (
+            "**Status:** `incomplete`",
+            "`d=2`, `k=6`",
+            "CVX SDP solver",
+            "`500` programming samples and `50` fresh-channel checks",
+            "experiments/quair06/kcopy_d2/run_exact_k56.m",
+            "results/diagnostic/quair06_exact_k56_checkpoint.mat",
+            "No `k=6` objective, feasible point, or certificate",
+        ),
+        "UP-GD-CVX-CANONICAL": (
+            "**Status:** `validated`",
+            "`(d,k)=(2,3),(2,4),(2,5),(3,3),(4,2),(4,3),(5,2)`",
+            "MATLAB, CVX, QETLAB, MOSEK",
+            "fresh checks are `200`",
+            "legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_k5.m",
+            "results/certified/general_d/struct3_d4_k3.mat",
+            "No supported direct entry currently reproduces the structured",
+        ),
+        "UP-GD-YALMIP-LARGE": (
+            "**Status:** `validated`",
+            "`(d,k)=(4,4)` and `(5,3)`",
+            "MATLAB, YALMIP, QETLAB, MOSEK",
+            "`128` and 12 fresh checks",
+            "legacy/server-snapshots/quair06-2026-08-07/pqga/y3_d4k4.m",
+            "results/certified/general_d/y3_d5_k3.mat",
+            "no supported direct entry currently reproduces either canonical row",
+        ),
+        "UP-GD-D3K4-POSTSOLVE": (
+            "**Status:** `diagnostic`",
+            "`d=3`, `k=4`",
+            "CVX or YALMIP, MOSEK",
+            "**Sample count:** `500`.",
+            "legacy/server-snapshots/quair06-2026-08-07/pqga/y_d3k4.m",
+            "legacy/failed-runs/logs/y_d3k4_postsolve_terminated.log",
+            "No full-space or completed reduced-space certificate",
+        ),
+        "UP-DIAGNOSTIC-CROSSCHECKS": (
+            "**Status:** `diagnostic`",
+            "`d=2,3`",
+            "usually SDPT3",
+            "`300`, `500`, or `800`",
+            "legacy/general-d-baseline",
+            "results/logs/brute_d2_k2.log",
+            "do not define rows in `results/summary.csv`",
+        ),
+        "UP-D2-LINEAR-RELAXATION": (
+            "**Status:** `legacy`",
+            "`d=2`, historical `k=1,2,3,4`",
+            "historical CVX solver configuration",
+            "**Sample count:** `500`.",
+            "legacy/linear-relaxation/run_quair06_linear_k14.m",
+            "historical_kcopy_d2_quair06_linear_k14.mat",
+            "is not equivalent to the full k-copy SDP",
+        ),
+        "UP-GD-DEFECTIVE-BASELINE": (
+            "**Status:** `legacy`",
+            "known defective for `k>=3`",
+            "generated variants may select MOSEK",
+            "Historical default `500`",
+            "legacy/general-d-baseline/gamma_k.m",
+            "docs/provenance/legacy-task-5-manifest.json",
+            "`PermuteSystems` convention is defective",
+        ),
+        "UP-FIXED-PROTOCOL-CHECK": (
+            "**Status:** `incomplete`",
+            "`d=2`, attempted `k=1,2,3`",
+            "Historical MATLAB, CVX, QETLAB, SDPT3",
+            "historical deterministic construction",
+            "legacy/failed-runs/fixed_protocol_cost_check.m",
+            "legacy/failed-runs/README.md",
+            "No `k=3` value is claimed",
+        ),
+        "UP-PBT-RECOVERED-CLAIM": (
+            "**Status:** `legacy`",
+            "Historical finite-`k` PBT-bound scripts",
+            "no SDP solve is part of this entry",
+            "Not applicable to the recovered analytic expression",
+            "pqga/pbt_bound/pbt_bound.py",
+            "pqga/pbt_bound/README.md",
+            "was not independently re-proven",
+        ),
+    }
 
     @staticmethod
     def _summary_rows():
@@ -327,6 +437,85 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
                     self.assertFalse(target.startswith(("http://", "https://")))
                     resolved = (ROOT / "docs" / target).resolve()
                     self.assertTrue(resolved.exists(), f"{experiment_id}: {target}")
+
+    def test_manifest_families_encode_expected_scientific_facts(self):
+        sections = self._manifest_sections()
+        self.assertEqual(set(self.EXPECTED_MANIFEST_FACTS), self.EXPECTED_EXPERIMENT_IDS)
+        for experiment_id, expected_facts in self.EXPECTED_MANIFEST_FACTS.items():
+            section = sections[experiment_id]
+            for fact in expected_facts:
+                self.assertIn(fact, section, f"{experiment_id}: {fact}")
+
+    def test_historical_general_d_wrappers_have_recorded_parameters(self):
+        wrappers = {
+            "struct2_k5.m": (2, 5, 500, 50),
+            "struct2_d3k3.m": (3, 3, 500, 50),
+            "struct3_d4k3.m": (4, 3, 500, 50),
+            "y3_d4k4.m": (4, 4, 128, 12),
+            "y3_d5k3.m": (5, 3, 256, 12),
+            "struct2_d3k4.m": (3, 4, 500, 50),
+            "y_d3k4.m": (3, 4, 500, 50),
+        }
+        base = ROOT / "legacy/server-snapshots/quair06-2026-08-07/pqga"
+        for name, (dimension, copies, samples, fresh) in wrappers.items():
+            source = (base / name).read_text(encoding="utf-8")
+            self.assertRegex(source, rf"(?m)^d\s*=\s*{dimension};\s*k\s*=\s*{copies};\s*s\s*=\s*{samples};")
+            self.assertRegex(source, rf"\bnf\s*=\s*{fresh}\s*;")
+
+    def test_summary_artifacts_exist_and_key_rows_are_exact(self):
+        rows = {(row["d"], row["k"]): row for row in self._summary_rows()}
+        for row in rows.values():
+            if row["artifact"]:
+                self.assertTrue((ROOT / row["artifact"]).is_file(), row["artifact"])
+
+        expected = {
+            ("2", "5"): (
+                "1.350907",
+                "validated",
+                "cvx-mosek",
+                "500",
+                "results/certified/general_d/struct2_d2_k5.mat",
+            ),
+            ("3", "4"): (
+                "3.619643",
+                "diagnostic",
+                "yalmip-mosek",
+                "500",
+                "legacy/failed-runs/logs/y_d3k4_postsolve_terminated.log",
+            ),
+            ("4", "4"): (
+                "7.003853",
+                "validated",
+                "yalmip-mosek",
+                "128",
+                "results/certified/general_d/y3_d4_k4.mat",
+            ),
+            ("5", "3"): (
+                "15.410364",
+                "validated",
+                "yalmip-mosek",
+                "256",
+                "results/certified/general_d/y3_d5_k3.mat",
+            ),
+        }
+        for key, values in expected.items():
+            row = rows[key]
+            actual = tuple(row[field] for field in (
+                "gamma", "status", "solver", "sample_count", "artifact"
+            ))
+            self.assertEqual(actual, values, key)
+
+    def test_output_preservation_requires_a_new_results_root(self):
+        root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        run_guide = (ROOT / "experiments/quair06/README.md").read_text(
+            encoding="utf-8"
+        )
+        for text in (root_readme, run_guide):
+            self.assertIn("new `UP_RESULTS_ROOT`", text)
+            self.assertRegex(text, r"truncat(?:e|es)")
+            self.assertRegex(text, r"replace(?:s)? (?:its |the )?PID\s+file")
+            self.assertRegex(text, r"rewrite")
+            self.assertRegex(text, r"recursively\s+delete")
 
     def test_readme_canonical_table_exactly_matches_summary(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")

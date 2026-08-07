@@ -88,8 +88,11 @@ export UP_RESULTS_ROOT="$PWD/results/generated"
 
 The first command runs `k=1,...,4` in the foreground. The second launches the
 expensive `k=5,6` batch, writes a PID and log below `UP_RESULTS_ROOT`, and
-resumes only from completed per-`k` records. Neither launcher deletes existing
-outputs. Both preserve `sample_count=500` and `certFresh=50`.
+resumes only from completed per-`k` records. Neither runner recursively deletes
+an output tree, but reuse of one root can truncate the fixed launcher log,
+replace its PID file, and rewrite MAT, CSV, diary, per-`k`, or failed-row state.
+Use a new `UP_RESULTS_ROOT` to preserve a previous run unchanged. Both batches
+preserve `sample_count=500` and `certFresh=50`.
 
 ## Canonical numerical results
 

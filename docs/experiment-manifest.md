@@ -67,31 +67,31 @@ MAT-level hashes and schemas are in
 
 - **Status:** `validated`
 - **Dimensions and copy counts:** Canonical CVX-MOSEK rows `(d,k)=(2,3),(2,4),(2,5),(3,3),(4,2),(4,3),(5,2)`.
-- **Entry script:** Certificate scripts [`cert_d2_k3.m`](../experiments/quair06/general_d/cert_d2_k3.m), [`cert_d2_k4.m`](../experiments/quair06/general_d/cert_d2_k4.m), [`cert_d4_k2.m`](../experiments/quair06/general_d/cert_d4_k2.m), and [`cert_d5_k2.m`](../experiments/quair06/general_d/cert_d5_k2.m); structured snapshots [`gamma_struct3.m`](../experiments/quair06/general_d/gamma_struct3.m) and [`diagnostics/gamma_struct2.m`](../experiments/quair06/general_d/diagnostics/gamma_struct2.m).
+- **Entry script:** Direct supported entries exist only for `(d,k)=(2,3),(2,4),(4,2),(5,2)`: [`cert_d2_k3.m`](../experiments/quair06/general_d/cert_d2_k3.m), [`cert_d2_k4.m`](../experiments/quair06/general_d/cert_d2_k4.m), [`cert_d4_k2.m`](../experiments/quair06/general_d/cert_d4_k2.m), and [`cert_d5_k2.m`](../experiments/quair06/general_d/cert_d5_k2.m). The exact historical parameter-specific wrappers are [`struct2_k5.m`](../legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_k5.m) for `(2,5)`, [`struct2_d3k3.m`](../legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_d3k3.m) for `(3,3)`, and [`struct3_d4k3.m`](../legacy/server-snapshots/quair06-2026-08-07/pqga/struct3_d4k3.m) for `(4,3)`. They are provenance snapshots, not supported launchers, and require reviewed portability adaptation before use. The portable [`gamma_struct3.m`](../experiments/quair06/general_d/gamma_struct3.m) and [`diagnostics/gamma_struct2.m`](../experiments/quair06/general_d/diagnostics/gamma_struct2.m) are implementation templates with defaults `d=2,k=5,s=500`; they are not direct reproduction scripts for the other rows.
 - **Dependencies and solver:** MATLAB, CVX, QETLAB, MOSEK.
 - **Sample count:** `500`; fresh checks are `200` for `d=2,k=3,4`, `50` for structured records and `d=4,k=2`, and `25` for `d=5,k=2`.
 - **Output artifacts:** [`cert_d2_k3.mat`](../results/certified/general_d/cert_d2_k3.mat), [`cert_d2_k4.mat`](../results/certified/general_d/cert_d2_k4.mat), [`struct2_d2_k5.mat`](../results/certified/general_d/struct2_d2_k5.mat), [`struct2_d3_k3.mat`](../results/certified/general_d/struct2_d3_k3.mat), [`cert_d4_k2.mat`](../results/certified/general_d/cert_d4_k2.mat), [`struct3_d4_k3.mat`](../results/certified/general_d/struct3_d4_k3.mat), and [`cert_d5_k2.mat`](../results/certified/general_d/cert_d5_k2.mat).
 - **Certificate or residual checks:** Depending on the formulation: full-space minimum eigenvalue, Hermiticity, TP and fresh programming residuals, or reduced-space minimum eigenvalue, non-Hermiticity, TP and fresh programming residuals. Exact fields are recorded in the MAT artifact manifest.
 - **Historical source:** Source commit `45127901a920384c3f4ec56f0ecfe15b78028d0a`, historical server result trees, and the 2026-08-07 read-only reconciliation.
-- **Known limitations:** Some committed entry scripts retain one historical hard-coded parameter pair; reproducing another listed pair requires a reviewed parameter change. Reduced-space finite-sample certificates are numerical and must not be described as symbolic all-CPTP proofs.
+- **Known limitations:** No supported direct entry currently reproduces the structured `(2,5)`, `(3,3)`, or `(4,3)` artifacts. Adapting a historical wrapper requires review of paths, output isolation, dimensions, and resource use. Reduced-space finite-sample certificates are numerical and must not be described as symbolic all-CPTP proofs.
 
 ## UP-GD-YALMIP-LARGE
 
 - **Status:** `validated`
 - **Dimensions and copy counts:** Canonical rows `(d,k)=(4,4)` and `(5,3)`; additional remote MAT files cross-check `(4,3)` and `(5,2)`.
-- **Entry script:** [`experiments/quair06/general_d/gamma_y3.m`](../experiments/quair06/general_d/gamma_y3.m).
+- **Entry script:** The exact historical parameter-specific wrappers are [`y3_d4k4.m`](../legacy/server-snapshots/quair06-2026-08-07/pqga/y3_d4k4.m) for `(d,k,s,n_f)=(4,4,128,12)` and [`y3_d5k3.m`](../legacy/server-snapshots/quair06-2026-08-07/pqga/y3_d5k3.m) for `(5,3,256,12)`. They are provenance snapshots, not supported launchers, and require reviewed portability adaptation before use. The portable [`gamma_y3.m`](../experiments/quair06/general_d/gamma_y3.m) is an implementation template with defaults `(d,k,s,n_f)=(2,5,500,12)` and does not directly reproduce either canonical row.
 - **Dependencies and solver:** MATLAB, YALMIP, QETLAB, MOSEK.
 - **Sample count:** `128` and 12 fresh checks for `d=4,k=4`; `256` and 12 fresh checks for `d=5,k=3`.
 - **Output artifacts:** Canonical [`results/certified/general_d/y3_d4_k4.mat`](../results/certified/general_d/y3_d4_k4.mat) and [`y3_d5_k3.mat`](../results/certified/general_d/y3_d5_k3.mat); cross-checks [`quair06_y3_d4_k3.mat`](../results/diagnostic/quair06_y3_d4_k3.mat) and [`quair06_y3_d5_k2.mat`](../results/diagnostic/quair06_y3_d5_k2.mat).
 - **Certificate or residual checks:** Reduced-space minimum eigenvalue, non-Hermiticity, TP residual, and fresh-channel programming residual.
 - **Historical source:** Historical general-`d` server tree and the 2026-08-07 read-only reconciliation.
-- **Known limitations:** These are memory-intensive historical runs. The current script has hard-coded defaults and is a snapshot, not a parameterized launcher. Cross-check MATs are diagnostic and do not create canonical rows.
+- **Known limitations:** These are memory-intensive historical runs, and no supported direct entry currently reproduces either canonical row. Cross-check MATs are diagnostic and do not create canonical rows.
 
 ## UP-GD-D3K4-POSTSOLVE
 
 - **Status:** `diagnostic`
 - **Dimensions and copy counts:** `d=3`, `k=4`.
-- **Entry script:** Historical structured and YALMIP wrappers represented by [`diagnostics/gamma_struct2.m`](../experiments/quair06/general_d/diagnostics/gamma_struct2.m) and [`diagnostics/gamma_y.m`](../experiments/quair06/general_d/diagnostics/gamma_y.m).
+- **Entry script:** Exact historical wrappers [`struct2_d3k4.m`](../legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_d3k4.m) and [`y_d3k4.m`](../legacy/server-snapshots/quair06-2026-08-07/pqga/y_d3k4.m). They are provenance snapshots, not supported launchers, and require reviewed portability adaptation before use. The portable [`diagnostics/gamma_struct2.m`](../experiments/quair06/general_d/diagnostics/gamma_struct2.m) and [`diagnostics/gamma_y.m`](../experiments/quair06/general_d/diagnostics/gamma_y.m) retain `d=2,k=5,s=500` defaults and do not reproduce this row directly.
 - **Dependencies and solver:** MATLAB, QETLAB, CVX or YALMIP, MOSEK.
 - **Sample count:** `500`.
 - **Output artifacts:** [`y_d3k4_postsolve_terminated.log`](../legacy/failed-runs/logs/y_d3k4_postsolve_terminated.log) and [`struct2_d3k4_postsolve_terminated.log`](../legacy/failed-runs/logs/struct2_d3k4_postsolve_terminated.log).
