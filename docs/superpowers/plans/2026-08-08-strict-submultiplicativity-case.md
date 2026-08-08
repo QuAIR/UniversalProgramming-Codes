@@ -1,5 +1,11 @@
 # Strict Submultiplicativity Case Implementation Plan
 
+> **Scope update:** The user reduced the requested publication package to a
+> compact GitHub example. The final implementation keeps one verification
+> function, one runner, one lightweight structural test, and linked README
+> material. The full CVX norm recomputation is optional and is not a release
+> gate.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Restore the historical finite-qubit strict-submultiplicativity example as a supported MATLAB experiment with exact structural certificate checks, a solver-backed numerical norm comparison, tests, and reader-facing documentation.

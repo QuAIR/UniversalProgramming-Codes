@@ -32,6 +32,18 @@ numerical evidence rather than a symbolic all-CPTP proof.
 - **Historical source:** Manuscript analysis and source commit `45127901a920384c3f4ec56f0ecfe15b78028d0a`.
 - **Known limitations:** The single-copy formula does not by itself establish a bound uniform in both `d` and `k`.
 
+## UP-STRICT-SUBMULT-QUBIT
+
+- **Status:** `validated` structural certificate data; the strict norm gap is historical numerical evidence.
+- **Dimensions and copy counts:** Two qubit channels and their tensor-product set.
+- **Entry script:** [`experiments/strict_submultiplicativity/run_strict_submultiplicativity.m`](../experiments/strict_submultiplicativity/run_strict_submultiplicativity.m), calling [`verify_strict_submultiplicativity.m`](../experiments/strict_submultiplicativity/verify_strict_submultiplicativity.m).
+- **Dependencies and solver:** Default structural check: MATLAB and QETLAB. Optional full norm recomputation: CVX and a supported SDP solver.
+- **Sample count:** Not applicable; this is a fixed two-channel set.
+- **Output artifacts:** [`results/certified/strict_submult_C_sparse.tsv`](../results/certified/strict_submult_C_sparse.tsv), containing 360 nonzero rational entries of a `256 x 256` correction matrix.
+- **Certificate or residual checks:** Channel trace preservation, Hermiticity, zero output partial trace, and four program-pair annihilation identities. The retained maximum annihilation residual is approximately `7.7e-18` in double precision.
+- **Historical source:** Local manuscript commits `b73a1de`, `e1af873`, and `dc58b12`.
+- **Known limitations:** The TSV does not include the original one-copy primal solution or matching primal-dual rational norm bounds. It is not by itself a complete rigorous certificate of the strict inequality. See the [case README](../experiments/strict_submultiplicativity/README.md).
+
 ## UP-D2-EXACT-K14
 
 - **Status:** `validated`

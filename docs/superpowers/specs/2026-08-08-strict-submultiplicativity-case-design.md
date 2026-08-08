@@ -1,5 +1,12 @@
 # Strict Submultiplicativity Case Design
 
+## Scope Adjustment
+
+At the user's direction, the publication package is intentionally compact. The
+default entry performs the retained structural checks; the full CVX norm
+recomputation remains an explicit optional mode. No additional certificate
+framework or generated result package is required for the GitHub citation.
+
 ## Purpose
 
 Restore the finite qubit strict-submultiplicativity example as a supported,

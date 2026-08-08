@@ -39,12 +39,22 @@ row space from 500 sampled CPTP maps and checks 50 fresh samples. These finite
 checks are numerical evidence; they are not an exact symbolic certification
 of the full polynomial row space.
 
+## Strict submultiplicativity example
+
+The historical two-channel qubit example, its 360-entry sparse rational
+correction matrix, and a compact MATLAB checker are collected in
+[`experiments/strict_submultiplicativity`](experiments/strict_submultiplicativity).
+The default entry reconstructs the correction and checks its Hermiticity,
+trace-annihilation, and four program-pair annihilation identities. A full CVX
+norm recomputation is available as an optional, more expensive mode.
+
 ## Repository layout
 
 | Path | Contents |
 | --- | --- |
 | [`src/matlab`](src/matlab) | Supported common routines, portable configuration, and the corrected exact qubit solver. |
 | [`experiments/quair06`](experiments/quair06) | Portable batch definitions and general-`d` experiment snapshots. |
+| [`experiments/strict_submultiplicativity`](experiments/strict_submultiplicativity) | Finite-qubit strict-submultiplicativity example and historical correction checker. |
 | [`results`](results) | Canonical table, retained MAT evidence, logs, and the machine-readable artifact manifest. |
 | [`docs/experiment-manifest.md`](docs/experiment-manifest.md) | Status, entry point, dependencies, artifacts, checks, source, and limitations for each experiment family. |
 | [`docs/mathematical-reduction`](docs/mathematical-reduction) | Corrected reduction and its implementation map. |
