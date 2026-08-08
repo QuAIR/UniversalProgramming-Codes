@@ -1,0 +1,24 @@
+source_snapshot=server-read-only-2026-08-07
+sample_count=500
+fresh_certificate_channels=50
+
+k=5 status=diagnostic_numerical_candidate
+preflight basis_dim=132 product_coeff_dim=17424 dense_hermitian_gib=2.262
+brauer_basis_1=132 brauer_basis_2=132 block_grid=4x4
+block_widths_1=1,5,9,5 block_widths_2=1,9,5,5
+hermitian_dimension=8912 tp_rows=5544 programming_rows=54
+warning=linsysolve_nan_or_inf
+solve cost=1.35153816332987 p1=1.17576941409901 p2=0.175768749230858
+certificate min_eig=3.365947e-5 max_nonherm=1.6446e-9 tp_residual=2.48638e-6 fresh_programming_residual=9.96877e-7
+runtime_s=113324.414558
+canonical_optimum=false
+all_cptp_feasibility_certified=false
+
+k=6 status=incomplete
+preflight basis_dim=429 product_coeff_dim=184041 dense_hermitian_gib=252.36
+brauer_basis_1=429 brauer_basis_2=429 block_grid=4x4
+block_widths_1=1,14,6,14 block_widths_2=1,6,14,14
+cost=NaN
+assembly_started=true
+cvx_solve_started=false
+solve_completed=false

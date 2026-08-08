@@ -16,8 +16,8 @@ class RepositoryVerifierTest(unittest.TestCase):
         required = [
             "src/matlab/common/build_walled_brauer.m",
             "src/matlab/kcopy_d2/gamma_k_d2_exact.m",
-            "experiments/quair06/kcopy_d2/run_exact_k14.m",
-            "experiments/quair06/kcopy_d2/run_exact_k56.m",
+            "experiments/server/kcopy_d2/run_exact_k14.m",
+            "experiments/server/kcopy_d2/run_exact_k56.m",
             "docs/experiment-manifest.md",
             "legacy/README.md",
         ]
@@ -57,7 +57,7 @@ class RepositoryVerifierTest(unittest.TestCase):
             encoding="utf-8",
         )
         for name in ("run_exact_k14.m", "run_exact_k56.m"):
-            (root / "experiments/quair06/kcopy_d2" / name).write_text(
+            (root / "experiments/server/kcopy_d2" / name).write_text(
                 "opts.s = 500;\nopts.certFresh = 50;\n", encoding="utf-8"
             )
 
@@ -186,10 +186,10 @@ class RepositoryVerifierTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.make_fixture(root)
-            runner = root / "experiments/quair06/kcopy_d2/run_exact_k14.m"
+            runner = root / "experiments/server/kcopy_d2/run_exact_k14.m"
             runner.write_text("opts.s = 500;\nopts.s = 1;\n", encoding="utf-8")
             self.assertIn(
-                "experiments/quair06/kcopy_d2/run_exact_k14.m: opts.s is below 500",
+                "experiments/server/kcopy_d2/run_exact_k14.m: opts.s is below 500",
                 validate_repository(root),
             )
 
@@ -197,10 +197,10 @@ class RepositoryVerifierTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.make_fixture(root)
-            runner = root / "experiments/quair06/kcopy_d2/run_exact_k14.m"
+            runner = root / "experiments/server/kcopy_d2/run_exact_k14.m"
             runner.write_text("opts.s = 600;\n", encoding="utf-8")
             self.assertIn(
-                "experiments/quair06/kcopy_d2/run_exact_k14.m: missing opts.s = 500",
+                "experiments/server/kcopy_d2/run_exact_k14.m: missing opts.s = 500",
                 validate_repository(root),
             )
 
@@ -208,10 +208,10 @@ class RepositoryVerifierTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.make_fixture(root)
-            runner = root / "experiments/quair06/kcopy_d2/run_exact_k14.m"
+            runner = root / "experiments/server/kcopy_d2/run_exact_k14.m"
             runner.write_text("opts.s = 500;\n", encoding="utf-8")
             self.assertIn(
-                "experiments/quair06/kcopy_d2/run_exact_k14.m: missing opts.certFresh = 50",
+                "experiments/server/kcopy_d2/run_exact_k14.m: missing opts.certFresh = 50",
                 validate_repository(root),
             )
 
@@ -219,13 +219,13 @@ class RepositoryVerifierTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.make_fixture(root)
-            runner = root / "experiments/quair06/kcopy_d2/run_exact_k14.m"
+            runner = root / "experiments/server/kcopy_d2/run_exact_k14.m"
             runner.write_text(
                 "opts.s = 500;\nopts.certFresh = 50;\nopts.certFresh = 49;\n",
                 encoding="utf-8",
             )
             self.assertIn(
-                "experiments/quair06/kcopy_d2/run_exact_k14.m: opts.certFresh is below 50",
+                "experiments/server/kcopy_d2/run_exact_k14.m: opts.certFresh is below 50",
                 validate_repository(root),
             )
 
@@ -233,7 +233,7 @@ class RepositoryVerifierTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.make_fixture(root)
-            runner = root / "experiments/quair06/kcopy_d2/run_exact_k14.m"
+            runner = root / "experiments/server/kcopy_d2/run_exact_k14.m"
             runner.write_text(
                 "opts.s = 500;\n"
                 "result = gamma_k_d2(build_input(alpha(beta)), ...\n"
@@ -241,7 +241,7 @@ class RepositoryVerifierTest(unittest.TestCase):
                 encoding="utf-8",
             )
             self.assertIn(
-                "experiments/quair06/kcopy_d2/run_exact_k14.m: exact runner invokes gamma_k_d2 linear mode",
+                "experiments/server/kcopy_d2/run_exact_k14.m: exact runner invokes gamma_k_d2 linear mode",
                 validate_repository(root),
             )
 
@@ -265,14 +265,14 @@ class RepositoryVerifierTest(unittest.TestCase):
                 "README.md: contains private-key marker", validate_repository(root)
             )
 
-    def test_superpowers_sdd_is_excluded_and_placeholder_home_path_is_allowed(self):
+    def test_workspace_staging_is_excluded_and_placeholder_home_path_is_allowed(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.make_fixture(root)
             (root / "docs/experiment-manifest.md").write_text(
                 "/home/<user>/project\n", encoding="utf-8"
             )
-            staging = root / ".superpowers/sdd"
+            staging = root / ".workspace/staging"
             staging.mkdir(parents=True)
             (staging / "notes.md").write_text(
                 "/home/" + "alice/matlab_codes\n" + "10.4." + "6.4\n"
@@ -281,15 +281,15 @@ class RepositoryVerifierTest(unittest.TestCase):
             )
             self.assertEqual(validate_repository(root), [])
 
-    def test_superpowers_policy_file_is_scanned(self):
+    def test_workspace_policy_file_is_scanned(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.make_fixture(root)
-            policy = root / ".superpowers/policy.md"
+            policy = root / ".workspace/policy.md"
             policy.parent.mkdir(parents=True)
             policy.write_text("/ho" + "me/alice/matlab_codes\n", encoding="utf-8")
             self.assertIn(
-                f"{Path('.superpowers') / 'policy.md'}: contains personal home path",
+                f"{Path('.workspace') / 'policy.md'}: contains personal home path",
                 validate_repository(root),
             )
 

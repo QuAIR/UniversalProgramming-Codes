@@ -26,13 +26,13 @@ class LegacyArchiveTest(unittest.TestCase):
             "legacy/qubit-reduced-prototype/README.md",
             "legacy/qubit-reduced-prototype/gamma_k_d2.m",
             "legacy/qubit-reduced-prototype/run_kcopy_d2.m",
-            "legacy/qubit-reduced-prototype/run_quair06_k14.m",
-            "legacy/qubit-reduced-prototype/run_quair06_k14.sh",
-            "legacy/qubit-reduced-prototype/launch_quair06_k14.sh",
+            "legacy/qubit-reduced-prototype/run_server_k14.m",
+            "legacy/qubit-reduced-prototype/run_server_k14.sh",
+            "legacy/qubit-reduced-prototype/launch_server_k14.sh",
             "legacy/linear-relaxation/README.md",
-            "legacy/linear-relaxation/run_quair06_linear_k14.m",
-            "legacy/linear-relaxation/run_quair06_linear_k14.sh",
-            "legacy/linear-relaxation/launch_quair06_linear_k14.sh",
+            "legacy/linear-relaxation/run_server_linear_k14.m",
+            "legacy/linear-relaxation/run_server_linear_k14.sh",
+            "legacy/linear-relaxation/launch_server_linear_k14.sh",
             "legacy/failed-runs/README.md",
             "legacy/failed-runs/fixed_protocol_cost_check.m",
         )
@@ -65,10 +65,10 @@ class LegacyArchiveTest(unittest.TestCase):
             "legacy/general-d-baseline/generators/gen.sh",
             "legacy/general-d-baseline/generators/genfast.sh",
             "legacy/general-d-baseline/generators/genbrute.sh",
-            "legacy/qubit-reduced-prototype/run_quair06_k14.sh",
-            "legacy/qubit-reduced-prototype/launch_quair06_k14.sh",
-            "legacy/linear-relaxation/run_quair06_linear_k14.sh",
-            "legacy/linear-relaxation/launch_quair06_linear_k14.sh",
+            "legacy/qubit-reduced-prototype/run_server_k14.sh",
+            "legacy/qubit-reduced-prototype/launch_server_k14.sh",
+            "legacy/linear-relaxation/run_server_linear_k14.sh",
+            "legacy/linear-relaxation/launch_server_linear_k14.sh",
         )
         for relative in wrappers:
             source = self.read(relative)
@@ -81,7 +81,7 @@ class LegacyArchiveTest(unittest.TestCase):
         for relative in (wrappers[4], wrappers[6]):
             source = self.read(relative)
             self.assertIn("repo_root", source, relative)
-            self.assertIn("run_quair06", source, relative)
+            self.assertIn("run_server", source, relative)
 
     def test_fixed_protocol_diagnostic_uses_portable_setup_and_recorded_status(self):
         source = self.read("legacy/failed-runs/fixed_protocol_cost_check.m")

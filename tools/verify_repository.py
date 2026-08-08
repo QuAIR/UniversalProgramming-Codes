@@ -19,16 +19,16 @@ VALID_STATUSES = {"validated", "diagnostic", "legacy", "incomplete"}
 REQUIRED_FILES = (
     "src/matlab/common/build_walled_brauer.m",
     "src/matlab/kcopy_d2/gamma_k_d2_exact.m",
-    "experiments/quair06/kcopy_d2/run_exact_k14.m",
-    "experiments/quair06/kcopy_d2/run_exact_k56.m",
+    "experiments/server/kcopy_d2/run_exact_k14.m",
+    "experiments/server/kcopy_d2/run_exact_k56.m",
     "docs/experiment-manifest.md",
     "legacy/README.md",
     "results/mat-artifacts.json",
     "results/summary.csv",
 )
 EXACT_RUNNERS = (
-    "experiments/quair06/kcopy_d2/run_exact_k14.m",
-    "experiments/quair06/kcopy_d2/run_exact_k56.m",
+    "experiments/server/kcopy_d2/run_exact_k14.m",
+    "experiments/server/kcopy_d2/run_exact_k56.m",
 )
 POSIX_PERSONAL_HOME = re.compile(
     r"(?<![\w/])/(?:home|Users)/[A-Za-z0-9][A-Za-z0-9._-]*(?=/|$)"
@@ -69,7 +69,11 @@ def _text_files(root: Path):
         relative = path.relative_to(root)
         if relative.parts and relative.parts[0] == ".git":
             continue
-        if relative.parts[:2] == (".superpowers", "sdd"):
+        if (
+            len(relative.parts) >= 2
+            and relative.parts[0].startswith(".")
+            and relative.parts[1] in {"sdd", "staging"}
+        ):
             continue
         if path.is_file() and path.suffix.lower() in TEXT_SUFFIXES:
             yield path

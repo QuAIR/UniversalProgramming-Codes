@@ -29,8 +29,8 @@ CERTIFIED_GENERAL_D = {
 }
 EXACT_D2 = {f"exact_d2_k{k}.mat" for k in range(1, 5)}
 DIAGNOSTIC_MATS = {
-    "historical_kcopy_d2_quair06_exact_k14.mat",
-    "historical_kcopy_d2_quair06_linear_k14.mat",
+    "historical_kcopy_d2_server_exact_k14.mat",
+    "historical_kcopy_d2_server_linear_k14.mat",
     "historical_results_brute_d2_k1_s500_r0.mat",
     "historical_results_brute_d2_k3_s300_r0.mat",
     "historical_results_gamma_d2_k1_s500_r0.mat",
@@ -50,16 +50,16 @@ DIAGNOSTIC_MATS = {
     "historical_results_struct_d2_k4.mat",
     "historical_results_yalmip_d2_k3.mat",
     "historical_results_yalmip_d2_k4.mat",
-    "quair06_exact_d2_k5_saved_blocks.mat",
-    "quair06_exact_k56_checkpoint.mat",
-    "quair06_full_vs_linear_k1_k3.mat",
-    "quair06_struct2_d3_k1.mat",
-    "quair06_struct2_d3_k2.mat",
-    "quair06_struct3_d4_k1.mat",
-    "quair06_struct3_d4_k2.mat",
-    "quair06_y3_d4_k3.mat",
-    "quair06_y3_d5_k2.mat",
-    "quair06_yalmip_d3_k2.mat",
+    "server_exact_d2_k5_saved_blocks.mat",
+    "server_exact_k56_checkpoint.mat",
+    "server_full_vs_linear_k1_k3.mat",
+    "server_struct2_d3_k1.mat",
+    "server_struct2_d3_k2.mat",
+    "server_struct3_d4_k1.mat",
+    "server_struct3_d4_k2.mat",
+    "server_y3_d4_k3.mat",
+    "server_y3_d5_k2.mat",
+    "server_yalmip_d3_k2.mat",
 }
 EXPECTED_COSTS = {
     (2, 1): "5.500000", (2, 2): "2.713330", (2, 3): "1.888291",
@@ -156,7 +156,7 @@ class ResultsPackageTest(unittest.TestCase):
             source = entry["source"]
             self.assertRegex(entry["source"]["sha256"], r"^[0-9a-f]{64}$")
             if source.get("snapshot_date") == "2026-08-07":
-                self.assertIn(source["source_root"], {"primary", "pqga-full"})
+                self.assertIn(source["source_root"], {"qubit", "general-d"})
                 self.assertNotIn("git_blob_sha1", source)
                 self.assertTrue(source["live_hash_verified"])
             else:
@@ -224,7 +224,7 @@ class ResultsPackageTest(unittest.TestCase):
         self.assertIn("results/logs/brute_d2_k2.log", readme)
 
     def test_exact_aggregate_records_documented_path_sanitization(self):
-        target = "results/diagnostic/historical_kcopy_d2_quair06_exact_k14.mat"
+        target = "results/diagnostic/historical_kcopy_d2_server_exact_k14.mat"
         entry = next(
             item for item in self._manifest()["artifacts"] if item["path"] == target
         )
@@ -252,15 +252,15 @@ class ResultsPackageTest(unittest.TestCase):
             capture_output=True,
             check=True,
         ).stdout.split(b"\0")
-        # Split precise personal markers so this test does not flag its own
-        # fixture while still scanning every tracked artifact, log, and MAT.
+        # Text files receive generic path checks in verify_repository.py. This
+        # byte scan also covers paths embedded in binary MAT artifacts.
         forbidden = (
-            b"/ho" + b"me/mingrui/",
-            b"C:\\Use" + b"rs\\johni\\",
+            b"/home/",
+            b":\\Users\\",
         )
         for raw_path in filter(None, tracked):
             path = ROOT / os.fsdecode(raw_path)
-            if not path.is_file():
+            if not path.is_file() or path.suffix.lower() != ".mat":
                 continue
             content = path.read_bytes()
             self.assertFalse(any(token in content for token in forbidden), raw_path)

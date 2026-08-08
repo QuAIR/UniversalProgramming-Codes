@@ -3,6 +3,7 @@
 import csv
 from pathlib import Path
 import re
+import subprocess
 import sys
 import unittest
 
@@ -19,18 +20,37 @@ from verify_repository import (
 
 class SupportedSourceTest(unittest.TestCase):
     GENERAL_D_ENTRY_POINTS = {
-        "experiments/quair06/general_d/cert_d2_k3.m": (False, 3),
-        "experiments/quair06/general_d/cert_d2_k4.m": (False, 3),
-        "experiments/quair06/general_d/cert_d4_k2.m": (False, 3),
-        "experiments/quair06/general_d/cert_d5_k2.m": (False, 3),
-        "experiments/quair06/general_d/gamma_struct3.m": (False, 3),
-        "experiments/quair06/general_d/gamma_y3.m": (True, 3),
-        "experiments/quair06/general_d/validate_fastP.m": (False, 3),
-        "experiments/quair06/general_d/diagnostics/gamma_struct.m": (False, 4),
-        "experiments/quair06/general_d/diagnostics/gamma_struct2.m": (False, 4),
-        "experiments/quair06/general_d/diagnostics/gamma_y.m": (True, 4),
-        "experiments/quair06/general_d/diagnostics/probe_d4k4.m": (False, 4),
+        "experiments/server/general_d/cert_d2_k3.m": (False, 3),
+        "experiments/server/general_d/cert_d2_k4.m": (False, 3),
+        "experiments/server/general_d/cert_d4_k2.m": (False, 3),
+        "experiments/server/general_d/cert_d5_k2.m": (False, 3),
+        "experiments/server/general_d/gamma_struct3.m": (False, 3),
+        "experiments/server/general_d/gamma_y3.m": (True, 3),
+        "experiments/server/general_d/validate_fastP.m": (False, 3),
+        "experiments/server/general_d/diagnostics/gamma_struct.m": (False, 4),
+        "experiments/server/general_d/diagnostics/gamma_struct2.m": (False, 4),
+        "experiments/server/general_d/diagnostics/gamma_y.m": (True, 4),
+        "experiments/server/general_d/diagnostics/probe_d4k4.m": (False, 4),
     }
+
+    def test_public_tree_uses_generic_server_names(self):
+        numbered_host = re.compile(
+            r"\b(?:server|host|node|compute)\d+\b", re.IGNORECASE
+        )
+        text_suffixes = {
+            ".csv", ".json", ".m", ".md", ".py", ".sh", ".tex", ".txt"
+        }
+        tracked = subprocess.check_output(
+            ["git", "ls-files", "-z"], cwd=ROOT
+        ).decode("utf-8").split("\0")
+        for relative in filter(None, tracked):
+            path = ROOT / relative
+            if not path.is_file():
+                continue
+            self.assertIsNone(numbered_host.search(relative), relative)
+            if path.suffix.lower() in text_suffixes:
+                source = path.read_text(encoding="utf-8", errors="replace")
+                self.assertIsNone(numbered_host.search(source), relative)
 
     def _read_general_d(self, relative):
         path = ROOT / relative
@@ -68,7 +88,7 @@ class SupportedSourceTest(unittest.TestCase):
     def _assert_mat_output_contract(self, relative, source, segment, output_pattern):
         output_dir_pattern = (
             rf"(?m)^[ \t]*outputDir[ \t]*=[ \t]*fullfile\(cfg\.resultsRoot[ \t]*,[ \t]*"
-            rf"[\"']quair06[\"'][ \t]*,[ \t]*[\"']general_d[\"'][ \t]*,[ \t]*[\"']{segment}[\"']\);[ \t]*$"
+            rf"[\"']server[\"'][ \t]*,[ \t]*[\"']general_d[\"'][ \t]*,[ \t]*[\"']{segment}[\"']\);[ \t]*$"
         )
         self.assertRegex(source, output_dir_pattern, relative)
         self.assertRegex(
@@ -149,36 +169,36 @@ class SupportedSourceTest(unittest.TestCase):
 
     def test_general_d_entry_points_have_explicit_portable_contract(self):
         outputs = {
-            "experiments/quair06/general_d/cert_d2_k3.m": (
+            "experiments/server/general_d/cert_d2_k3.m": (
                 "certificates",
                 "cert_d2_k3.mat",
             ),
-            "experiments/quair06/general_d/cert_d2_k4.m": (
+            "experiments/server/general_d/cert_d2_k4.m": (
                 "certificates",
                 "cert_d2_k4.mat",
             ),
-            "experiments/quair06/general_d/cert_d4_k2.m": (
+            "experiments/server/general_d/cert_d4_k2.m": (
                 "certificates",
                 "cert_d4_k2.mat",
             ),
-            "experiments/quair06/general_d/cert_d5_k2.m": (
+            "experiments/server/general_d/cert_d5_k2.m": (
                 "certificates",
                 "cert_d5_k2.mat",
             ),
-            "experiments/quair06/general_d/gamma_struct3.m": (
+            "experiments/server/general_d/gamma_struct3.m": (
                 "validated",
                 "struct3_d%d_k%d.mat",
             ),
-            "experiments/quair06/general_d/gamma_y3.m": ("validated", "y3_d%d_k%d.mat"),
-            "experiments/quair06/general_d/diagnostics/gamma_struct.m": (
+            "experiments/server/general_d/gamma_y3.m": ("validated", "y3_d%d_k%d.mat"),
+            "experiments/server/general_d/diagnostics/gamma_struct.m": (
                 "diagnostics",
                 "struct_d%d_k%d.mat",
             ),
-            "experiments/quair06/general_d/diagnostics/gamma_struct2.m": (
+            "experiments/server/general_d/diagnostics/gamma_struct2.m": (
                 "diagnostics",
                 "struct2_d%d_k%d.mat",
             ),
-            "experiments/quair06/general_d/diagnostics/gamma_y.m": (
+            "experiments/server/general_d/diagnostics/gamma_y.m": (
                 "diagnostics",
                 "yalmip_d%d_k%d.mat",
             ),
@@ -221,7 +241,7 @@ class SupportedSourceTest(unittest.TestCase):
             "fres",
         )
         for name, (dimension, copies, fresh_channels) in certificates.items():
-            relative = f"experiments/quair06/general_d/{name}"
+            relative = f"experiments/server/general_d/{name}"
             source = self._read_general_d(relative)
             self.assertEqual(
                 re.findall(r"\bd\s*=\s*(\d+)\s*;", source), [str(dimension)], relative
@@ -247,31 +267,31 @@ class SupportedSourceTest(unittest.TestCase):
 
     def test_general_d_gamma_defaults_solver_seeds_and_outputs(self):
         gamma_scripts = {
-            "experiments/quair06/general_d/gamma_struct3.m": (
+            "experiments/server/general_d/gamma_struct3.m": (
                 "validated",
                 "struct3_d%d_k%d.mat",
                 "cvx",
                 50,
             ),
-            "experiments/quair06/general_d/gamma_y3.m": (
+            "experiments/server/general_d/gamma_y3.m": (
                 "validated",
                 "y3_d%d_k%d.mat",
                 "yalmip",
                 12,
             ),
-            "experiments/quair06/general_d/diagnostics/gamma_struct.m": (
+            "experiments/server/general_d/diagnostics/gamma_struct.m": (
                 "diagnostics",
                 "struct_d%d_k%d.mat",
                 "cvx",
                 50,
             ),
-            "experiments/quair06/general_d/diagnostics/gamma_struct2.m": (
+            "experiments/server/general_d/diagnostics/gamma_struct2.m": (
                 "diagnostics",
                 "struct2_d%d_k%d.mat",
                 "cvx",
                 50,
             ),
-            "experiments/quair06/general_d/diagnostics/gamma_y.m": (
+            "experiments/server/general_d/diagnostics/gamma_y.m": (
                 "diagnostics",
                 "yalmip_d%d_k%d.mat",
                 "yalmip",
@@ -327,6 +347,7 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
         "UP-GD-DEFECTIVE-BASELINE",
         "UP-FIXED-PROTOCOL-CHECK",
         "UP-PBT-RECOVERED-CLAIM",
+        "UP-STRICT-SUBMULT-QUBIT",
     }
     REQUIRED_MANIFEST_FIELDS = (
         "Status",
@@ -469,7 +490,7 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "solver": ("CVX", "QETLAB", "default SDPT3"),
             "samples": ("`500` programming samples", "`50` fresh-channel checks"),
             "entries": (
-                "../experiments/quair06/kcopy_d2/run_exact_k14.m",
+                "../experiments/server/kcopy_d2/run_exact_k14.m",
                 "../src/matlab/kcopy_d2/gamma_k_d2_exact.m",
             ),
             "outputs": tuple(
@@ -482,11 +503,11 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "dimensions": ("`d=2`", "`k=5`"),
             "solver": ("CVX", "QETLAB", "SDPT3"),
             "samples": ("`500` programming samples", "`50` fresh-channel checks"),
-            "entries": ("../experiments/quair06/kcopy_d2/run_exact_k56.m",),
+            "entries": ("../experiments/server/kcopy_d2/run_exact_k56.m",),
             "outputs": (
-                "../results/diagnostic/quair06_exact_d2_k5_saved_blocks.mat",
-                "../results/logs/quair06_exact_k56_checkpoint.log",
-                "../results/logs/quair06_exact_k56_checkpoint.csv",
+                "../results/diagnostic/server_exact_d2_k5_saved_blocks.mat",
+                "../results/logs/server_exact_k56_checkpoint.log",
+                "../results/logs/server_exact_k56_checkpoint.csv",
             ),
             "limitations": (
                 "`diagnostic_numerical_candidate`",
@@ -498,11 +519,11 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "dimensions": ("`d=2`", "`k=6`"),
             "solver": ("CVX SDP solver", "no completed solve"),
             "samples": ("`500` programming samples", "`50` fresh-channel checks"),
-            "entries": ("../experiments/quair06/kcopy_d2/run_exact_k56.m",),
+            "entries": ("../experiments/server/kcopy_d2/run_exact_k56.m",),
             "outputs": (
-                "../results/diagnostic/quair06_exact_k56_checkpoint.mat",
-                "../results/logs/quair06_exact_k56_checkpoint.log",
-                "../results/logs/quair06_exact_k56_checkpoint.csv",
+                "../results/diagnostic/server_exact_k56_checkpoint.mat",
+                "../results/logs/server_exact_k56_checkpoint.log",
+                "../results/logs/server_exact_k56_checkpoint.csv",
             ),
             "limitations": ("No `k=6` objective, feasible point, or certificate",),
         },
@@ -517,15 +538,15 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
                 "`25` for `d=5,k=2`",
             ),
             "entries": (
-                "../experiments/quair06/general_d/cert_d2_k3.m",
-                "../experiments/quair06/general_d/cert_d2_k4.m",
-                "../experiments/quair06/general_d/cert_d4_k2.m",
-                "../experiments/quair06/general_d/cert_d5_k2.m",
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_k5.m",
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_d3k3.m",
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/struct3_d4k3.m",
-                "../experiments/quair06/general_d/gamma_struct3.m",
-                "../experiments/quair06/general_d/diagnostics/gamma_struct2.m",
+                "../experiments/server/general_d/cert_d2_k3.m",
+                "../experiments/server/general_d/cert_d2_k4.m",
+                "../experiments/server/general_d/cert_d4_k2.m",
+                "../experiments/server/general_d/cert_d5_k2.m",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/struct2_k5.m",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/struct2_d3k3.m",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/struct3_d4k3.m",
+                "../experiments/server/general_d/gamma_struct3.m",
+                "../experiments/server/general_d/diagnostics/gamma_struct2.m",
             ),
             "outputs": tuple(
                 f"../results/certified/general_d/{name}"
@@ -550,15 +571,15 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "solver": ("MATLAB, YALMIP, QETLAB, MOSEK",),
             "samples": ("`128` and 12 fresh checks", "`256` and 12 fresh checks"),
             "entries": (
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/y3_d4k4.m",
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/y3_d5k3.m",
-                "../experiments/quair06/general_d/gamma_y3.m",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/y3_d4k4.m",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/y3_d5k3.m",
+                "../experiments/server/general_d/gamma_y3.m",
             ),
             "outputs": (
                 "../results/certified/general_d/y3_d4_k4.mat",
                 "../results/certified/general_d/y3_d5_k3.mat",
-                "../results/diagnostic/quair06_y3_d4_k3.mat",
-                "../results/diagnostic/quair06_y3_d5_k2.mat",
+                "../results/diagnostic/server_y3_d4_k3.mat",
+                "../results/diagnostic/server_y3_d5_k2.mat",
             ),
             "limitations": (
                 "no supported direct entry currently reproduces either canonical row",
@@ -571,10 +592,10 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "solver": ("CVX or YALMIP", "MOSEK"),
             "samples": ("`500`",),
             "entries": (
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/struct2_d3k4.m",
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/y_d3k4.m",
-                "../experiments/quair06/general_d/diagnostics/gamma_struct2.m",
-                "../experiments/quair06/general_d/diagnostics/gamma_y.m",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/struct2_d3k4.m",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/y_d3k4.m",
+                "../experiments/server/general_d/diagnostics/gamma_struct2.m",
+                "../experiments/server/general_d/diagnostics/gamma_y.m",
             ),
             "outputs": (
                 "../legacy/failed-runs/logs/y_d3k4_postsolve_terminated.log",
@@ -590,7 +611,7 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "entries": (
                 "../legacy/general-d-baseline",
                 "../legacy/failed-runs",
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/gamma_run_d3_k2_s800_r1.m",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/gamma_run_d3_k2_s800_r1.m",
             ),
             "outputs": (
                 "../results/logs/brute_d2_k2.log",
@@ -605,10 +626,10 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "dimensions": ("`d=2`", "`k=1,2,3,4`"),
             "solver": ("MATLAB, CVX, QETLAB", "historical CVX solver configuration"),
             "samples": ("`500`",),
-            "entries": ("../legacy/linear-relaxation/run_quair06_linear_k14.m",),
+            "entries": ("../legacy/linear-relaxation/run_server_linear_k14.m",),
             "outputs": (
-                "../results/diagnostic/historical_kcopy_d2_quair06_linear_k14.mat",
-                "../results/diagnostic/quair06_full_vs_linear_k1_k3.mat",
+                "../results/diagnostic/historical_kcopy_d2_server_linear_k14.mat",
+                "../results/diagnostic/server_full_vs_linear_k1_k3.mat",
             ),
             "limitations": (
                 "lower-bound relaxation",
@@ -651,15 +672,32 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "solver": ("no SDP solve is part of this entry",),
             "samples": ("Not applicable", "recovered analytic expression"),
             "entries": (
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/pbt_bound/pbt_bound.py",
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/pbt_bound/make_fig3.py",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/pbt_bound/pbt_bound.py",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/pbt_bound/make_fig3.py",
             ),
             "outputs": (
-                "../legacy/server-snapshots/quair06-2026-08-07/pqga/pbt_bound/README.md",
+                "../legacy/server-snapshots/server-2026-08-07/general-d/pbt_bound/README.md",
             ),
             "limitations": (
                 "was not independently re-proven",
                 "does not establish the converse",
+            ),
+        },
+        "UP-STRICT-SUBMULT-QUBIT": {
+            "status": "validated",
+            "dimensions": ("Two qubit channels", "tensor-product set"),
+            "solver": ("MATLAB and QETLAB", "CVX"),
+            "samples": ("Not applicable",),
+            "entries": (
+                "../experiments/strict_submultiplicativity/run_strict_submultiplicativity.m",
+                "../experiments/strict_submultiplicativity/verify_strict_submultiplicativity.m",
+            ),
+            "outputs": (
+                "../results/certified/strict_submult_C_sparse.tsv",
+            ),
+            "limitations": (
+                "does not include the original one-copy primal solution",
+                "not by itself a complete rigorous certificate",
             ),
         },
     }
@@ -700,12 +738,12 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "docs/experiment-manifest.md",
             "docs/mathematical-reduction/MATH_REFERENCE.md",
             "docs/provenance/README.md",
-            "docs/provenance/quair06-live-inventory.json",
-            "experiments/quair06/README.md",
-            "experiments/quair06/kcopy_d2/run_exact_k14.m",
-            "experiments/quair06/kcopy_d2/run_exact_k56.m",
-            "experiments/quair06/general_d/gamma_struct3.m",
-            "experiments/quair06/general_d/gamma_y3.m",
+            "docs/provenance/server-live-inventory.json",
+            "experiments/server/README.md",
+            "experiments/server/kcopy_d2/run_exact_k14.m",
+            "experiments/server/kcopy_d2/run_exact_k56.m",
+            "experiments/server/general_d/gamma_struct3.m",
+            "experiments/server/general_d/gamma_y3.m",
             "results/mat-artifacts.json",
             "results/summary.csv",
         )
@@ -791,7 +829,7 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "struct2_d3k4.m": (3, 4, 500, 50, "cvx", "struct2_d%d_k%d.mat"),
             "y_d3k4.m": (3, 4, 500, 50, "yalmip", "yalmip_d%d_k%d.mat"),
         }
-        base = ROOT / "legacy/server-snapshots/quair06-2026-08-07/pqga"
+        base = ROOT / "legacy/server-snapshots/server-2026-08-07/general-d"
         for name, (
             dimension,
             copies,
@@ -831,7 +869,7 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
             "run_exact_k56.m": "ks = [5; 6];",
         }
         for name, copies in runners.items():
-            source = (ROOT / "experiments/quair06/kcopy_d2" / name).read_text(
+            source = (ROOT / "experiments/server/kcopy_d2" / name).read_text(
                 encoding="ascii"
             )
             self.assertIn("opts.solver = cfg.solver;", source, name)
@@ -853,7 +891,7 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
 
     def test_output_preservation_requires_a_new_results_root(self):
         root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        run_guide = (ROOT / "experiments/quair06/README.md").read_text(encoding="utf-8")
+        run_guide = (ROOT / "experiments/server/README.md").read_text(encoding="utf-8")
         for text in (root_readme, run_guide):
             self.assertIn("new `UP_RESULTS_ROOT`", text)
             self.assertRegex(text, r"truncat(?:e|es)")
@@ -883,12 +921,12 @@ class PublicDocumentationIntegrationTest(unittest.TestCase):
 
     def test_live_reconciliation_is_linked_and_factual(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        run_guide = (ROOT / "experiments/quair06/README.md").read_text(encoding="utf-8")
+        run_guide = (ROOT / "experiments/server/README.md").read_text(encoding="utf-8")
         for text in (readme, run_guide):
             self.assertIn("205 files", text)
             self.assertRegex(text, r"zero\s+source\s+SHA-256\s+mismatches")
             self.assertIn("No remote job was started, stopped, or modified", text)
-            self.assertIn("quair06-live-inventory.json", text)
+            self.assertIn("server-live-inventory.json", text)
 
     def test_complete_repository_passes_static_verifier(self):
         self.assertEqual(validate_repository(ROOT), [])

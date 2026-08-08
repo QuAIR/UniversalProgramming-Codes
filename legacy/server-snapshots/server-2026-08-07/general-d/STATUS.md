@@ -1,6 +1,4 @@
-# Historical snapshot: general-d run status (recall manifest)
-
-This sanitized snapshot records the server state at the cited dates. Its "RUNNING" labels are historical and do not describe current activity.
+# general-d run status (recall manifest)
 Updated 2026-06-13.
 
 DONE/CERTIFIED: gamma_k(CPTP,2) k=1..5; gamma_2(CPTP,d) d=2..5;

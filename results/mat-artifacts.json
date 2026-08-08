@@ -1183,7 +1183,7 @@
                           "current_sha256":  "9a9a167518f5858b366a42dd166bca69a9dc981846d58451fa6da40e3215f41d",
                           "source":  {
                                          "commit":  "45127901a920384c3f4ec56f0ecfe15b78028d0a",
-                                         "path":  "research_code/results/kcopy_d2_quair06/results_exact/exact_d2_k1.mat",
+                                         "path":  "research_code/results/kcopy_d2_server/results_exact/exact_d2_k1.mat",
                                          "sha256":  "9a9a167518f5858b366a42dd166bca69a9dc981846d58451fa6da40e3215f41d",
                                          "git_blob_sha1":  "60ea26c45ecf2aff646c93021a56fceb4d4499da"
                                      },
@@ -1323,7 +1323,7 @@
                           "current_sha256":  "8811e4248ce79edb2429c1c8350e4cac908209ed6dc53abfc041d17139984754",
                           "source":  {
                                          "commit":  "45127901a920384c3f4ec56f0ecfe15b78028d0a",
-                                         "path":  "research_code/results/kcopy_d2_quair06/results_exact/exact_d2_k2.mat",
+                                         "path":  "research_code/results/kcopy_d2_server/results_exact/exact_d2_k2.mat",
                                          "sha256":  "8811e4248ce79edb2429c1c8350e4cac908209ed6dc53abfc041d17139984754",
                                          "git_blob_sha1":  "a3ba00d80c2acadde2d2fbf4c3269ea51a00222b"
                                      },
@@ -1463,7 +1463,7 @@
                           "current_sha256":  "e79b1c8486f87078b1d8cd3a84c977adb87330557aceac6affcd641acfe0ce34",
                           "source":  {
                                          "commit":  "45127901a920384c3f4ec56f0ecfe15b78028d0a",
-                                         "path":  "research_code/results/kcopy_d2_quair06/results_exact/exact_d2_k3.mat",
+                                         "path":  "research_code/results/kcopy_d2_server/results_exact/exact_d2_k3.mat",
                                          "sha256":  "e79b1c8486f87078b1d8cd3a84c977adb87330557aceac6affcd641acfe0ce34",
                                          "git_blob_sha1":  "27ff6321d818dd716e7db4fd374e297d1c8bdda1"
                                      },
@@ -1603,7 +1603,7 @@
                           "current_sha256":  "0c6a1b7d32990ce049391035f8fb968ed790b657898d8ff5590f532183fb8be3",
                           "source":  {
                                          "commit":  "45127901a920384c3f4ec56f0ecfe15b78028d0a",
-                                         "path":  "research_code/results/kcopy_d2_quair06/results_exact/exact_d2_k4.mat",
+                                         "path":  "research_code/results/kcopy_d2_server/results_exact/exact_d2_k4.mat",
                                          "sha256":  "0c6a1b7d32990ce049391035f8fb968ed790b657898d8ff5590f532183fb8be3",
                                          "git_blob_sha1":  "b1f01deb44e85545da2a6c7142abd48d0d34de24"
                                      },
@@ -1738,12 +1738,12 @@
                                      ]
                       },
                       {
-                          "path":  "results/diagnostic/historical_kcopy_d2_quair06_exact_k14.mat",
+                          "path":  "results/diagnostic/historical_kcopy_d2_server_exact_k14.mat",
                           "classification":  "diagnostic",
                           "current_sha256":  "cead3ef6e3ed471d862feccdf030c228bac9951479eb275f12aef4315ab2ab73",
                           "source":  {
                                          "commit":  "45127901a920384c3f4ec56f0ecfe15b78028d0a",
-                                         "path":  "research_code/results/kcopy_d2_quair06/kcopy_d2_quair06_exact_k14.mat",
+                                         "path":  "research_code/results/kcopy_d2_server/kcopy_d2_server_exact_k14.mat",
                                          "sha256":  "7c6a54ad675fe91986516cebe9edb37f0023250e19052eecb8df0cab3dff2002",
                                          "git_blob_sha1":  "e7f1cee67a030b07b747614a2b600b862d5daa05"
                                      },
@@ -1777,12 +1777,12 @@
                                            }
                       },
                       {
-                          "path":  "results/diagnostic/historical_kcopy_d2_quair06_linear_k14.mat",
+                          "path":  "results/diagnostic/historical_kcopy_d2_server_linear_k14.mat",
                           "classification":  "diagnostic",
                           "current_sha256":  "2b3dc664af9676cf06d665ac7df4b9033cb050fcc579778322d4bdd02f2a6c3f",
                           "source":  {
                                          "commit":  "45127901a920384c3f4ec56f0ecfe15b78028d0a",
-                                         "path":  "research_code/results/kcopy_d2_quair06/kcopy_d2_quair06_linear_k14.mat",
+                                         "path":  "research_code/results/kcopy_d2_server/kcopy_d2_server_linear_k14.mat",
                                          "sha256":  "2b3dc664af9676cf06d665ac7df4b9033cb050fcc579778322d4bdd02f2a6c3f",
                                          "git_blob_sha1":  "fdf4c7c76329c057391e64917d8039e1cb04b2e8"
                                      },
@@ -2425,13 +2425,13 @@
                                         ]
                       },
                       {
-                          "path":  "results/diagnostic/quair06_exact_d2_k5_saved_blocks.mat",
+                          "path":  "results/diagnostic/server_exact_d2_k5_saved_blocks.mat",
                           "classification":  "diagnostic",
                           "diagnostic_type":  "numerical_candidate",
                           "current_sha256":  "34e0237e6df364836066f493c7b6f49d0d1ed432f4c536d4562b59c933299ce6",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
-                                         "source_root":  "primary",
+                                         "source_root":  "qubit",
                                          "path":  "results_exact_k56/exact_d2_k5.mat",
                                          "sha256":  "34e0237e6df364836066f493c7b6f49d0d1ed432f4c536d4562b59c933299ce6",
                                          "live_hash_verified":  true
@@ -2512,14 +2512,14 @@
                                      ]
                       },
                       {
-                          "path":  "results/diagnostic/quair06_exact_k56_checkpoint.mat",
+                          "path":  "results/diagnostic/server_exact_k56_checkpoint.mat",
                           "classification":  "diagnostic",
                           "diagnostic_type":  "checkpoint_k5_complete_k6_incomplete",
                           "current_sha256":  "fa4cdfbb8acb67fa3c6b8082d3b54a8f75d86758acd061554502d4c4bb44c874",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
-                                         "source_root":  "primary",
-                                         "path":  "kcopy_d2_quair06_exact_k56_partial.mat",
+                                         "source_root":  "qubit",
+                                         "path":  "kcopy_d2_server_exact_k56_partial.mat",
                                          "sha256":  "feddeaab294590d1a46f0210bda5833634ebae645fb730dd09f320a65770340c",
                                          "live_hash_verified":  true
                                      },
@@ -2563,14 +2563,14 @@
                                            }
                       },
                       {
-                          "path":  "results/diagnostic/quair06_full_vs_linear_k1_k3.mat",
+                          "path":  "results/diagnostic/server_full_vs_linear_k1_k3.mat",
                           "classification":  "diagnostic",
                           "diagnostic_type":  "historical_full_vs_linear_comparison",
                           "current_sha256":  "9e2a56ebf95ee395f244ec0c1782ed9dd4766413e5c855b7b5f141327ef4eeb3",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
-                                         "source_root":  "primary",
-                                         "path":  "kcopy_d2_quair06_k14_partial.mat",
+                                         "source_root":  "qubit",
+                                         "path":  "kcopy_d2_server_k14_partial.mat",
                                          "sha256":  "9e2a56ebf95ee395f244ec0c1782ed9dd4766413e5c855b7b5f141327ef4eeb3",
                                          "live_hash_verified":  true
                                      },
@@ -2618,13 +2618,13 @@
                                      ]
                       },
                       {
-                          "path":  "results/diagnostic/quair06_struct2_d3_k1.mat",
+                          "path":  "results/diagnostic/server_struct2_d3_k1.mat",
                           "classification":  "diagnostic",
                           "diagnostic_type":  "full_space_crosscheck",
                           "current_sha256":  "ed62fa29d6e28f600f0e8861ea039c23cdfca9883eb21b976f1bc3401cf9611d",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
-                                         "source_root":  "pqga-full",
+                                         "source_root":  "general-d",
                                          "path":  "results/struct2_d3_k1.mat",
                                          "sha256":  "ed62fa29d6e28f600f0e8861ea039c23cdfca9883eb21b976f1bc3401cf9611d",
                                          "live_hash_verified":  true
@@ -2716,13 +2716,13 @@
                                      ]
                       },
                       {
-                          "path":  "results/diagnostic/quair06_struct2_d3_k2.mat",
+                          "path":  "results/diagnostic/server_struct2_d3_k2.mat",
                           "classification":  "diagnostic",
                           "diagnostic_type":  "full_space_crosscheck",
                           "current_sha256":  "d28ed60909fd6ba674fb13a0303d5cc33e6b63ee42b88501a362942d2710f912",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
-                                         "source_root":  "pqga-full",
+                                         "source_root":  "general-d",
                                          "path":  "results/struct2_d3_k2.mat",
                                          "sha256":  "d28ed60909fd6ba674fb13a0303d5cc33e6b63ee42b88501a362942d2710f912",
                                          "live_hash_verified":  true
@@ -2814,13 +2814,13 @@
                                      ]
                       },
                       {
-                          "path":  "results/diagnostic/quair06_struct3_d4_k1.mat",
+                          "path":  "results/diagnostic/server_struct3_d4_k1.mat",
                           "classification":  "diagnostic",
                           "diagnostic_type":  "reduced_space_crosscheck",
                           "current_sha256":  "ae23823cad355ec22b2ff8384d6db57fb84697d4be13a3e93fcae6c326a987f1",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
-                                         "source_root":  "pqga-full",
+                                         "source_root":  "general-d",
                                          "path":  "results/struct3_d4_k1.mat",
                                          "sha256":  "ae23823cad355ec22b2ff8384d6db57fb84697d4be13a3e93fcae6c326a987f1",
                                          "live_hash_verified":  true
@@ -2906,13 +2906,13 @@
                                      ]
                       },
                       {
-                          "path":  "results/diagnostic/quair06_struct3_d4_k2.mat",
+                          "path":  "results/diagnostic/server_struct3_d4_k2.mat",
                           "classification":  "diagnostic",
                           "diagnostic_type":  "reduced_space_crosscheck",
                           "current_sha256":  "db4e150e5c2066b465fb7de74262dc80eccfea8607721f8321087d46304840c4",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
-                                         "source_root":  "pqga-full",
+                                         "source_root":  "general-d",
                                          "path":  "results/struct3_d4_k2.mat",
                                          "sha256":  "db4e150e5c2066b465fb7de74262dc80eccfea8607721f8321087d46304840c4",
                                          "live_hash_verified":  true
@@ -2998,13 +2998,13 @@
                                      ]
                       },
                       {
-                          "path":  "results/diagnostic/quair06_y3_d4_k3.mat",
+                          "path":  "results/diagnostic/server_y3_d4_k3.mat",
                           "classification":  "diagnostic",
                           "diagnostic_type":  "yalmip_crosscheck",
                           "current_sha256":  "333361adbb2c916b765d74598a9396ea459cb4b7cb01a452a45a0b728a67d378",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
-                                         "source_root":  "pqga-full",
+                                         "source_root":  "general-d",
                                          "path":  "results/y3_d4_k3.mat",
                                          "sha256":  "333361adbb2c916b765d74598a9396ea459cb4b7cb01a452a45a0b728a67d378",
                                          "live_hash_verified":  true
@@ -3090,13 +3090,13 @@
                                      ]
                       },
                       {
-                          "path":  "results/diagnostic/quair06_y3_d5_k2.mat",
+                          "path":  "results/diagnostic/server_y3_d5_k2.mat",
                           "classification":  "diagnostic",
                           "diagnostic_type":  "yalmip_crosscheck",
                           "current_sha256":  "e5ecfbb459fd14f41f20887e48e6d7b08cfab719442d206c8708e4fddfde5533",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
-                                         "source_root":  "pqga-full",
+                                         "source_root":  "general-d",
                                          "path":  "results/y3_d5_k2.mat",
                                          "sha256":  "e5ecfbb459fd14f41f20887e48e6d7b08cfab719442d206c8708e4fddfde5533",
                                          "live_hash_verified":  true
@@ -3182,13 +3182,13 @@
                                      ]
                       },
                       {
-                          "path":  "results/diagnostic/quair06_yalmip_d3_k2.mat",
+                          "path":  "results/diagnostic/server_yalmip_d3_k2.mat",
                           "classification":  "diagnostic",
                           "diagnostic_type":  "yalmip_crosscheck",
                           "current_sha256":  "30bc2e173e874bf1365a8ed454e5b8716db9a3a65f8b24d1185f8228c1b306c1",
                           "source":  {
                                          "snapshot_date":  "2026-08-07",
-                                         "source_root":  "pqga-full",
+                                         "source_root":  "general-d",
                                          "path":  "results/yalmip_d3_k2.mat",
                                          "sha256":  "30bc2e173e874bf1365a8ed454e5b8716db9a3a65f8b24d1185f8228c1b306c1",
                                          "live_hash_verified":  true
@@ -3284,8 +3284,8 @@
                                 "date":  "2026-08-07",
                                 "source_file_count":  205,
                                 "roots":  {
-                                              "primary":  57,
-                                              "pqga-full":  148
+                                              "qubit":  57,
+                                              "general-d":  148
                                           },
                                 "live_hash_mismatches":  0,
                                 "remote_write_operations":  0,

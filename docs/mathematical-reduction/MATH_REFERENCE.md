@@ -10,7 +10,7 @@ and points to the code lines and variable names that realise it.
 > snapshot and is **not an executable entry point**: its `PermuteSystems`
 > convention is wrong for `k >= 3`. Supported exact qubit runs use
 > `src/matlab/kcopy_d2/gamma_k_d2_exact.m`; retained general-d experiment
-> snapshots are under `experiments/quair06/general_d`. The shared decomposition
+> snapshots are under `experiments/server/general_d`. The shared decomposition
 > helper is `src/matlab/common/decompose_brauer_algebra.m`.
 
 Throughout: d = local Hilbert-space dimension, k = number of programmer

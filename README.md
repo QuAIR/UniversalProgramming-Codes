@@ -53,12 +53,12 @@ norm recomputation is available as an optional, more expensive mode.
 | Path | Contents |
 | --- | --- |
 | [`src/matlab`](src/matlab) | Supported common routines, portable configuration, and the corrected exact qubit solver. |
-| [`experiments/quair06`](experiments/quair06) | Portable batch definitions and general-`d` experiment snapshots. |
+| [`experiments/server`](experiments/server) | Portable batch definitions and general-`d` experiment snapshots. |
 | [`experiments/strict_submultiplicativity`](experiments/strict_submultiplicativity) | Finite-qubit strict-submultiplicativity example and historical correction checker. |
 | [`results`](results) | Canonical table, retained MAT evidence, logs, and the machine-readable artifact manifest. |
 | [`docs/experiment-manifest.md`](docs/experiment-manifest.md) | Status, entry point, dependencies, artifacts, checks, source, and limitations for each experiment family. |
 | [`docs/mathematical-reduction`](docs/mathematical-reduction) | Corrected reduction and its implementation map. |
-| [`docs/provenance`](docs/provenance) | Git and read-only quair06 reconciliation records. |
+| [`docs/provenance`](docs/provenance) | Git and read-only server reconciliation records. |
 | [`legacy`](legacy) | Defective, relaxed, failed, superseded, or historical-only code. |
 | [`tests`](tests) | Static, evidence-loading, configuration, and inexpensive numerical checks. |
 
@@ -81,7 +81,7 @@ required only by the general-`d` entries that name them. MOSEK must be
 installed and licensed through the selected CVX or YALMIP environment. There
 is no `UP_LOG_ROOT`: batch logs live below `UP_RESULTS_ROOT`.
 
-See the [portable run guide](experiments/quair06/README.md) for foreground,
+See the [portable run guide](experiments/server/README.md) for foreground,
 detached, resume, and general-`d` examples.
 
 ## Batch examples
@@ -92,8 +92,8 @@ Run the supported exact qubit batches from a POSIX shell:
 export UP_CVX_ROOT=/opt/cvx
 export UP_QETLAB_ROOT=/opt/qetlab
 export UP_RESULTS_ROOT="$PWD/results/generated"
-./experiments/quair06/kcopy_d2/run_exact_k14.sh
-./experiments/quair06/kcopy_d2/launch_exact_k56.sh
+./experiments/server/kcopy_d2/run_exact_k14.sh
+./experiments/server/kcopy_d2/launch_exact_k56.sh
 ```
 
 The first command runs `k=1,...,4` in the foreground. The second launches the
@@ -159,19 +159,19 @@ the large SDPs:
 run('tests/matlab/test_paths.m')
 run('tests/matlab/test_portable_configuration.m')
 run('tests/matlab/test_result_artifacts.m')
-run('tests/matlab/test_quair06_evidence.m')
+run('tests/matlab/test_server_evidence.m')
 ```
 
 `tests/matlab/smoke_k1.m` is the optional solver-backed `k=1` check.
 
 ## Provenance and licensing
 
-The quair06 trees were reconciled read-only on 2026-08-07: 57 files from the
+The server trees were reconciled read-only on 2026-08-07: 57 files from the
 qubit tree and 148 from the general-`d` tree, for 205 files total and zero
 source SHA-256 mismatches. No remote job was started, stopped, or modified.
 Remote modification times were captured read-only on 2026-08-08 and normalized
 to UTC after access was restored; the source hashes remained unchanged.
-See the [live inventory](docs/provenance/quair06-live-inventory.json), the
+See the [live inventory](docs/provenance/server-live-inventory.json), the
 [artifact manifest](results/mat-artifacts.json), and the
 [provenance notes](docs/provenance/README.md).
 

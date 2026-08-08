@@ -1,7 +1,7 @@
 # Historical Result Evidence
 
 This directory restores curated evidence from source commit `4512790` and the
-read-only quair06 reconciliation of 2026-08-07. It does not report a new run.
+read-only server reconciliation of 2026-08-07. It does not report a new run.
 Values in `summary.csv` are universal-processor programming costs (overheads),
 not unitary-inversion fidelities.
 
@@ -42,7 +42,7 @@ The aggregate exact d=2 MAT was copied from source commit `4512790` and differs 
 
 ## Live k=5 and k=6 evidence
 
-`diagnostic/quair06_exact_d2_k5_saved_blocks.mat` contains the full saved
+`diagnostic/server_exact_d2_k5_saved_blocks.mat` contains the full saved
 blocks, coefficients, `p1`, `p2`, and residual information for the completed
 d=2,k=5 run. Its cost is `1.35153816332987`, with positive minimum eigenvalue
 and residuals below `3e-6`. The solver transcript also contains a
@@ -53,12 +53,12 @@ have recorded residual magnitudes below `3e-6`, but these finite checks do not
 certify feasibility for every CPTP map. It is neither a rigorously certified
 all-CPTP feasible point nor an optimum.
 
-`diagnostic/quair06_exact_k56_checkpoint.mat` records k=5 as complete and k=6
+`diagnostic/server_exact_k56_checkpoint.mat` records k=5 as complete and k=6
 as `NaN`/incomplete. Four path strings in its `opts` struct were replaced by
-neutral placeholders. `logs/quair06_exact_k56_checkpoint.log` retains the
+neutral placeholders. `logs/server_exact_k56_checkpoint.log` retains the
 sanitized human-readable evidence, and the adjacent CSV is machine-readable.
 No k=6 solution is claimed.
 
-The seven `quair06_struct*`, `quair06_y3*`, and `quair06_yalmip*` MAT files are
+The seven `server_struct*`, `server_y3*`, and `server_yalmip*` MAT files are
 cross-checks for existing canonical rows. They do not add or replace rows in
 `summary.csv`.
